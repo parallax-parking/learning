@@ -1,12 +1,13 @@
 # Bike Anatomy Trainer
 
+### 👉 https://parallax-parking.github.io/learning/
+
+*(the link goes live once GitHub Pages is switched on — see [Enabling GitHub Pages](#enabling-github-pages))*
+
 An Anki-style flashcard trainer for the **30 named parts of a road bike**, built as a single
 self-contained HTML page. A part of the bike lights up, you type its name, and it turns green
 if you're right and red if you're wrong. Anything you miss goes back in the pile and comes
 around again until it sticks.
-
-**Live page:** enable GitHub Pages (see below), then visit
-`https://parallax-parking.github.io/learning/`
 
 ---
 
