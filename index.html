@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bike Anatomy Trainer</title>
+<meta name="description" content="Anki-style flashcard trainer for the 30 named parts of a road bike.">
+<style>
+  :root{
+    --bg:#0a0a0c;
+    --panel:#141419;
+    --panel-2:#1c1c23;
+    --line:#2a2a33;
+    --ink:#f2f2f4;
+    --ink-dim:#9a9aa6;
+    --ink-faint:#63636f;
+    --accent:#ff6b1a;
+    --ok:#31c26d;
+    --bad:#f0483e;
+    --warn:#f5b301;
+    --frame:#f2f2ef;
+    --metal:#8d8d99;
+    --dark:#26262e;
+    --radius:14px;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+    padding:0 16px 64px;
+  }
+  .wrap{max-width:1080px;margin:0 auto}
+
+  /* ---------- header ---------- */
+  header{
+    display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+    padding:20px 0 14px;border-bottom:1px solid var(--line);margin-bottom:18px;
+  }
+  h1{font-size:19px;margin:0;letter-spacing:-.2px;font-weight:650}
+  h1 .dot{color:var(--accent)}
+  .sub{color:var(--ink-faint);font-size:12.5px;margin:2px 0 0}
+  .spacer{flex:1}
+
+  .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+  .seg button{
+    background:none;border:0;color:var(--ink-dim);font:inherit;font-size:13px;font-weight:550;
+    padding:6px 13px;border-radius:7px;cursor:pointer;transition:.14s;white-space:nowrap;
+  }
+  .seg button:hover{color:var(--ink)}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:#150c05}
+
+  select{
+    background:var(--panel);color:var(--ink);border:1px solid var(--line);
+    border-radius:10px;padding:7px 10px;font:inherit;font-size:13px;cursor:pointer;
+  }
+
+  /* ---------- stats ---------- */
+  .stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .chip{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:7px 12px;display:flex;align-items:baseline;gap:7px;
+  }
+  .chip .k{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint)}
+  .chip .v{font-family:var(--mono);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+  .chip.ok .v{color:var(--ok)} .chip.bad .v{color:var(--bad)} .chip.hot .v{color:var(--accent)}
+
+  .bar{height:5px;background:var(--panel-2);border-radius:99px;overflow:hidden;margin:0 0 16px}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .35s cubic-bezier(.4,0,.2,1)}
+
+  /* ---------- stage ---------- */
+  .stage{
+    background:radial-gradient(120% 130% at 50% 22%, #17171d 0%, #0a0a0c 72%);
+    border:1px solid var(--line);border-radius:var(--radius);
+    position:relative;overflow:hidden;
+  }
+  svg#bike{display:block;width:100%;height:auto;touch-action:manipulation}
+  .stage.explore svg#bike{cursor:crosshair}
+
+  /* bike drawing */
+  .tyre{fill:none;stroke:#191920;stroke-width:12}
+  .tyre-in{fill:none;stroke:#33333d;stroke-width:1.1}
+  .tyre-wall{fill:none;stroke:#8a5230;stroke-width:2.6;opacity:.85}
+  .rim{fill:none;stroke:#2b2b34;stroke-width:32}
+  .rim-edge{fill:none;stroke:#585866;stroke-width:1.2}
+  .spoke{stroke:#6b6b79;stroke-width:1.3}
+  .hub{fill:#43434f;stroke:#8b8b9a;stroke-width:2}
+  .rotor{fill:none;stroke:#7b7b8b;stroke-width:2.2;stroke-dasharray:11 7}
+  .rotor-in{fill:none;stroke:#4e4e58;stroke-width:5}
+  .frame{fill:none;stroke:#f1f0ea;stroke-linecap:round;stroke-linejoin:round}
+  .part{fill:none;stroke:#b0b0be;stroke-linecap:round;stroke-linejoin:round}
+  .solid{fill:#3a3a45;stroke:#9092a1;stroke-width:1.8;stroke-linejoin:round}
+  .chainline{fill:none;stroke:#b8b8c6;stroke-width:3.2}
+  .chain-t{fill:none;stroke:#6c6c7a;stroke-width:5.4;stroke-dasharray:2.6 3.2}
+  .ring{fill:none;stroke:#cfcfd9;stroke-width:2.2}
+  .teeth{fill:none;stroke:#cfcfd9;stroke-width:6;stroke-dasharray:2 4.2}
+  .cog{fill:none;stroke:#a6a6b6;stroke-width:4.2;stroke-dasharray:2 3.4}
+
+  /* highlight layer */
+  #hl{pointer-events:none}
+  #hl *{fill:none;stroke:var(--accent);stroke-width:16;stroke-linecap:round;stroke-linejoin:round;opacity:.55;
+        filter:drop-shadow(0 0 10px rgba(255,107,26,.55))}
+  #hl.ok *{stroke:var(--ok);filter:drop-shadow(0 0 10px rgba(49,194,109,.55))}
+  #hl.bad *{stroke:var(--bad);filter:drop-shadow(0 0 10px rgba(240,72,62,.55))}
+  #hl.thin *{stroke-width:9}
+
+  /* markers */
+  .hot{fill:transparent;cursor:pointer}
+  .dotg{pointer-events:none}
+  .dot{fill:var(--accent);opacity:0}
+  .stage.explore .dot{opacity:.5}
+  .stage.explore .dot.miss{fill:var(--bad);opacity:.75}
+  .stage.explore .dot.got{fill:var(--ok);opacity:.55}
+  .dot.active{opacity:1}
+  .pulse{fill:none;stroke:var(--accent);stroke-width:2.5;opacity:0;
+    transform-box:fill-box;transform-origin:center center}
+  .pulse.on{opacity:1;animation:ping 1.7s cubic-bezier(0,.2,.6,1) infinite}
+  @keyframes ping{0%{transform:scale(.55);opacity:.9}70%{transform:scale(3.1);opacity:0}100%{transform:scale(3.1);opacity:0}}
+  .pulse.ok{stroke:var(--ok)}
+  .lbl{font:650 17px var(--font);fill:var(--ink);paint-order:stroke;stroke:#0a0a0c;stroke-width:5;stroke-linejoin:round}
+  .lbl.q{fill:var(--accent);font-size:26px}
+  .leader{stroke:var(--accent);stroke-width:1.6;opacity:.6;stroke-dasharray:4 4}
+
+  /* ---------- prompt ---------- */
+  .prompt{
+    margin-top:14px;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);padding:16px;
+  }
+  .ask{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .ask .q{font-size:15.5px;font-weight:600}
+  .tag{
+    font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;
+    background:var(--panel-2);border:1px solid var(--line);color:var(--ink-dim);
+    padding:3px 9px;border-radius:99px;
+  }
+  .tag.hint{border-color:#5a4a12;background:#2a2410;color:var(--warn)}
+
+  .row{display:flex;gap:9px;flex-wrap:wrap}
+  input[type=text]{
+    flex:1;min-width:200px;background:var(--bg);border:1.5px solid var(--line);
+    border-radius:11px;padding:13px 15px;color:var(--ink);font:inherit;font-size:16px;outline:none;transition:.14s;
+  }
+  input[type=text]::placeholder{color:var(--ink-faint)}
+  input[type=text]:focus{border-color:var(--accent)}
+  input.ok{border-color:var(--ok);background:rgba(49,194,109,.09);color:#b6f0cf}
+  input.bad{border-color:var(--bad);background:rgba(240,72,62,.09);color:#ffc2be}
+  input:disabled{opacity:1}
+
+  button.btn{
+    background:var(--panel-2);color:var(--ink);border:1px solid var(--line);
+    border-radius:11px;padding:13px 18px;font:inherit;font-size:14.5px;font-weight:600;
+    cursor:pointer;transition:.14s;white-space:nowrap;
+  }
+  button.btn:hover{background:#26262f;border-color:#3a3a46}
+  button.btn.primary{background:var(--accent);color:#150c05;border-color:var(--accent)}
+  button.btn.primary:hover{filter:brightness(1.1)}
+  button.btn.ghost{background:none;color:var(--ink-dim)}
+  button.btn.ghost:hover{color:var(--ink)}
+
+  .fb{margin-top:12px;font-size:14.5px;min-height:22px}
+  .fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)} .fb.warn{color:var(--warn)}
+  .fb b{color:var(--ink)}
+  .fb .kbd{
+    font-family:var(--mono);font-size:11.5px;background:var(--panel-2);border:1px solid var(--line);
+    border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--ink-dim);
+    margin:0 3px;white-space:nowrap;
+  }
+
+  /* ---------- explore ---------- */
+  .list{display:none;margin-top:14px}
+  .stage-wrap.explore-on .list{display:block}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:7px}
+  .item{
+    display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:9px 11px;cursor:pointer;transition:.12s;text-align:left;
+    font:inherit;font-size:13.5px;color:var(--ink);width:100%;
+  }
+  .item:hover{border-color:var(--accent);background:var(--panel-2)}
+  .item.sel{border-color:var(--accent);background:rgba(255,107,26,.1)}
+  .item .num{
+    font-family:var(--mono);font-size:11px;color:var(--ink-faint);min-width:22px;
+    background:var(--panel-2);border-radius:5px;padding:2px 5px;text-align:center;
+  }
+  .item .miss{margin-left:auto;font-size:10.5px;color:var(--bad);font-family:var(--mono)}
+  .grouphead{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
+    margin:16px 0 8px;font-weight:600;
+  }
+  .grouphead:first-child{margin-top:4px}
+
+  /* ---------- summary ---------- */
+  .done{display:none;margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .done.on{display:block}
+  .done h2{margin:0 0 4px;font-size:20px}
+  .done p.lede{color:var(--ink-dim);margin:0 0 18px;font-size:14px}
+  .scoreline{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:18px}
+  .scoreline div span{display:block}
+  .scoreline .n{font-family:var(--mono);font-size:27px;font-weight:700;line-height:1.1}
+  .scoreline .l{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+  .missed{margin-bottom:18px}
+  .missed ul{margin:8px 0 0;padding-left:18px;color:var(--ink-dim);font-size:14px}
+  .missed li b{color:var(--ink)}
+
+  footer{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);
+    color:var(--ink-faint);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  footer button{background:none;border:0;color:var(--ink-faint);font:inherit;font-size:12.5px;cursor:pointer;text-decoration:underline;padding:0}
+  footer button:hover{color:var(--bad)}
+
+  @media (max-width:640px){
+    h1{font-size:17px}
+    .stats{gap:6px}
+    .chip{padding:6px 10px}
+    .chip .v{font-size:14px}
+    .row{flex-direction:column}
+    button.btn{width:100%}
+    .row.ghostrow{flex-direction:row;gap:7px}
+    .row.ghostrow button.btn{width:auto;flex:1;padding:12px 6px;font-size:13.5px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1>Bike Anatomy Trainer<span class="dot">.</span></h1>
+    <p class="sub">Flashcards for the 30 named parts of a road bike — get it wrong, it comes back.</p>
+  </div>
+  <div class="spacer"></div>
+  <select id="deck" aria-label="Choose deck">
+    <option value="all">All parts (30)</option>
+    <option value="Frame">Frame</option>
+    <option value="Drivetrain">Drivetrain</option>
+    <option value="Braking">Braking</option>
+    <option value="Cockpit">Cockpit</option>
+    <option value="Wheel">Wheel</option>
+    <option value="trouble">My trouble spots</option>
+  </select>
+  <div class="seg" role="group" aria-label="Mode">
+    <button id="mQuiz" aria-pressed="true">Quiz</button>
+    <button id="mExp" aria-pressed="false">Explore</button>
+  </div>
+</header>
+
+<div class="stats" id="stats"></div>
+<div class="bar"><i id="barfill"></i></div>
+
+<div class="stage-wrap" id="stageWrap">
+  <div class="stage" id="stage">
+    <svg id="bike" viewBox="70 40 860 580" role="img" aria-label="Side view diagram of a road bike">
+      <defs>
+        <radialGradient id="shad" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#000" stop-opacity=".55"/>
+          <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <ellipse cx="500" cy="592" rx="340" ry="16" fill="url(#shad)"/>
+
+      <!-- ============ WHEELS ============ -->
+      <g id="wheels">
+        <circle class="tyre-wall" cx="255" cy="415" r="164.5"/>
+        <circle class="tyre"      cx="255" cy="415" r="159"/>
+        <circle class="tyre-in"   cx="255" cy="415" r="153"/>
+        <circle class="rim"       cx="255" cy="415" r="137"/>
+        <circle class="rim-edge"  cx="255" cy="415" r="153"/>
+        <circle class="rim-edge"  cx="255" cy="415" r="121"/>
+        <g class="spokes" data-cx="255" data-cy="415"></g>
+
+        <circle class="tyre-wall" cx="745" cy="415" r="164.5"/>
+        <circle class="tyre"      cx="745" cy="415" r="159"/>
+        <circle class="tyre-in"   cx="745" cy="415" r="153"/>
+        <circle class="rim"       cx="745" cy="415" r="137"/>
+        <circle class="rim-edge"  cx="745" cy="415" r="153"/>
+        <circle class="rim-edge"  cx="745" cy="415" r="121"/>
+        <g class="spokes" data-cx="745" data-cy="415"></g>
+
+        <!-- valve: through the rim bed, stem pointing in toward the hub -->
+        <path class="part" d="M806 519 L789 491" stroke-width="5"/>
+        <circle class="solid" cx="787" cy="488" r="4"/>
+      </g>
+
+      <!-- ============ ROTORS ============ -->
+      <g>
+        <circle class="rotor-in" cx="745" cy="415" r="33"/>
+        <circle class="rotor"    cx="745" cy="415" r="54"/>
+      </g>
+
+      <!-- ============ FRAME ============ -->
+      <g id="frame">
+        <path class="frame" d="M451 449 L255 415" stroke-width="12"/>   <!-- chainstay -->
+        <path class="frame" d="M255 415 L386 229" stroke-width="10"/>   <!-- rear/seat stay -->
+        <path class="frame" d="M451 449 L386 229" stroke-width="23"/>   <!-- seat tube -->
+        <path class="frame" d="M451 449 L678 243" stroke-width="29"/>   <!-- down tube -->
+        <path class="frame" d="M657 173 L386 229" stroke-width="21"/>   <!-- top tube -->
+        <path class="frame" d="M678 243 L657 173" stroke-width="26"/>   <!-- head tube -->
+        <path class="frame" d="M678 243 L745 415" stroke-width="12"/>   <!-- fork blade -->
+      </g>
+
+      <!-- ============ SEATPOST / SADDLE ============ -->
+      <g>
+        <path class="part" d="M386 229 L355 124" stroke-width="14" stroke="#d9d9e2"/>
+        <path class="solid" d="M375 222 L397 218 L401 240 L379 244 Z"/>
+        <path class="solid" d="M301 97 C 309 89, 336 88, 360 92 C 388 97, 414 106, 420 111
+                               C 415 115, 396 114, 372 110 C 340 105, 306 106, 301 97 Z"/>
+        <path class="part" d="M330 108 L368 114 M336 114 L372 118" stroke-width="2.6"/>
+        <path class="part" d="M349 120 L374 116" stroke-width="7"/>
+      </g>
+
+      <!-- ============ COCKPIT ============ -->
+      <g id="cockpit">
+        <path class="solid" d="M647 184 L679 177 L684 199 L652 206 Z"/>            <!-- headset -->
+        <path class="part" d="M716 161 L768 157 C 798 155 813 173 808 196
+                               C 803 219 786 229 763 226" stroke-width="11"/>       <!-- bars -->
+        <path class="solid" d="M655 157 L723 149 L725 173 L657 181 Z"/>            <!-- stem -->
+        <path class="solid" d="M779 155 C 801 152, 813 166, 808 184 L794 198 L782 176 Z"/>
+        <path class="part" d="M799 195 L791 217" stroke-width="6"/>                <!-- lever blade -->
+      </g>
+
+      <!-- ============ DRIVETRAIN (drive side sits proud of the frame) ============ -->
+      <g id="drive">
+        <circle class="cog" cx="255" cy="415" r="48"/>
+        <circle class="cog" cx="255" cy="415" r="40"/>
+        <circle class="cog" cx="255" cy="415" r="32"/>
+        <circle class="cog" cx="255" cy="415" r="25"/>
+
+        <path class="chain-t"   d="M451 392 L255 365"/>
+        <path class="chainline" d="M451 392 L255 365"/>
+        <path class="chain-t"   d="M451 506 L318 494 L293 471 L280 491 L255 463"/>
+        <path class="chainline" d="M451 506 L318 494 L293 471 L280 491 L255 463"/>
+
+        <path class="part" d="M262 447 L281 462 L293 471" stroke-width="7"/>
+        <path class="solid" d="M284 455 L302 451 L307 478 L289 483 Z"/>
+        <circle class="solid" cx="293" cy="471" r="9"/>
+        <circle class="solid" cx="280" cy="491" r="9"/>
+
+        <circle class="teeth" cx="451" cy="449" r="57"/>
+        <circle class="ring"  cx="451" cy="449" r="51"/>
+        <circle class="ring"  cx="451" cy="449" r="30" opacity=".5"/>
+        <path class="ring" d="M451 419 L451 449 L477 464 M451 449 L425 464" opacity=".5"/>
+
+        <path class="part" d="M451 449 L505 526" stroke-width="12" stroke="#dcdce4"/>
+        <circle class="solid" cx="451" cy="449" r="11"/>
+        <path class="solid" d="M497 531 L534 545 L529 557 L492 543 Z"/>
+
+        <path class="solid" d="M433 371 L457 367 L460 397 L436 402 Z"/>
+        <path class="part" d="M437 400 L463 396" stroke-width="4"/>
+      </g>
+
+      <!-- ============ BRAKES / AXLES / DROPOUTS ============ -->
+      <g id="stoppers">
+        <path class="solid" d="M697 336 L724 328 L731 362 L704 371 Z"/>            <!-- front caliper -->
+        <path class="part" d="M712 366 L722 386" stroke-width="4"/>
+        <path class="solid" d="M287 366 L314 359 L321 389 L294 396 Z" fill="#4a4a57"/>            <!-- rear caliper -->
+
+        <path class="solid" d="M718 372 L750 384 L744 409 L714 397 Z"/>            <!-- front dropout -->
+        <path class="part" d="M736 393 L745 415" stroke-width="6" stroke="#0a0a0c"/>
+
+        <circle class="hub" cx="745" cy="415" r="17"/>
+        <circle class="solid" cx="745" cy="415" r="7"/>
+        <circle class="hub" cx="255" cy="415" r="18"/>
+        <circle class="solid" cx="255" cy="415" r="7"/>
+      </g>
+
+      <!-- highlight overlay -->
+      <g id="hl"></g>
+      <!-- leader + marker layer -->
+      <g class="dotg" id="markers"></g>
+      <g id="hots"></g>
+    </svg>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="prompt" id="prompt">
+    <div class="ask">
+      <span class="q" id="qtext">Name the highlighted part</span>
+      <span class="tag" id="cardno">card 1 / 30</span>
+      <span class="tag hint" id="hintTag" hidden></span>
+    </div>
+    <div class="row">
+      <input type="text" id="answer" placeholder="Type the part name…" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
+      <button class="btn primary" id="check">Check</button>
+    </div>
+    <div class="row ghostrow" style="margin-top:9px">
+      <button class="btn ghost" id="hintBtn">Hint</button>
+      <button class="btn ghost" id="revealBtn">Show answer</button>
+      <button class="btn ghost" id="skipBtn">Skip</button>
+    </div>
+    <div class="fb" id="fb"></div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="done" id="done">
+    <h2 id="doneTitle">Deck cleared</h2>
+    <p class="lede" id="doneLede"></p>
+    <div class="scoreline">
+      <div><span class="n" id="sAcc">—</span><span class="l">First-try accuracy</span></div>
+      <div><span class="n" id="sCards">—</span><span class="l">Parts learned</span></div>
+      <div><span class="n" id="sTime">—</span><span class="l">Time</span></div>
+      <div><span class="n" id="sStreak">—</span><span class="l">Best streak</span></div>
+    </div>
+    <div class="missed" id="missedBox"></div>
+    <div class="row">
+      <button class="btn primary" id="againBtn">Run the deck again</button>
+      <button class="btn" id="missOnlyBtn">Drill only what I missed</button>
+    </div>
+  </div>
+
+  <!-- EXPLORE -->
+  <div class="list" id="list"></div>
+</div>
+
+<footer>
+  <span id="pb"></span>
+  <button id="resetBtn">Reset all saved progress</button>
+</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   THE DECK — 30 parts, matching the Canyon Aeroad manual diagram
+   x/y = marker point in SVG space. hi = geometry to light up.
+   ============================================================ */
+var PARTS = [
+ {id:"toptube",  n:"1a", name:"Top tube",  cat:"Frame",
+  alias:["top tube","toptube","top bar","crossbar","cross bar"],
+  note:"The spine of the main triangle, head tube back to seat tube.",
+  x:521,y:201, hi:'<path d="M657 173 L386 229"/>'},
+
+ {id:"downtube", n:"1b", name:"Down tube", cat:"Frame",
+  alias:["down tube","downtube"],
+  note:"The biggest tube on the bike — head tube down to the bottom bracket.",
+  x:564,y:346, hi:'<path d="M451 449 L678 243"/>'},
+
+ {id:"seattube", n:"1c", name:"Seat tube", cat:"Frame",
+  alias:["seat tube","seattube"],
+  note:"Bottom bracket up to the seat post.",
+  x:418,y:340, hi:'<path d="M451 449 L386 229"/>'},
+
+ {id:"chainstay",n:"1d", name:"Chainstay", cat:"Frame",
+  alias:["chainstay","chain stay","chainstays","chain stays"],
+  note:"Low pair running from bottom bracket to rear axle, alongside the chain.",
+  x:353,y:432, hi:'<path d="M451 449 L255 415"/>'},
+
+ {id:"rearstay", n:"1e", name:"Rear stay", cat:"Frame",
+  alias:["rear stay","rear stays","seat stay","seatstay","seat stays","seatstays","rearstay"],
+  note:"Upper pair from rear axle to the seat cluster. Also called the seat stay.",
+  x:320,y:322, hi:'<path d="M255 415 L386 229"/>'},
+
+ {id:"saddle",   n:"2", name:"Saddle", cat:"Contact",
+  alias:["saddle","seat","bike seat","bicycle seat"],
+  note:"What you sit on.",
+  x:355,y:100, hi:'<path d="M308 99 L412 108"/>'},
+
+ {id:"seatpost", n:"3", name:"Seat post", cat:"Frame",
+  alias:["seat post","seatpost","post"],
+  note:"Slides in and out of the seat tube to set saddle height.",
+  x:368,y:172, hi:'<path d="M384 222 L356 128"/>'},
+
+ {id:"seatclamp",n:"4", name:"Seat post clamp", cat:"Frame",
+  alias:["seat post clamp","seatpost clamp","seat clamp","saddle clamp","post clamp","seat binder","binder"],
+  note:"Pinches the frame around the post so it stops sliding.",
+  x:389,y:231, hi:'<circle cx="388" cy="231" r="15"/>'},
+
+ {id:"rearbrake",n:"5", name:"Rear brake", cat:"Braking",
+  alias:["rear brake","rear caliper","rear brake caliper","back brake","rear disc brake"],
+  note:"The caliper squeezing the rear rotor.",
+  x:304,y:377, hi:'<circle cx="304" cy="377" r="21"/>'},
+
+ {id:"cassette", n:"6", name:"Cassette sprockets", cat:"Drivetrain",
+  alias:["cassette","cassette sprockets","sprockets","cogs","rear cogs","rear sprockets","freewheel","gears"],
+  note:"The stack of rear gears the chain climbs up and down.",
+  x:255,y:367, hi:'<circle cx="255" cy="415" r="40"/>'},
+
+ {id:"frontder", n:"7", name:"Front derailleur", cat:"Drivetrain",
+  alias:["front derailleur","front mech","fd","front changer","front gear changer"],
+  note:"Nudges the chain between the front chainrings.",
+  x:446,y:385, hi:'<circle cx="446" cy="385" r="21"/>'},
+
+ {id:"rearder",  n:"8", name:"Rear derailleur", cat:"Drivetrain",
+  alias:["rear derailleur","rear mech","rd","derailleur","back derailleur","rear gear changer"],
+  note:"Moves the chain across the cassette and keeps it tensioned.",
+  x:295,y:479, hi:'<circle cx="293" cy="472" r="27"/>'},
+
+ {id:"chain",    n:"9", name:"Chain", cat:"Drivetrain",
+  alias:["chain","bike chain","drive chain"],
+  note:"Carries your effort from the chainring to the cassette.",
+  x:368,y:494, hi:'<path d="M451 506 L318 494 L293 471"/>'},
+
+ {id:"chainring",n:"10", name:"Chainring", cat:"Drivetrain",
+  alias:["chainring","chain ring","chainrings","front ring","front chainring","front sprocket","chain wheel","chainwheel"],
+  note:"The toothed ring bolted to the crank — the front gear.",
+  x:505,y:428, hi:'<circle cx="451" cy="449" r="54"/>'},
+
+ {id:"crankset", n:"11", name:"Crank set", cat:"Drivetrain",
+  alias:["crank set","crankset","crank","cranks","crank arm","crank arms","chainset"],
+  note:"The arms (plus rings and spindle) turning your legs into rotation.",
+  x:482,y:492, hi:'<path d="M451 449 L505 526"/>'},
+
+ {id:"pedal",    n:"12", name:"Pedal", cat:"Contact",
+  alias:["pedal","pedals"],
+  note:"Where your foot meets the machine.",
+  x:516,y:544, hi:'<path d="M497 537 L530 551"/>'},
+
+ {id:"stem",     n:"13", name:"Stem", cat:"Cockpit",
+  alias:["stem","handlebar stem"],
+  note:"Short bridge clamping the bars to the steerer tube.",
+  x:690,y:164, hi:'<path d="M662 167 L718 160"/>'},
+
+ {id:"bars",     n:"14", name:"Handlebars", cat:"Cockpit",
+  alias:["handlebars","handlebar","bars","bar","drop bars","dropbars","drops","drop bar","handle bars","handle bar"],
+  note:"Tops, hoods and drops — your three hand positions.",
+  x:786,y:222, hi:'<path d="M716 161 L768 157 C 797 155 812 172 807 195 C 802 218 786 228 764 225"/>'},
+
+ {id:"lever",    n:"15", name:"Brake/shift lever", cat:"Cockpit",
+  alias:["brake shift lever","brake/shift lever","brake lever","shift lever","shifter","shifters","lever","levers","sti lever","brifter","brake and shift lever","shift brake lever"],
+  note:"One lever does both jobs: brake and change gear.",
+  x:796,y:174, hi:'<circle cx="796" cy="174" r="23"/>'},
+
+ {id:"headset",  n:"16", name:"Headset", cat:"Cockpit",
+  alias:["headset","head set","head bearing","steering bearing"],
+  note:"Bearings in the head tube that let the fork steer smoothly.",
+  x:665,y:192, hi:'<circle cx="665" cy="192" r="19"/>'},
+
+ {id:"fork",     n:"17", name:"Fork", cat:"Cockpit",
+  alias:["fork","front fork","forks","fork blade","fork leg"],
+  note:"Two legs holding the front wheel and taking the steering.",
+  x:698,y:295, hi:'<path d="M678 243 L745 415"/>'},
+
+ {id:"frontbrake",n:"18", name:"Front brake", cat:"Braking",
+  alias:["front brake","front caliper","front brake caliper","caliper","brake caliper","disc brake"],
+  note:"The caliper on the fork leg that clamps the front rotor.",
+  x:713,y:350, hi:'<circle cx="713" cy="350" r="24"/>'},
+
+ {id:"rotor",    n:"19", name:"Brake rotor", cat:"Braking",
+  alias:["brake rotor","rotor","disc","brake disc","disc rotor","rotors","brake discs"],
+  note:"Steel disc bolted to the hub; the pads bite this.",
+  x:700,y:447, hi:'<circle cx="745" cy="415" r="54"/>'},
+
+ {id:"dropout",  n:"20", name:"Drop-out", cat:"Wheel",
+  alias:["dropout","drop out","drop-out","dropouts","fork end","fork ends","fork tip"],
+  note:"The slot at the end of the fork (or stay) the axle seats into.",
+  x:731,y:388, hi:'<circle cx="732" cy="390" r="21"/>'},
+
+ {id:"axle",     n:"21", name:"Quick-release/thru axle", cat:"Wheel",
+  alias:["quick release thru axle","quick release","thru axle","through axle","thru-axle","quick-release","axle","skewer","quick release skewer","qr","quick release axle"],
+  note:"The rod that clamps the wheel into the drop-outs.",
+  x:745,y:415, hi:'<circle cx="745" cy="415" r="12"/>'},
+
+ {id:"spoke",    n:"22", name:"Spoke", cat:"Wheel",
+  alias:["spoke","spokes"],
+  note:"Thin tension wires; the wheel hangs from the ones at the top.",
+  x:806,y:380, hi:'<path d="M745 415 L850 355"/>'},
+
+ {id:"rim",      n:"23", name:"Rim", cat:"Wheel",
+  alias:["rim","rims","wheel rim","deep rim"],
+  note:"The hoop the spokes pull on and the tyre sits in.",
+  x:745,y:278, hi:'<circle cx="745" cy="415" r="137"/>'},
+
+ {id:"tyre",     n:"24", name:"Tyre", cat:"Wheel",
+  alias:["tyre","tire","tyres","tires"],
+  note:"The only part touching the road.",
+  x:633,y:527, hi:'<circle cx="745" cy="415" r="159"/>'},
+
+ {id:"hub",      n:"25", name:"Hub", cat:"Wheel",
+  alias:["hub","hubs","hub shell","wheel hub"],
+  note:"The bearing barrel at the centre that the wheel spins on.",
+  x:255,y:415, hi:'<circle cx="255" cy="415" r="19"/>'},
+
+ {id:"valve",    n:"26", name:"Valve", cat:"Wheel",
+  alias:["valve","valve stem","presta valve","tyre valve","tire valve","tube valve","schrader valve"],
+  note:"Sticks through the rim so you can put air in.",
+  x:797,y:505, hi:'<path d="M806 519 L789 491"/>'}
+];
+
+var THIN = {saddle:1,seatpost:1,chain:1,crankset:1,pedal:1,stem:1,bars:1,spoke:1,axle:1,seatclamp:1};
+
+/* ============================================================
+   Storage
+   ============================================================ */
+var KEY = "bikeAnatomy.v1";
+var store = load();
+function load(){
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY)||"{}");
+    s.miss = s.miss||{}; s.seen = s.seen||{}; s.got = s.got||{};
+    s.bestAcc = s.bestAcc||0; s.runs = s.runs||0;
+    return s;
+  }catch(e){ return {miss:{},seen:{},got:{},bestAcc:0,runs:0}; }
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+
+/* ============================================================
+   Text matching — forgiving but not sloppy
+   ============================================================ */
+function norm(s){
+  return String(s).toLowerCase()
+    .replace(/[‘’“”]/g,"'")
+    .replace(/[^a-z0-9]+/g," ")
+    .replace(/\b(the|a|an|my|bike|bikes|bicycle|cycle)\b/g," ")
+    .replace(/\s+/g," ").trim();
+}
+function lev(a,b){
+  if(a===b) return 0;
+  var m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  var prev=new Array(n+1),cur=new Array(n+1),i,j;
+  for(j=0;j<=n;j++) prev[j]=j;
+  for(i=1;i<=m;i++){
+    cur[0]=i;
+    for(j=1;j<=n;j++){
+      cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a.charAt(i-1)===b.charAt(j-1)?0:1));
+    }
+    for(j=0;j<=n;j++) prev[j]=cur[j];
+  }
+  return prev[n];
+}
+// returns "exact" | "typo" | null
+function grade(input, part){
+  var v = norm(input);
+  if(!v) return null;
+  var cands = [part.name].concat(part.alias).map(norm);
+  var i;
+  for(i=0;i<cands.length;i++) if(cands[i] && v===cands[i]) return "exact";
+  // singular/plural leniency
+  for(i=0;i<cands.length;i++){
+    if(!cands[i]) continue;
+    if(v===cands[i]+"s" || v+"s"===cands[i]) return "exact";
+  }
+  // typo tolerance scaled to length
+  var best=99;
+  for(i=0;i<cands.length;i++){
+    if(!cands[i]) continue;
+    var d=lev(v,cands[i]);
+    var allow = cands[i].length<=5 ? 1 : (cands[i].length<=10 ? 2 : 3);
+    if(d<=allow && d<best) best=d;
+  }
+  return best<99 ? "typo" : null;
+}
+// guard: is the answer actually a *different* part's name?
+function whichPart(input){
+  var v=norm(input);
+  for(var i=0;i<PARTS.length;i++){
+    var c=[PARTS[i].name].concat(PARTS[i].alias).map(norm);
+    for(var j=0;j<c.length;j++) if(c[j]&&(v===c[j]||v===c[j]+"s"||v+"s"===c[j])) return PARTS[i];
+  }
+  return null;
+}
+
+/* ============================================================
+   DOM
+   ============================================================ */
+var $=function(id){return document.getElementById(id);};
+var svg=$("bike"), hots=$("hots"), markers=$("markers"), hl=$("hl");
+var stage=$("stage"), stageWrap=$("stageWrap");
+var input=$("answer"), fb=$("fb"), qtext=$("qtext"), cardno=$("cardno"), hintTag=$("hintTag");
+var NS="http://www.w3.org/2000/svg";
+
+/* spokes */
+(function drawSpokes(){
+  var gs=svg.querySelectorAll(".spokes");
+  for(var g=0;g<gs.length;g++){
+    var cx=+gs[g].getAttribute("data-cx"), cy=+gs[g].getAttribute("data-cy"), i;
+    for(i=0;i<20;i++){
+      var a=(i/20)*Math.PI*2 + 0.08;
+      var l=document.createElementNS(NS,"line");
+      l.setAttribute("class","spoke");
+      l.setAttribute("x1",(cx+Math.cos(a)*19).toFixed(1));
+      l.setAttribute("y1",(cy+Math.sin(a)*19).toFixed(1));
+      l.setAttribute("x2",(cx+Math.cos(a)*120).toFixed(1));
+      l.setAttribute("y2",(cy+Math.sin(a)*120).toFixed(1));
+      gs[g].appendChild(l);
+    }
+  }
+})();
+
+/* markers + hotspots */
+var dotEl={}, pulse, qlabel, leader;
+(function buildMarkers(){
+  leader=document.createElementNS(NS,"line");
+  leader.setAttribute("class","leader"); leader.style.opacity=0;
+  markers.appendChild(leader);
+
+  PARTS.forEach(function(p){
+    var c=document.createElementNS(NS,"circle");
+    c.setAttribute("class","dot"); c.setAttribute("cx",p.x); c.setAttribute("cy",p.y); c.setAttribute("r",7);
+    markers.appendChild(c); dotEl[p.id]=c;
+
+    var h=document.createElementNS(NS,"circle");
+    h.setAttribute("class","hot"); h.setAttribute("cx",p.x); h.setAttribute("cy",p.y); h.setAttribute("r",26);
+    h.setAttribute("data-id",p.id);
+    hots.appendChild(h);
+  });
+
+  pulse=document.createElementNS(NS,"circle");
+  pulse.setAttribute("class","pulse"); pulse.setAttribute("r",9);
+  markers.appendChild(pulse);
+
+  qlabel=document.createElementNS(NS,"text");
+  qlabel.setAttribute("class","lbl q"); qlabel.setAttribute("text-anchor","middle");
+  qlabel.style.opacity=0;
+  markers.appendChild(qlabel);
+})();
+
+function labelSpot(p){
+  // sit the callout above the part, clamped inside the viewBox
+  var lx=Math.max(150,Math.min(855,p.x));
+  var ly=Math.max(60,p.y-46);
+  return {x:lx,y:ly};
+}
+function pointAt(p,text,cls){
+  var s=labelSpot(p);
+  pulse.setAttribute("cx",p.x); pulse.setAttribute("cy",p.y);
+  pulse.classList.add("on");
+  pulse.classList.toggle("ok", cls==="ok");
+  qlabel.setAttribute("x",s.x); qlabel.setAttribute("y",s.y);
+  qlabel.textContent=text;
+  qlabel.setAttribute("class","lbl"+(text==="?"?" q":""));
+  qlabel.style.opacity=1;
+  leader.setAttribute("x1",s.x); leader.setAttribute("y1",s.y+7);
+  leader.setAttribute("x2",p.x); leader.setAttribute("y2",p.y-11);
+  leader.style.opacity=(Math.abs(s.y-p.y)>30||Math.abs(s.x-p.x)>30)?.6:0;
+}
+function clearPointer(){
+  pulse.classList.remove("on","ok");
+  qlabel.style.opacity=0; leader.style.opacity=0;
+  hl.innerHTML=""; hl.setAttribute("class","");
+  for(var k in dotEl) dotEl[k].classList.remove("active");
+}
+function light(p,state){
+  hl.innerHTML=p.hi;
+  hl.setAttribute("class",(state||"")+(THIN[p.id]?" thin":""));
+}
+
+/* ============================================================
+   Session
+   ============================================================ */
+var mode="quiz";
+var newQ=[], again=[], current=null, deckName="all", step=0;
+// newQ  : parts not yet answered correctly this run
+// again : lapsed parts, each with a `due` step so they resurface *after* other cards
+//         (a fixed queue slot starves everything behind it — see remaining())
+var firstTry={}, learned={}, missedThisRun={};
+var asked=0, right=0, streak=0, bestStreak=0, startedAt=0, hintUsed=false, answered=false, deckSize=0;
+var tok=0;   // guards stale auto-advance timers
+
+function deckParts(){
+  if(deckName==="all") return PARTS.slice();
+  if(deckName==="trouble"){
+    var t=PARTS.filter(function(p){return (store.miss[p.id]||0)>0;});
+    return t.length?t:PARTS.slice();
+  }
+  return PARTS.filter(function(p){return p.cat===deckName;});
+}
+function shuffle(a){
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+function remaining(){ return newQ.length + again.length + (current?1:0); }
+function lapse(part,gap){
+  again.push({p:part, due:step+gap});
+  again.sort(function(a,b){ return a.due-b.due; });
+}
+// Serve a lapsed card once it is due, but never two in a row while parts remain
+// unseen — otherwise the lapsed pile comes due at exactly the rate we consume it
+// and the back of the deck is never introduced at all.
+var servedNew=true;
+function pull(){
+  step++;
+  if(again.length && again[0].due<=step && (!newQ.length || servedNew)){
+    servedNew=false;
+    return again.shift().p;
+  }
+  if(newQ.length){ servedNew=true; return newQ.shift(); }
+  if(again.length) return again.shift().p;
+  return null;
+}
+
+function startRun(only){
+  var pool = only && only.length ? only.slice() : deckParts();
+  newQ = shuffle(pool.slice());
+  again = []; step = 0; servedNew = true;
+  deckSize = newQ.length;
+  firstTry={}; learned={}; missedThisRun={};
+  asked=0; right=0; streak=0; bestStreak=0; hintUsed=false; answered=false;
+  current=null; startedAt=Date.now();
+  $("done").classList.remove("on");
+  $("prompt").style.display="";
+  next();
+  renderStats();
+}
+function next(){
+  tok++;
+  answered=false; hintUsed=false;
+  hintTag.hidden=true; fb.textContent=""; fb.className="fb";
+  input.value=""; input.disabled=false; input.className="";
+  $("check").textContent="Check";
+  clearPointer();
+
+  current = pull();
+  if(!current){ finish(); return; }
+  store.seen[current.id]=(store.seen[current.id]||0)+1;
+  dotEl[current.id].classList.add("active");
+  light(current,"");
+  pointAt(current,"?","");
+  qtext.textContent="Name the highlighted part";
+  cardno.textContent="card "+(Object.keys(learned).length+1)+" / "+deckSize+
+                     "  ·  "+remaining()+" left";
+  if(mode==="quiz" && window.innerWidth>720) input.focus();
+  renderStats();
+}
+
+function submit(){
+  if(answered){ next(); return; }
+  var val=input.value;
+  if(!norm(val)){ input.focus(); return; }
+  var part=current;                 // hold on to it: `current` is cleared on a pass
+  var g=grade(val,part);
+  answered=true;
+  input.disabled=true;
+  asked++;
+
+  if(g){
+    var wasFirst = firstTry[part.id]===undefined;
+    if(wasFirst && !hintUsed) right++;
+    if(wasFirst) firstTry[part.id]= !hintUsed;
+    learned[part.id]=true;
+    store.got[part.id]=(store.got[part.id]||0)+1;
+    streak++; if(streak>bestStreak) bestStreak=streak;
+    current=null;                   // answered right: it leaves the run
+    input.className="ok";
+    light(part,"ok"); pointAt(part,part.name,"ok");
+    fb.className="fb ok";
+    fb.innerHTML = (g==="typo")
+      ? '&#10003; Close enough &mdash; it&rsquo;s spelled <b>'+esc(part.name)+'</b>. '+esc(part.note)
+      : '&#10003; Correct. '+esc(part.note);
+    save(); renderStats();
+    var myTok=tok;
+    setTimeout(function(){ if(answered && tok===myTok) next(); },1150);
+  }else{
+    streak=0;
+    if(firstTry[part.id]===undefined) firstTry[part.id]=false;
+    missedThisRun[part.id]=true;
+    store.miss[part.id]=(store.miss[part.id]||0)+1;
+    lapse(part, 2+Math.floor(Math.random()*3));   // the Anki "again" pile
+    current=null;
+    input.className="bad";
+    light(part,"bad"); pointAt(part,part.name,"bad");
+    fb.className="fb bad";
+    var other=whichPart(val);
+    var mis = (other && other.id!==part.id)
+      ? ' That&rsquo;s the <b>'+esc(other.name)+'</b>.' : '';
+    fb.innerHTML='&#10007; It&rsquo;s the <b>'+esc(part.name)+'</b>.'+mis+' '+esc(part.note)
+      +' <span class="kbd">Enter</span> to continue';
+    $("check").textContent="Next";
+    save(); renderStats();
+    $("check").focus();
+  }
+}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function finish(){
+  clearPointer();
+  $("prompt").style.display="none";
+  var d=$("done"); d.classList.add("on");
+  var secs=Math.round((Date.now()-startedAt)/1000);
+  var acc=deckSize?Math.round(right/deckSize*100):0;
+  $("sAcc").textContent=acc+"%";
+  $("sCards").textContent=deckSize;
+  $("sTime").textContent=(secs>=60?Math.floor(secs/60)+"m "+(secs%60)+"s":secs+"s");
+  $("sStreak").textContent=bestStreak;
+  store.runs++;
+  var pb=acc>store.bestAcc;
+  if(pb) store.bestAcc=acc;
+  save();
+  $("doneTitle").textContent = acc===100 ? "Clean sweep." : "Deck cleared.";
+  $("doneLede").textContent = acc===100
+    ? "Every part first try, no hints. That is the whole bike in your head."
+    : (pb ? "New personal best — you got "+right+" of "+deckSize+" on the first try."
+          : "You got "+right+" of "+deckSize+" on the first try. The rest came back until they stuck.");
+  var miss=Object.keys(missedThisRun);
+  var box=$("missedBox");
+  if(miss.length){
+    box.innerHTML='<div class="grouphead">Came back to bite you</div><ul>'+
+      miss.map(function(id){var p=byId(id);return "<li><b>"+esc(p.name)+"</b> &mdash; "+esc(p.note)+"</li>";}).join("")+
+      "</ul>";
+    $("missOnlyBtn").style.display="";
+    $("missOnlyBtn").onclick=function(){ startRun(miss.map(byId)); };
+  }else{
+    box.innerHTML="";
+    $("missOnlyBtn").style.display="none";
+  }
+  renderStats();
+}
+function byId(id){ for(var i=0;i<PARTS.length;i++) if(PARTS[i].id===id) return PARTS[i]; return null; }
+
+/* ============================================================
+   Stats + progress
+   ============================================================ */
+function renderStats(){
+  var doneN=Object.keys(learned).length;
+  var accShown = doneN?Math.round(right/doneN*100):0;
+  var chips=[
+    ["Learned",doneN+" / "+deckSize,""],
+    ["First try",accShown+"%",accShown>=80?"ok":(doneN&&accShown<50?"bad":"")],
+    ["Streak",streak,streak>=4?"hot":""],
+    ["Best ever",(store.bestAcc||0)+"%",""]
+  ];
+  $("stats").innerHTML=chips.map(function(c){
+    return '<div class="chip '+c[2]+'"><span class="k">'+c[0]+'</span><span class="v">'+c[1]+'</span></div>';
+  }).join("");
+  $("barfill").style.width=(deckSize?(doneN/deckSize*100):0)+"%";
+  var totalMiss=0,k; for(k in store.miss) totalMiss+=store.miss[k];
+  $("pb").textContent=store.runs+" run"+(store.runs===1?"":"s")+" saved on this device · "+totalMiss+" total misses logged";
+}
+
+/* ============================================================
+   Explore mode
+   ============================================================ */
+var CATS=["Frame","Drivetrain","Braking","Cockpit","Wheel","Contact"];
+var CATLABEL={Frame:"Frame",Drivetrain:"Drivetrain",Braking:"Brakes",Cockpit:"Steering &amp; cockpit",Wheel:"Wheel",Contact:"Contact points"};
+function renderList(){
+  var html="";
+  CATS.forEach(function(cat){
+    var ps=PARTS.filter(function(p){return p.cat===cat;});
+    if(!ps.length) return;
+    html+='<div class="grouphead">'+CATLABEL[cat]+'</div><div class="grid">';
+    ps.forEach(function(p){
+      var m=store.miss[p.id]||0;
+      html+='<button class="item" data-id="'+p.id+'"><span class="num">'+p.n+'</span><span>'+esc(p.name)+'</span>'+
+            (m?'<span class="miss">&#215;'+m+'</span>':'')+'</button>';
+    });
+    html+='</div>';
+  });
+  $("list").innerHTML=html;
+}
+function showPart(p){
+  clearPointer();
+  light(p,"");
+  pointAt(p,p.name,"");
+  dotEl[p.id].classList.add("active");
+  var items=$("list").querySelectorAll(".item");
+  for(var i=0;i<items.length;i++) items[i].classList.toggle("sel", items[i].getAttribute("data-id")===p.id);
+  qtext.textContent=p.name;
+}
+$("list").addEventListener("click",function(e){
+  var b=e.target.closest?e.target.closest(".item"):null;
+  if(b) showPart(byId(b.getAttribute("data-id")));
+});
+
+/* nearest-hotspot click, so tight clusters are still reachable */
+function svgPoint(evt){
+  var r=svg.getBoundingClientRect();
+  var cx=(evt.touches?evt.touches[0].clientX:evt.clientX)-r.left;
+  var cy=(evt.touches?evt.touches[0].clientY:evt.clientY)-r.top;
+  return {x:70+cx/r.width*860, y:40+cy/r.height*580};
+}
+svg.addEventListener("click",function(e){
+  if(mode!=="explore") return;
+  var pt=svgPoint(e), best=null, bd=1e9;
+  PARTS.forEach(function(p){
+    var d=(p.x-pt.x)*(p.x-pt.x)+(p.y-pt.y)*(p.y-pt.y);
+    if(d<bd){bd=d;best=p;}
+  });
+  if(best && bd < 70*70) showPart(best);
+});
+
+/* ============================================================
+   Mode + controls
+   ============================================================ */
+function setMode(m){
+  mode=m;
+  $("mQuiz").setAttribute("aria-pressed", m==="quiz");
+  $("mExp").setAttribute("aria-pressed", m==="explore");
+  stage.classList.toggle("explore", m==="explore");
+  stageWrap.classList.toggle("explore-on", m==="explore");
+  var live = remaining()>0;
+  $("prompt").style.display = (m==="quiz" && live) ? "" : "none";
+  $("done").classList.toggle("on", m==="quiz" && !live && deckSize>0);
+  clearPointer();
+  if(m==="quiz"){
+    if(!live) startRun(); else next();
+  }else{
+    renderList();
+    qtext.textContent="Tap any part of the bike";
+    var m2=PARTS.filter(function(p){return (store.miss[p.id]||0)>0;});
+    for(var k in dotEl){
+      dotEl[k].classList.remove("miss","got");
+      if((store.miss[k]||0)>0) dotEl[k].classList.add("miss");
+      else if((store.got[k]||0)>0) dotEl[k].classList.add("got");
+    }
+  }
+}
+$("mQuiz").onclick=function(){setMode("quiz");};
+$("mExp").onclick=function(){setMode("explore");};
+$("deck").onchange=function(){ deckName=this.value; setMode("quiz"); startRun(); };
+$("check").onclick=submit;
+$("againBtn").onclick=function(){ startRun(); };
+$("skipBtn").onclick=function(){
+  if(answered){ next(); return; }
+  if(firstTry[current.id]===undefined) firstTry[current.id]=false;
+  streak=0;
+  lapse(current,5); current=null;
+  next();
+};
+$("revealBtn").onclick=function(){
+  if(answered){ next(); return; }
+  answered=true; input.disabled=true; input.className="bad";
+  var part=current;
+  if(firstTry[part.id]===undefined) firstTry[part.id]=false;
+  missedThisRun[part.id]=true;
+  store.miss[part.id]=(store.miss[part.id]||0)+1;
+  streak=0;
+  lapse(part,3); current=null;
+  light(part,"bad"); pointAt(part,part.name,"bad");
+  fb.className="fb warn";
+  fb.innerHTML='It&rsquo;s the <b>'+esc(part.name)+'</b>. '+esc(part.note)+' <span class="kbd">Enter</span> to continue';
+  $("check").textContent="Next";
+  save(); renderStats();
+  $("check").focus();
+};
+$("hintBtn").onclick=function(){
+  if(answered||!current) return;
+  hintUsed=true;
+  var words=current.name.split(/[\s\/]+/);
+  var initials=words.map(function(w){return w.charAt(0).toUpperCase()+"·".repeat(Math.max(1,w.length-1));}).join(" ");
+  hintTag.hidden=false;
+  hintTag.innerHTML=CATLABEL[current.cat]+" &nbsp;·&nbsp; "+initials;
+  input.focus();
+};
+$("resetBtn").onclick=function(){
+  if(!confirm("Wipe all saved stats and trouble spots on this device?")) return;
+  store={miss:{},seen:{},got:{},bestAcc:0,runs:0}; save();
+  startRun(); renderList();
+};
+input.addEventListener("keydown",function(e){
+  if(e.key==="Enter"){ e.preventDefault(); submit(); }
+});
+document.addEventListener("keydown",function(e){
+  if(mode!=="quiz" || !answered || e.key!=="Enter") return;
+  var a=document.activeElement;
+  // a focused button already turns Enter into a click; don't advance twice
+  if(a && (a===input || a.tagName==="BUTTON")) return;
+  e.preventDefault(); next();
+});
+
+/* go */
+setMode("quiz");
+renderList();
+})();
+</script>
+</body>
+</html>
