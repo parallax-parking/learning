@@ -2,8 +2,6 @@
 
 ### 👉 https://parallax-parking.github.io/learning/
 
-*(the link goes live once GitHub Pages is switched on — see [Enabling GitHub Pages](#enabling-github-pages))*
-
 An Anki-style flashcard trainer for the **30 named parts of a road bike**, built as a single
 self-contained HTML page. A part of the bike lights up, you type its name, and it turns green
 if you're right and red if you're wrong. Anything you miss goes back in the pile and comes
@@ -38,13 +36,31 @@ accepted for `seat tube`.
 ### Explore mode
 
 Tap anywhere on the bike, or pick from the grouped list, to see any part named and highlighted.
-Parts you've missed before are marked red in the list with a miss count, so your weak spots are
-visible before you start.
+The bike doubles as a heat map of how you're actually doing:
+
+| Dot | Meaning |
+|---|---|
+| ⚪️ grey | Not yet tested |
+| 🟡 amber | Getting there — answered right, but not yet twice running |
+| 🟢 green | Solid — named unaided the last 2 times in a row |
+| 🔴 red | Shaky — missed within the last 3 attempts |
+
+### Mastery is recent form, not a permanent record
+
+Each part keeps a rolling window of its last 6 attempts (`1` = named unaided, `0` = missed or
+revealed). A hint-assisted answer records **nothing** — it neither proves you know the part nor
+proves you don't.
+
+The point is that red **heals**. Two unaided answers in a row and a part goes green, however many
+times you fumbled it last week. A lifetime miss counter would brand a part red forever, which
+tells you where you *were* rather than where you *are* — and would keep feeding you parts you
+mastered a fortnight ago.
 
 ### Decks
 
 Drill the whole bike, or narrow to **Frame**, **Drivetrain**, **Braking**, **Cockpit**, **Wheel**,
-or **My trouble spots** (auto-built from everything you've ever got wrong on this device).
+or **My trouble spots**, which rebuilds itself from whatever is currently red — the deck
+selector shows the count, and it shrinks as parts go green.
 
 ### Scheduling
 
@@ -53,19 +69,16 @@ back, and not at the end, so you actually get another go. New cards and lapsed c
 interleaved, which guarantees you meet every part in the deck rather than looping the first
 handful.
 
-Progress, miss counts and your best score are kept in `localStorage`, per device. Nothing is
-sent anywhere. **Reset all saved progress** in the footer wipes it.
+Attempt history and your best score are kept in `localStorage`, per device. Nothing is sent
+anywhere. **Reset all saved progress** in the footer wipes it.
 
 ---
 
 ## Enabling GitHub Pages
 
-1. Repo → **Settings** → **Pages**
-2. **Source:** Deploy from a branch
-3. **Branch:** pick the branch holding `index.html`, folder `/ (root)`
-4. Save, wait a minute, and load `https://parallax-parking.github.io/learning/`
-
-`.nojekyll` is included so GitHub serves the files as-is.
+Already enabled: **Deploy from a branch**, `claude/interactive-bike-parts-quiz-hv38l9` / `(root)`.
+`.nojekyll` is included so GitHub serves the files as-is. Each push to that branch rebuilds
+the site automatically.
 
 ---
 
@@ -91,6 +104,10 @@ One entry per card:
 | `hi` | SVG shape to light up — reuse the same geometry as the drawing itself |
 
 To make a card highlight as a thin stroke rather than a fat one, add its `id` to the `THIN` map.
+
+Mastery thresholds live in three constants near the top of the script — `WINDOW` (how many
+attempts are remembered), `SOLID_RUN` (consecutive hits needed to go green) and `RECENT` (how far
+back a miss still counts as shaky).
 
 ### Using a different diagram
 

@@ -113,10 +113,12 @@
   .hot{fill:transparent;cursor:pointer}
   .dotg{pointer-events:none}
   .dot{fill:var(--accent);opacity:0}
-  .stage.explore .dot{opacity:.5}
-  .stage.explore .dot.miss{fill:var(--bad);opacity:.75}
-  .stage.explore .dot.got{fill:var(--ok);opacity:.55}
+  .stage.explore .dot{fill:var(--ink-faint);opacity:.5}
+  .stage.explore .dot.learning{fill:var(--warn);opacity:.75}
+  .stage.explore .dot.solid{fill:var(--ok);opacity:.6}
+  .stage.explore .dot.weak{fill:var(--bad);opacity:.9}
   .dot.active{opacity:1}
+  .stage.explore .dot.active{fill:var(--accent);opacity:1}
   .pulse{fill:none;stroke:var(--accent);stroke-width:2.5;opacity:0;
     transform-box:fill-box;transform-origin:center center}
   .pulse.on{opacity:1;animation:ping 1.7s cubic-bezier(0,.2,.6,1) infinite}
@@ -186,7 +188,17 @@
     font-family:var(--mono);font-size:11px;color:var(--ink-faint);min-width:22px;
     background:var(--panel-2);border-radius:5px;padding:2px 5px;text-align:center;
   }
-  .item .miss{margin-left:auto;font-size:10.5px;color:var(--bad);font-family:var(--mono)}
+  .item .state{margin-left:auto;font-size:10.5px;font-family:var(--mono);letter-spacing:.02em}
+  .item .state.weak{color:var(--bad)}
+  .item .state.solid{color:var(--ok)}
+  .item .state.learning{color:var(--warn)}
+  .legend{display:flex;gap:15px;flex-wrap:wrap;margin:14px 0 2px;font-size:12px;color:var(--ink-faint)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .legend i{width:9px;height:9px;border-radius:50%;flex:none}
+  .legend i.n{background:var(--ink-faint)}
+  .legend i.l{background:var(--warn)}
+  .legend i.s{background:var(--ok)}
+  .legend i.w{background:var(--bad)}
   .grouphead{
     font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
     margin:16px 0 8px;font-weight:600;
@@ -594,12 +606,40 @@ var store = load();
 function load(){
   try{
     var s = JSON.parse(localStorage.getItem(KEY)||"{}");
-    s.miss = s.miss||{}; s.seen = s.seen||{}; s.got = s.got||{};
+    s.miss = s.miss||{}; s.seen = s.seen||{}; s.got = s.got||{}; s.hist = s.hist||{};
     s.bestAcc = s.bestAcc||0; s.runs = s.runs||0;
     return s;
-  }catch(e){ return {miss:{},seen:{},got:{},bestAcc:0,runs:0}; }
+  }catch(e){ return {miss:{},seen:{},got:{},hist:{},bestAcc:0,runs:0}; }
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+
+/* ------------------------------------------------------------
+   Mastery: a rolling window, not a lifetime tally. One early
+   mistake should not brand a part red forever — score the last
+   few attempts so a part can recover by being answered right.
+     1 = named unaided   0 = missed or revealed
+   A hint-assisted correct records nothing: it neither proves
+   you know it nor proves you don't.
+   ------------------------------------------------------------ */
+var WINDOW=6, SOLID_RUN=2, RECENT=3;
+function record(id,val){
+  var h=store.hist[id]||(store.hist[id]=[]);
+  h.push(val);
+  while(h.length>WINDOW) h.shift();
+}
+function mastery(id){
+  var h=store.hist[id]||[];
+  if(!h.length) return "new";
+  var run=0,i;
+  for(i=h.length-1;i>=0&&h[i]===1;i--) run++;
+  if(run>=SOLID_RUN) return "solid";              // right SOLID_RUN times running
+  if(h.slice(-RECENT).indexOf(0)>=0) return "weak"; // missed inside the recent window
+  return "learning";
+}
+function countBy(state){
+  var n=0; PARTS.forEach(function(p){ if(mastery(p.id)===state) n++; });
+  return n;
+}
 
 /* ============================================================
    Text matching — forgiving but not sloppy
@@ -693,7 +733,8 @@ var dotEl={}, pulse, qlabel, leader;
 
   PARTS.forEach(function(p){
     var c=document.createElementNS(NS,"circle");
-    c.setAttribute("class","dot"); c.setAttribute("cx",p.x); c.setAttribute("cy",p.y); c.setAttribute("r",7);
+    c.setAttribute("class","dot"); c.setAttribute("data-part",p.id);
+    c.setAttribute("cx",p.x); c.setAttribute("cy",p.y); c.setAttribute("r",7);
     markers.appendChild(c); dotEl[p.id]=c;
 
     var h=document.createElementNS(NS,"circle");
@@ -757,8 +798,10 @@ var tok=0;   // guards stale auto-advance timers
 function deckParts(){
   if(deckName==="all") return PARTS.slice();
   if(deckName==="trouble"){
-    var t=PARTS.filter(function(p){return (store.miss[p.id]||0)>0;});
-    return t.length?t:PARTS.slice();
+    var weak=PARTS.filter(function(p){return mastery(p.id)==="weak";});
+    if(weak.length) return weak;
+    var soft=PARTS.filter(function(p){var m=mastery(p.id);return m==="weak"||m==="learning";});
+    return soft.length?soft:PARTS.slice();
   }
   return PARTS.filter(function(p){return p.cat===deckName;});
 }
@@ -836,6 +879,7 @@ function submit(){
     if(wasFirst) firstTry[part.id]= !hintUsed;
     learned[part.id]=true;
     store.got[part.id]=(store.got[part.id]||0)+1;
+    if(!hintUsed) record(part.id,1);   // hinted answers stay neutral
     streak++; if(streak>bestStreak) bestStreak=streak;
     current=null;                   // answered right: it leaves the run
     input.className="ok";
@@ -852,6 +896,7 @@ function submit(){
     if(firstTry[part.id]===undefined) firstTry[part.id]=false;
     missedThisRun[part.id]=true;
     store.miss[part.id]=(store.miss[part.id]||0)+1;
+    record(part.id,0);
     lapse(part, 2+Math.floor(Math.random()*3));   // the Anki "again" pile
     current=null;
     input.className="bad";
@@ -900,6 +945,7 @@ function finish(){
     box.innerHTML="";
     $("missOnlyBtn").style.display="none";
   }
+  renderList();
   renderStats();
 }
 function byId(id){ for(var i=0;i<PARTS.length;i++) if(PARTS[i].id===id) return PARTS[i]; return null; }
@@ -920,8 +966,11 @@ function renderStats(){
     return '<div class="chip '+c[2]+'"><span class="k">'+c[0]+'</span><span class="v">'+c[1]+'</span></div>';
   }).join("");
   $("barfill").style.width=(deckSize?(doneN/deckSize*100):0)+"%";
-  var totalMiss=0,k; for(k in store.miss) totalMiss+=store.miss[k];
-  $("pb").textContent=store.runs+" run"+(store.runs===1?"":"s")+" saved on this device · "+totalMiss+" total misses logged";
+  var solid=countBy("solid"), weak=countBy("weak");
+  $("pb").textContent=store.runs+" run"+(store.runs===1?"":"s")+" saved on this device · "+
+                      solid+" solid, "+weak+" shaky";
+  var opt=$("deck").querySelector('option[value="trouble"]');
+  if(opt) opt.textContent = weak ? "My trouble spots ("+weak+")" : "My trouble spots";
 }
 
 /* ============================================================
@@ -929,16 +978,22 @@ function renderStats(){
    ============================================================ */
 var CATS=["Frame","Drivetrain","Braking","Cockpit","Wheel","Contact"];
 var CATLABEL={Frame:"Frame",Drivetrain:"Drivetrain",Braking:"Brakes",Cockpit:"Steering &amp; cockpit",Wheel:"Wheel",Contact:"Contact points"};
+var STATE_BADGE={solid:"&#10003;", learning:"&middot;&middot;", weak:"shaky"};
 function renderList(){
-  var html="";
+  var html='<div class="legend">'+
+    '<span><i class="n"></i>Not yet tested</span>'+
+    '<span><i class="l"></i>Getting there</span>'+
+    '<span><i class="s"></i>Solid &mdash; right '+SOLID_RUN+' times running</span>'+
+    '<span><i class="w"></i>Shaky &mdash; missed in the last '+RECENT+'</span>'+
+  '</div>';
   CATS.forEach(function(cat){
     var ps=PARTS.filter(function(p){return p.cat===cat;});
     if(!ps.length) return;
     html+='<div class="grouphead">'+CATLABEL[cat]+'</div><div class="grid">';
     ps.forEach(function(p){
-      var m=store.miss[p.id]||0;
+      var st=mastery(p.id);
       html+='<button class="item" data-id="'+p.id+'"><span class="num">'+p.n+'</span><span>'+esc(p.name)+'</span>'+
-            (m?'<span class="miss">&#215;'+m+'</span>':'')+'</button>';
+            (st==="new"?'':'<span class="state '+st+'">'+STATE_BADGE[st]+'</span>')+'</button>';
     });
     html+='</div>';
   });
@@ -993,11 +1048,10 @@ function setMode(m){
   }else{
     renderList();
     qtext.textContent="Tap any part of the bike";
-    var m2=PARTS.filter(function(p){return (store.miss[p.id]||0)>0;});
     for(var k in dotEl){
-      dotEl[k].classList.remove("miss","got");
-      if((store.miss[k]||0)>0) dotEl[k].classList.add("miss");
-      else if((store.got[k]||0)>0) dotEl[k].classList.add("got");
+      dotEl[k].classList.remove("weak","learning","solid");
+      var st=mastery(k);
+      if(st!=="new") dotEl[k].classList.add(st);
     }
   }
 }
@@ -1020,6 +1074,7 @@ $("revealBtn").onclick=function(){
   if(firstTry[part.id]===undefined) firstTry[part.id]=false;
   missedThisRun[part.id]=true;
   store.miss[part.id]=(store.miss[part.id]||0)+1;
+  record(part.id,0);
   streak=0;
   lapse(part,3); current=null;
   light(part,"bad"); pointAt(part,part.name,"bad");
@@ -1040,7 +1095,7 @@ $("hintBtn").onclick=function(){
 };
 $("resetBtn").onclick=function(){
   if(!confirm("Wipe all saved stats and trouble spots on this device?")) return;
-  store={miss:{},seen:{},got:{},bestAcc:0,runs:0}; save();
+  store={miss:{},seen:{},got:{},hist:{},bestAcc:0,runs:0}; save();
   startRun(); renderList();
 };
 input.addEventListener("keydown",function(e){
