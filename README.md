@@ -132,9 +132,11 @@ the scheduler, matcher, stats and both modes carry over unchanged.
 
 # Human Action Review
 
-End-of-chapter review for Ludwig von Mises's *Human Action*. One card per question, 42 cards
+End-of-chapter review for Ludwig von Mises's *Human Action*. One card per question, 66 cards
 across chapters I–III (Acting Man · The Epistemological Problems of the Sciences of Human Action ·
-Economics and the Revolt Against Reason), including nine **key terms** to define.
+Economics and the Revolt Against Reason), including 9 **key terms** to define. Every numbered
+section and every unnumbered sub-heading on the book's contents page (*On Happiness*, *I and We*,
+*Vegetative Man* …) has its own questions.
 
 ## How it works
 
@@ -164,14 +166,18 @@ The checklist carries the photograph; the orange box carries the handle.
 
 ### Browse mode
 
-Every question grouped by chapter, with the same grey / amber / green / red mastery dot as the bike.
-Open any one to read the answer, points and analogy without being quizzed — useful right after
-finishing a chapter, before the first run.
+Every question laid out the way the book's contents page is: chapter → numbered section →
+sub-heading, with the same grey / amber / green / red mastery dot as the bike and a per-section tally
+of what is solid and what is shaky. Open any question to read the answer, points and analogy without
+being quizzed — useful right after finishing a section, before the first run. Each chapter and section
+heading has a **Review →** button that starts a run on just those cards.
 
 ### Decks
 
-All chapters, any single chapter, **Key terms only**, or **My trouble spots**, which rebuilds itself
-from whatever is currently shaky.
+The deck menu mirrors the same structure: all chapters, **Key terms only**, **My trouble spots** (which
+rebuilds itself from whatever is currently shaky), and then, per chapter, the whole chapter or any one
+numbered section — so you can drill §2 *The Prerequisites of Human Action* on its own the evening you
+read it.
 
 Mastery, scheduling and storage are the same rolling-window scheme as the bike trainer (see above),
 kept under a separate `localStorage` key, so resetting one page leaves the other alone.
@@ -182,21 +188,25 @@ Everything lives in the `CARDS` array near the top of the `<script>` in `human-a
 entry per card:
 
 ```js
-{id:"c1-prereq", ch:1, sec:"§2 The prerequisites of human action", kind:"q",
- q:"What are the three prerequisites of human action?",
- a:"First, felt uneasiness …",
- pts:["Felt uneasiness","An image of a more satisfactory state","…"],
- ana:"An itch (uneasiness), the thought of the relief of scratching …"},
+{id:"c1-happiness", ch:1, s:2, sub:"On Happiness", kind:"q",
+ q:"In what sense does all action aim at <em>happiness</em> …?",
+ a:"Every action tries to exchange a less satisfactory state …",
+ pts:["Action always substitutes a more satisfactory state …","…"],
+ ana:"Saying ‘everyone acts to be happier’ is like saying …"},
 ```
 
 | field | what it does |
 |---|---|
-| `ch` | Chapter number. Add the chapter to `CHAPTERS` (numeral, full title, short title) and to the deck `<select>`. |
-| `sec` | Section label shown on the card and in Browse |
+| `ch` | Chapter number |
+| `s` | Numbered section within the chapter, as on the contents page |
+| `sub` | Optional: the unnumbered sub-heading the question belongs to (`"On Happiness"`). Omit for questions on the section proper. |
 | `kind` | `"q"` for a review question, `"term"` for a definition (goes in the Key terms deck) |
 | `q` | The question. `<em>` highlights a word in orange. |
 | `a` | The model answer |
 | `pts` | The checklist — the things a complete answer should contain |
 | `ana` | The analogy shown under "Think of it like…" |
 
-Browse mode lists chapters from the `[1,2,3]` array in `renderList`; extend it when you add a chapter.
+To add a chapter, add it to `CHAPTERS` — numeral, full title, short title, and its `secs` list copied
+from the book's contents page (`{n, t, subs:[…]}`) — and add its number to the `[1,2,3]` arrays in
+`buildDeckSelect` and `renderList`. The deck menu and Browse layout are generated from `CHAPTERS`, so a
+sub-heading with no cards yet shows up in Browse marked *(no cards yet)* until you write some.

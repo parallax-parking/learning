@@ -56,7 +56,7 @@
 
   select{
     background:var(--panel);color:var(--ink);border:1px solid var(--line);
-    border-radius:10px;padding:7px 10px;font:inherit;font-size:13px;cursor:pointer;max-width:100%;
+    border-radius:10px;padding:7px 10px;font:inherit;font-size:13px;cursor:pointer;max-width:min(100%,360px);
   }
 
   /* ---------- stats ---------- */
@@ -191,6 +191,34 @@
     margin:18px 0 8px;font-weight:600;
   }
   .grouphead b{color:var(--ink-dim)}
+  .chaphead{
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    margin:26px 0 6px;padding-bottom:8px;border-bottom:1px solid var(--line);
+    font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;
+  }
+  .chaphead b{color:var(--accent)}
+  .chaphead .drill{margin-left:auto}
+  .sechead{
+    display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:18px 0 8px;
+    font-size:14px;color:var(--ink);
+  }
+  .sechead .num{font-family:var(--mono);color:var(--accent);font-size:12px}
+  .sechead .t{font-weight:600}
+  .sechead .tally{font-size:11.5px;color:var(--ink-faint);font-family:var(--mono)}
+  .sechead .tally b{font-weight:500}
+  .sechead .tally b.s{color:var(--ok)} .sechead .tally b.w{color:var(--bad)} .sechead .tally b.l{color:var(--warn)}
+  .sechead .drill{margin-left:auto}
+  .subhead{
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim);
+    margin:12px 0 6px 2px;font-weight:600;
+  }
+  .subhead i{color:var(--ink-faint);font-weight:400;text-transform:none;letter-spacing:0}
+  button.drill{
+    background:none;border:1px solid var(--line);color:var(--ink-dim);border-radius:8px;
+    font:inherit;font-size:11.5px;font-weight:600;padding:3px 9px;cursor:pointer;text-transform:none;letter-spacing:0;
+    white-space:nowrap;transition:.12s;
+  }
+  button.drill:hover{border-color:var(--accent);color:var(--accent)}
   details.item{
     background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:7px;
     transition:.12s;
@@ -207,7 +235,6 @@
   details.item summary i.st.solid{background:var(--ok);opacity:.8}
   details.item summary i.st.weak{background:var(--bad);opacity:.95}
   details.item summary .q{flex:1;font-family:var(--serif);font-size:15.5px}
-  details.item summary .sec{font-size:11px;color:var(--ink-faint);white-space:nowrap}
   details.item summary .t{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);border:1px solid #5a4a12;border-radius:99px;padding:1px 7px}
   details.item .body{padding:2px 13px 14px;border-top:1px dashed var(--line);margin-top:0}
   details.item .body .model{font-size:15.5px;margin:12px 0 10px}
@@ -235,7 +262,6 @@
     .grade{flex-direction:row}
     .grade button.btn{min-width:0;padding:12px 6px;font-size:13.5px}
     .grade button.btn .kbd{display:none}
-    details.item summary .sec{display:none}
     footer a{margin-left:0}
   }
   @media (prefers-reduced-motion:reduce){
@@ -252,14 +278,7 @@
     <p class="sub">End-of-chapter questions for Mises&rsquo;s <i>Human Action</i>, chapters I&ndash;III &mdash; answer, reveal, grade yourself.</p>
   </div>
   <div class="spacer"></div>
-  <select id="deck" aria-label="Choose deck">
-    <option value="all">All chapters</option>
-    <option value="1">Chapter I · Acting Man</option>
-    <option value="2">Chapter II · Epistemological Problems</option>
-    <option value="3">Chapter III · Revolt Against Reason</option>
-    <option value="terms">Key terms only</option>
-    <option value="trouble">My trouble spots</option>
-  </select>
+  <select id="deck" aria-label="Choose deck"></select>
   <div class="seg" role="group" aria-label="Mode">
     <button id="mReview" aria-pressed="true">Review</button>
     <button id="mBrowse" aria-pressed="false">Browse</button>
@@ -352,103 +371,129 @@
    checklist. `ana` is the analogy shown with the answer.
    ============================================================ */
 var CHAPTERS={
-  1:{num:"I",   title:"Acting Man",                                                    short:"Acting Man"},
-  2:{num:"II",  title:"The Epistemological Problems of the Sciences of Human Action", short:"Epistemological Problems"},
-  3:{num:"III", title:"Economics and the Revolt Against Reason",                      short:"Revolt Against Reason"}
+  1:{num:"I",   title:"Acting Man", short:"Acting Man", secs:[
+    {n:1, t:"Purposeful Action and Animal Reaction"},
+    {n:2, t:"The Prerequisites of Human Action", subs:["On Happiness","On Instincts and Impulses"]},
+    {n:3, t:"Human Action as an Ultimate Given"},
+    {n:4, t:"Rationality and Irrationality; Subjectivism and Objectivity of Praxeological Research"},
+    {n:5, t:"Causality as a Requirement of Action"},
+    {n:6, t:"The Alter Ego", subs:["On the Serviceableness of Instincts","The Absolute End","Vegetative Man"]}
+  ]},
+  2:{num:"II",  title:"The Epistemological Problems of the Sciences of Human Action", short:"Epistemological Problems", secs:[
+    {n:1,  t:"Praxeology and History"},
+    {n:2,  t:"The Formal and Aprioristic Character of Praxeology", subs:["The Alleged Logical Heterogeneity of Primitive Man"]},
+    {n:3,  t:"The A Priori and Reality"},
+    {n:4,  t:"The Principle of Methodological Individualism", subs:["I and We"]},
+    {n:5,  t:"The Principle of Methodological Singularism"},
+    {n:6,  t:"The Individual and Changing Features of Human Action"},
+    {n:7,  t:"The Scope and the Specific Method of History"},
+    {n:8,  t:"Conception and Understanding", subs:["Natural History and Human History"]},
+    {n:9,  t:"On Ideal Types"},
+    {n:10, t:"The Procedure of Economics"},
+    {n:11, t:"The Limitations on Praxeological Concepts"}
+  ]},
+  3:{num:"III", title:"Economics and the Revolt Against Reason", short:"Revolt Against Reason", secs:[
+    {n:1, t:"The Revolt Against Reason"},
+    {n:2, t:"The Logical Aspect of Polylogism"},
+    {n:3, t:"The Praxeological Aspect of Polylogism"},
+    {n:4, t:"Racial Polylogism"},
+    {n:5, t:"Polylogism and Understanding"},
+    {n:6, t:"The Case for Reason"}
+  ]}
 };
 
 var CARDS=[
 /* ---------------- Chapter I: Acting Man ---------------- */
-{id:"c1-term-action", ch:1, sec:"§1 Purposeful action and animal reaction", kind:"term",
+{id:"c1-term-action", ch:1, s:1, kind:"term",
  q:"Define <em>human action</em> as Mises uses the term.",
  a:"Human action is purposeful behaviour: will put into operation, aiming at ends and goals. It is the ego’s meaningful response to stimuli and to the conditions of its environment — a person’s conscious adjustment to the state of the universe that determines their life.",
  pts:["Purposeful, conscious behaviour — not a reflex","Aims at ends and employs means","The ego responds <i>meaningfully</i> to its environment"],
  ana:"A thermostat clicks on when the room gets cold; a person decides to light a fire. Both respond to cold, but only the second is action: there is an aim behind it, and the person could have chosen to shiver instead."},
 
-{id:"c1-term-prax", ch:1, sec:"§1 Purposeful action and animal reaction", kind:"term",
+{id:"c1-term-prax", ch:1, s:1, kind:"term",
  q:"Define <em>praxeology</em>.",
  a:"The general theory of human action: the science of the formal, universal features of purposeful behaviour, without regard to the particular ends pursued. Economics is its best-developed branch.",
  pts:["The science of human action as such","Formal and universal — indifferent to the content of ends","Economics is a part of it"],
  ana:"If economics is a well-charted province, praxeology is the whole continent it sits on."},
-{id:"c1-reflex", ch:1, sec:"§1 Purposeful action and animal reaction", kind:"q",
+{id:"c1-reflex", ch:1, s:1, kind:"q",
  q:"Why are reflexes and the body’s involuntary responses not action? Can a person nonetheless <em>act about</em> them?",
  a:"The reactions of cells, nerves and organs to stimuli — digestion, heartbeat, a flinch — happen without the ego aiming at anything, so they fall outside praxeology. But a person can act about them: suppress a cough, resist an urge, postpone a meal. The dividing line is whether the ego consciously aims at an end. Even the ‘subconscious’ motives of psychoanalysis still describe behaviour aimed at ends, only ends the actor does not avow; what praxeology excludes is purely physiological reaction.",
  pts:["Involuntary physiological responses are not action","The ego can take a stand toward its impulses — that stand is action","Unavowed motives still count; only purely physiological reaction is excluded"],
  ana:"Your pulse is the engine idling; action is your hand on the wheel. You cannot stop the engine by wishing, but you decide where the car goes — and you can decide to hold your breath for a while."},
 
-{id:"c1-prereq", ch:1, sec:"§2 The prerequisites of human action", kind:"q",
+{id:"c1-prereq", ch:1, s:2, kind:"q",
  q:"What are the three prerequisites of human action?",
  a:"First, felt uneasiness: the actor is not fully content with the present state. Second, an image of a more satisfactory state. Third, the expectation that purposeful behaviour has the power to remove or lessen the uneasiness. Take any one away and no action follows: a perfectly contented being, a being that cannot picture anything better, and a being convinced nothing can be done all stay still.",
  pts:["Felt uneasiness","An image of a more satisfactory state","The expectation that purposeful behaviour can reach it","Remove any one and there is no action"],
  ana:"An itch (uneasiness), the thought of the relief of scratching (the better state), and a free hand (the belief you can do something about it). Tie your hands and the itch stays an itch — a sensation, not a project."},
 
-{id:"c1-term-uneasiness", ch:1, sec:"§2 The prerequisites of human action", kind:"term",
+{id:"c1-term-uneasiness", ch:1, s:2, kind:"term",
  q:"What does Mises mean by <em>uneasiness</em>?",
  a:"The felt dissatisfaction that is the first spring of action: a person’s sense that their present state could be better. It is not any particular pain but any felt gap between what is and what could be. Without it there is no reason to act.",
  pts:["The felt gap between the present state and a preferable one","The trigger of all action","Purely formal — covers hunger, boredom and ambition alike"],
  ana:"Uneasiness is the pebble in the shoe. Whether the pebble is hunger or a half-finished novel, the walk changes because of it."},
 
-{id:"c1-happiness", ch:1, sec:"§2 On happiness", kind:"q",
+{id:"c1-happiness", ch:1, s:2, sub:"On Happiness", kind:"q",
  q:"In what sense does all action aim at <em>happiness</em>, and why does Mises call this a purely formal statement?",
  a:"Every action tries to exchange a less satisfactory state for a more satisfactory one — call that the pursuit of happiness if you like. Said this way it carries no content: it does not say what makes anyone happy. ‘Pleasure’ and ‘pain’ here are formal and subjective, meaning whatever the acting person judges better or worse. Stated formally, eudaemonism and hedonism are not ethical programmes but descriptions of action as such.",
  pts:["Action always substitutes a more satisfactory state for a less satisfactory one","‘Happiness’ or ‘pleasure’ is formal — it names no particular content","Praxeology does not say what people <i>ought</i> to want"],
  ana:"Saying ‘everyone acts to be happier’ is like saying ‘everyone eats what they prefer’. It is true of the monk and the glutton alike, and therefore says nothing about what is on the plate."},
 
-{id:"c1-instinct", ch:1, sec:"§2 On instincts and impulses", kind:"q",
+{id:"c1-instinct", ch:1, s:2, sub:"On Instincts and Impulses", kind:"q",
  q:"What is Mises’s objection to ‘instinct sociology’ — explaining human behaviour by instincts?",
  a:"Naming an instinct explains nothing; it merely relabels the behaviour (‘he fights because of a fighting instinct’). And humans are not driven as animals are: they can resist impulses, give up a gratification now for a gain later, and weigh competing urges against each other. Yielding to an impulse is itself a choice to yield. Praxeology does not need to settle whether a given impulse was resistible; it needs only that humans can and do choose among their urges.",
  pts:["Labelling a drive an ‘instinct’ is not an explanation","Humans can override impulses; animals, as far as we know, cannot","Giving in to an impulse is itself a choice, hence an action"],
  ana:"Calling conduct ‘instinctive’ is like explaining why a sleeping pill works by saying it has a ‘dormitive virtue’. The label just repeats the thing that was to be explained."},
 
-{id:"c1-given", ch:1, sec:"§3 Human action as an ultimate given", kind:"q",
+{id:"c1-given", ch:1, s:3, kind:"q",
  q:"Why does Mises treat human action as an <em>ultimate given</em>, and what is methodological dualism?",
  a:"Science cannot (yet) explain how physiological events produce thoughts and valuations; the gap between mind and body is unbridged. Rather than pretend to a monism we cannot use, praxeology takes purposeful action as an irreducible starting point — every science rests on ultimate givens it does not explain. This working stance is methodological dualism: we treat mind and matter as two realms not because we know they are, but because we lack any bridge between them.",
  pts:["Every science has starting points it cannot reduce further","We cannot trace ideas and valuations back to physical processes","Methodological dualism is a pragmatic stance, not a metaphysical claim"],
  ana:"Geometry does not prove its axioms; it builds on them. Action is praxeology’s axiom — the floor you stand on, not a result you derive."},
 
-{id:"c1-rational", ch:1, sec:"§4 Rationality and irrationality", kind:"q",
+{id:"c1-rational", ch:1, s:4, kind:"q",
  q:"Why does Mises insist that human action is <em>always</em> rational, and what does he make of the phrase ‘irrational action’?",
  a:"‘Rational’ can refer only to means, never to ultimate ends. Action is by definition the use of means to reach chosen ends, so ‘rational action’ is a pleonasm — all action is rational. Ultimate ends are the actor’s own values and lie beyond reason’s reach. When a critic calls an end irrational, they are only saying they would have chosen differently. Action can be mistaken — the means may fail — but error is not irrationality.",
  pts:["‘Rational’ applies to the choice of means, not to ends","‘Rational action’ is redundant; ‘irrational action’ is a contradiction","Calling an end ‘irrational’ is a value judgement in disguise","Mistaken action is still action"],
  ana:"A satnav can tell you the quickest road (the means) but has no opinion on whether you should be driving to the coast at all (the end). Mises’s ‘rational’ is the satnav’s job description."},
 
-{id:"c1-material", ch:1, sec:"§4 Rationality and irrationality", kind:"q",
+{id:"c1-material", ch:1, s:4, kind:"q",
  q:"Does praxeology treat only the pursuit of material wealth as ‘economic’ or ‘rational’? Why does Mises reject that view?",
  a:"No. The older view held that only striving for material goods is ‘economic’ and everything else lies outside economics or is ‘irrational’. Mises replies that every action economises: it applies scarce means to chosen ends, and the end may be money, a cathedral, a friend’s welfare or a martyr’s cause. A person who starves rather than betray a belief acts exactly as purposefully as a merchant.",
  pts:["Every action allocates scarce means — that is what makes it economic","Ends are subjective: charity, honour and asceticism count as much as profit","There is no separate ‘economic man’ with only material goals"],
  ana:"A budget is a budget whether you spend it on bread or on candles for a shrine. Economics is about the budgeting, not about the bread."},
 
-{id:"c1-subj", ch:1, sec:"§4 Subjectivism and objectivity of praxeological research", kind:"q",
+{id:"c1-subj", ch:1, s:4, kind:"q",
  q:"How can praxeology be both <em>subjectivist</em> and <em>objective</em>?",
  a:"It is subjectivist because it takes the acting person’s ends as given and passes no judgement on them. Precisely because of that it is objective and universal: its statements hold for all action whatever the goals. It is value-free (wertfrei) — it does not ask whether an end is good, only what follows when someone pursues it with given means.",
  pts:["Takes ultimate ends as data and does not evaluate them","Therefore valid for every acting person, whatever they value","Value-freedom is the source of its objectivity"],
  ana:"A kitchen scale is objective exactly because it does not care whether you are weighing gold or gravel. Praxeology weighs action without an opinion on what you are cooking."},
 
-{id:"c1-term-wertfrei", ch:1, sec:"§4 Subjectivism and objectivity of praxeological research", kind:"term",
+{id:"c1-term-wertfrei", ch:1, s:4, kind:"term",
  q:"What is <em>Wertfreiheit</em> (value-freedom)?",
  a:"The principle that praxeology and economics take no stand on the ends people pursue. They describe what follows from acting on given values with given means; they neither approve nor condemn the values. It is the stance that makes the science applicable to everyone.",
  pts:["The science of action is neutral toward ends","It describes consequences; it does not prescribe goals","It is the ground of praxeology’s universality"],
  ana:"A map shows every road, including the one to the cliff edge. The map is value-free; the choice of road is yours."},
 
-{id:"c1-cause", ch:1, sec:"§5 Causality as a requirement of action", kind:"q",
+{id:"c1-cause", ch:1, s:5, kind:"q",
  q:"Why is <em>causality</em> a requirement of action?",
  a:"To act is to interfere with the course of events, and that makes sense only if one believes there are regular connections between causes and effects — that doing A brings about B. Where a person sees no causal link they cannot act, only wish or pray. Praxeology does not need the ultimate metaphysics of causation; it needs only that the actor believes in regularities, even mistaken ones, as in magic.",
  pts:["Action means intervening in events to change their course","That presupposes belief in cause-and-effect regularities","A wrong causal theory still lets a person act; no causal theory leaves them helpless"],
  ana:"You press a light switch because you expect it to be wired to the bulb. If you believed switch and bulb were unconnected you would sit in the dark. A person who believes a rain dance brings rain at least dances."},
 
-{id:"c1-alterego", ch:1, sec:"§6 The alter ego", kind:"q",
+{id:"c1-alterego", ch:1, s:6, kind:"q",
  q:"What is the problem of the <em>alter ego</em>, and how does praxeology deal with it?",
  a:"We cannot prove that other beings have minds and act; we only observe their behaviour. We apply the category of action to other people because it works: interpreting them as aiming at ends lets us predict their conduct and cooperate with them. Mechanism (explaining by blind causes) is used where it suffices; finalism (explaining by purposes) where it does not. Exactly where to draw the line is a practical question. For human beings, to deny that they act would be absurd.",
  pts:["Other minds cannot be proven, only inferred from behaviour","We treat beings as acting when the category of action gives a workable explanation","The choice between finalistic and mechanistic explanation is pragmatic"],
  ana:"You cannot see inside a chess program, but you play against it as if it ‘wants’ to win, because that stance predicts its moves. Praxeology takes the same stance toward other people, and with far better reason."},
 
-{id:"c1-absolute", ch:1, sec:"§6 The absolute end", kind:"q",
+{id:"c1-absolute", ch:1, s:6, sub:"The Absolute End", kind:"q",
  q:"What does Mises say about an <em>absolute end</em> — an end valid regardless of anyone’s valuation?",
  a:"Praxeology deals only with the ends human beings actually pursue; every end is some actor’s end, relative to their valuations. Whether there is an absolute end, binding independently of human choice, is a question for theology or metaphysics, not for a science of action. When critics denounce other people’s ends as irrational and announce the ‘true’ end, they are advancing their own values under the name of the absolute.",
  pts:["Praxeology knows only the ends that acting people choose","An ‘absolute end’ lies outside science — it is a religious or metaphysical claim","Appeals to the absolute end usually smuggle in the speaker’s own preferences"],
  ana:"A compass points to magnetic north; it cannot tell you where you ought to go. Someone who insists there is one true destination for all travellers is reading a map praxeology does not carry."},
 
-{id:"c1-veg", ch:1, sec:"§6 Vegetative man", kind:"q",
+{id:"c1-veg", ch:1, s:6, sub:"Vegetative Man", kind:"q",
  q:"Who is <em>vegetative man</em>, and why does Mises bring him up?",
  a:"Some doctrines hold up the ideal of complete renunciation: no desires, no striving, a life like a plant’s. Mises notes that a being who really reached that state would no longer act and would not be a human in the praxeological sense. In practice the ascetic who pursues renunciation is still acting — choosing one state over another and using means to reach it. Action is the human condition; one leaves it only by ceasing to be human.",
  pts:["A being without uneasiness or striving would not act","Pursuing renunciation is itself purposeful action","Human action is inseparable from being human"],
@@ -456,162 +501,307 @@ var CARDS=[
 
 
 /* ---------------- Chapter II: Epistemological problems ---------------- */
-{id:"c2-branches", ch:2, sec:"§1 Praxeology and history", kind:"q",
+{id:"c2-branches", ch:2, s:1, kind:"q",
  q:"What are the two branches of the sciences of human action, and how do they divide the work?",
  a:"Praxeology and history. Praxeology is theoretical and systematic: its statements hold for all human action regardless of time and place. History is the collection and systematic arrangement of experience concerning human action — what particular people valued and did. History deals with the unique and individual; praxeology with the universal categories that make the unique intelligible.",
  pts:["Praxeology: theoretical, universal, a priori","History: concrete past action, the unique and individual","Economics is the most developed part of praxeology"],
  ana:"Praxeology is the grammar; history is the literature. You cannot read the novel without the grammar, and the grammar has nothing to say about which novel got written."},
 
-{id:"c2-apriori", ch:2, sec:"§2 The formal and aprioristic character of praxeology", kind:"q",
+{id:"c2-apriori", ch:2, s:2, kind:"q",
  q:"In what sense is praxeology <em>a priori</em>? Where do its categories come from?",
  a:"Its propositions are not derived from experience but from the category of action, which is part of the logical structure of the human mind. Like logic and mathematics they are true prior to and independently of any particular experience; experience can neither confirm nor refute them. ‘A priori’ does not mean innate contents — it means the mind’s necessary structure, without which experience would be unintelligible.",
  pts:["Derived by reasoning from the category of action, not from observation","Same epistemological status as logic and mathematics","A priori means the mind’s logical structure, not inborn knowledge of facts"],
  ana:"You do not measure thousands of triangles to confirm Pythagoras; the theorem follows from what a right triangle is. ‘People use means to reach ends’ follows from what action is."},
 
-{id:"c2-verify", ch:2, sec:"§2 The formal and aprioristic character of praxeology", kind:"q",
+{id:"c2-verify", ch:2, s:2, kind:"q",
  q:"Why can praxeological theorems be neither <em>verified</em> nor <em>falsified</em> by experience?",
  a:"Because they are deductions from the concept of action, their validity is logical, not empirical: a correct chain of reasoning cannot be overturned by observation any more than a proof in arithmetic can. Besides, history offers no controlled experiments — every event is a tangle of many causes, so an apparent counter-example cannot isolate which assumption failed. Experience matters in one place only: deciding which real-world conditions (like the disutility of labour) are worth building into the theory.",
  pts:["Validity is logical, like a mathematical proof","Historical events are complex — there are no controlled experiments","Experience selects which assumptions are relevant, but cannot test the deduction"],
  ana:"Counting apples badly does not refute 2 + 2 = 4; it refutes your counting. A messy historical episode cannot refute ‘a price ceiling below the market price creates shortages’; at most it shows other things were also happening."},
 
-{id:"c2-primitive", ch:2, sec:"§2 The alleged logical heterogeneity of primitive man", kind:"q",
+{id:"c2-primitive", ch:2, s:2, sub:"The Alleged Logical Heterogeneity of Primitive Man", kind:"q",
  q:"How does Mises answer the claim that ‘primitive man’ has a different, <em>prelogical</em> mind?",
  a:"The ethnological evidence shows the same logical structure: primitive people reason from means to ends just as we do. What differs is content — mistaken theories of cause (magic, rain dances) and fewer accumulated ideas. Their errors are errors inside the same logic, not a different logic. Magic is a technique: they applied causality, they just applied it wrongly.",
  pts:["Same logical categories; different beliefs about causes","Magic is a mistaken causal theory, not a different way of thinking","Errors in applying logic do not prove a heterogeneous logic"],
  ana:"A chess player who opens badly is playing chess, not a different game. The rain dancer uses the same if-this-then-that reasoning as the engineer; the engineer just has better data."},
 
-{id:"c2-reality", ch:2, sec:"§3 The a priori and reality", kind:"q",
+{id:"c2-reality", ch:2, s:3, kind:"q",
  q:"If praxeology is a priori, how does it connect to <em>reality</em>? Is it just an empty formalism?",
  a:"No. Action is a real feature of the world — people actually act — so the category of action describes something that exists. And praxeology is not idle: its categories are what make experience of human affairs intelligible at all. Further, economics deliberately takes real conditions into account — scarcity, the disutility of labour, the fact that leisure is valued — by treating them as explicit assumptions. There is no useful distinction between ‘pure’ and ‘applied’ praxeology; the point is to understand the world we live in.",
  pts:["Action is real; the category describes something that exists","A priori categories are the tools that make experience intelligible","Economics incorporates contingent real conditions as explicit assumptions"],
  ana:"The rules of arithmetic are a priori, but you use them to count real sheep. Praxeology’s categories are the arithmetic; the sheep are the real conditions it reasons about."},
 
-{id:"c2-term-mi", ch:2, sec:"§4 The principle of methodological individualism", kind:"term",
+{id:"c2-term-mi", ch:2, s:4, kind:"term",
  q:"State the principle of <em>methodological individualism</em>.",
  a:"All action is performed by individuals. A collective — a nation, a state, a firm, a church — has no existence apart from the actions of the individuals who constitute it; it is real only as the meaning those individuals attach to their actions. ‘The hangman, not the state, executes a criminal.’ This does not deny that collectives matter; it says the way to understand them is to understand how individuals’ actions are directed by the ideas that constitute the collective.",
  pts:["Only individuals act","Collectives exist through the meaning individuals give their actions, not as separate agents","To grasp a collective, analyse the actions of its members"],
  ana:"An orchestra never plays a note; only musicians do. ‘The orchestra’ is the shared intention that turns forty people’s bowing into one symphony — real, but living entirely in the players."},
 
-{id:"c2-weI", ch:2, sec:"§4 I and We", kind:"q",
+{id:"c2-weI", ch:2, s:4, sub:"I and We", kind:"q",
  q:"Why does Mises say collectives are objects of <em>understanding</em>, not perception — and what does he note about one person belonging to many?",
  a:"We never see a nation or a class; we see people. The collective becomes visible only when we understand the meaning behind their actions. And a given person belongs to many collectives at once — a family, a church, a nation, a firm — which may conflict. That alone shows the collective cannot be the basic unit: you cannot reduce a person to ‘the nation’ when the same person is also ‘the church’.",
  pts:["Collectives are grasped by understanding the meaning of actions, never by the senses","The same individual belongs to many, sometimes conflicting, collectives","That is why the individual, not the group, is the starting point"],
  ana:"You can photograph a crowd but never ‘the public’. And one woman in the crowd is a mother, a taxpayer and a football fan — three collectives in one pair of shoes, so none of them can be the shoes."},
 
-{id:"c2-term-ms", ch:2, sec:"§5 The principle of methodological singularism", kind:"term",
+{id:"c2-term-ms", ch:2, s:5, kind:"term",
  q:"What is the principle of <em>methodological singularism</em>?",
  a:"Praxeology begins not with ‘action in general’ but with the concrete action: a particular person acting at a definite time and place, in a definite situation, with definite means toward definite ends. From the study of the single action it rises to classes of action. Every action is a definite action.",
  pts:["Start from the individual, concrete act, not from abstractions","Every action has a specific time, place, means and end","Classes of action are built up from singular actions"],
  ana:"Biology does not start from ‘life in general’; it starts from this cell under this microscope. Praxeology starts from this person choosing this thing now."},
 
-{id:"c2-const", ch:2, sec:"§6 The individual and changing features of human action", kind:"q",
+{id:"c2-const", ch:2, s:6, kind:"q",
  q:"Which features of human action are <em>constant</em> and which <em>change</em>? Why does that matter for the split between praxeology and history?",
  a:"The formal categories — ends and means, scarcity, time, uncertainty, choice, preference — are the same for all people at all times. What changes is the content: what people value, what they know, what tools they have. Praxeology deals with the constant structure; history with the changing content. So praxeology never says what anyone will value, only what follows if they value something and act on it.",
  pts:["The categories of action are invariant; the contents of action vary","Praxeology studies the invariant form, history the varying content","Praxeology is conditional: ‘if people value X, then…’"],
  ana:"Grammar persists while vocabulary turns over. Praxeology is the grammar of choosing; history is the vocabulary of what was chosen in 1849 or 1949."},
 
-{id:"c2-hist", ch:2, sec:"§7 The scope and the specific method of history", kind:"q",
+{id:"c2-hist", ch:2, s:7, kind:"q",
  q:"What is the scope of <em>history</em>, and what is its specific method?",
  a:"History covers all past human action in its concreteness. It cannot run experiments and it finds no ‘laws of history’. It uses natural science and praxeology as tools wherever they apply, but its own specific method is understanding (Verstehen): grasping the meaning the actors gave their actions and judging the relevance of the various factors at work. The historian also selects what to study by judging relevance — but a good historian’s judgements are about relevance, not about approving or condemning.",
  pts:["Deals with concrete, unrepeatable past action","No experiments and no historical laws","Its specific tool is understanding: meaning and relevance","Uses praxeology and natural science as auxiliary tools"],
  ana:"A detective cannot re-run the crime. He uses chemistry for the bloodstain and logic for the alibi, but the heart of the job is reading what the people in the room meant to do."},
 
-{id:"c2-conc", ch:2, sec:"§8 Conception and understanding", kind:"q",
+{id:"c2-conc", ch:2, s:8, kind:"q",
  q:"Distinguish <em>conception</em> from <em>understanding</em>.",
  a:"Conception (Begreifen) is the tool of logic, mathematics and praxeology: grasping by reasoning what is necessary and universal. Understanding (Verstehen) is the historian’s tool: grasping the meaning of concrete action, the actors’ valuations, and the relevance — the qualitative weight — of the many causes at work, where no measurement is possible. Understanding never contradicts the theorems of praxeology or natural science; it fills in only what they leave open. Two historians can agree on all the facts and all the theory and still weigh relevance differently.",
  pts:["Conception: a priori, necessary, universal — praxeology’s method","Understanding: grasps meaning and relevance in concrete cases — history’s method","Understanding works only where theory and natural science stop","Divergent judgements of relevance are the one place for subjectivity"],
  ana:"Conception is the rulebook of football; understanding is the commentator explaining why this match turned on that substitution. The commentator cannot overrule the rulebook, but the rulebook cannot write the match report."},
 
-{id:"c2-nathist", ch:2, sec:"§8 Natural history and human history", kind:"q",
+{id:"c2-nathist", ch:2, s:8, sub:"Natural History and Human History", kind:"q",
  q:"How does human history differ from <em>natural history</em>, such as geology?",
  a:"Natural history deals with past events of things that do not act — rocks, stars, species — explained by natural laws alone. Human history must also deal with meaning: what the people involved were striving for. That is why understanding is needed in human history and has no place in geology.",
  pts:["Natural history: past events without actors, explained by natural laws","Human history: past events shaped by purposes, needing understanding","Natural science applies to both; only human history adds meaning"],
  ana:"A glacier did not intend to carve the valley; Hannibal did intend to cross the Alps. You can explain the valley with physics, but you need Hannibal’s aims to explain the elephants."},
 
-{id:"c2-ideal", ch:2, sec:"§9 On ideal types", kind:"q",
+{id:"c2-ideal", ch:2, s:9, kind:"q",
  q:"What is an <em>ideal type</em>, and how does it differ from a praxeological category?",
  a:"An ideal type (the term comes from Max Weber) is a tool of history: a class concept — ‘the entrepreneur’, ‘the Roman legion’, ‘Napoleon’ — formed by understanding, which groups people, situations or institutions sharing the characteristics the historian judges relevant. It is neither a statistical average nor a deduction; whether something belongs is a matter of judgement. Praxeological categories, by contrast, are exact and a priori: the praxeological ‘entrepreneur’ is a function (bearing uncertainty) present in every acting person, not a type of person.",
  pts:["Ideal types are history’s class concepts, built by understanding and relevance","Not averages and not definitions — membership is a judgement call","Praxeological concepts are exact, a priori and functional"],
  ana:"Hollywood’s ‘gruff detective’ is an ideal type: you know one when you see one, but there is no checklist. Praxeology’s ‘entrepreneur’ is more like ‘the dealer’ in a card game — a role anyone fills the moment they pick up the deck."},
 
-{id:"c2-proc", ch:2, sec:"§10 The procedure of economics", kind:"q",
+{id:"c2-proc", ch:2, s:10, kind:"q",
  q:"Describe the <em>procedure of economics</em> — how it combines a priori reasoning with real conditions.",
  a:"Economics starts from the category of action and then introduces assumptions that correspond to the real world — scarcity, the disutility of labour, that people prefer more satisfaction to less — and deduces what follows. Its favourite instrument is the imaginary construction: picturing a state of affairs under hypothetical conditions, even impossible ones such as a world without change, to isolate the effect of one factor. Which assumptions to study is chosen by their relevance to real problems, but the reasoning itself is a priori and its results apply to all action under those conditions.",
  pts:["Starts from the category of action","Adds explicit assumptions drawn from real conditions","Uses imaginary constructions to isolate causes","Relevance guides what to study; logic guarantees what follows"],
  ana:"An engineer draws a frictionless plane he knows does not exist in order to see what friction does. Economics builds a frictionless economy — one that rotates evenly, without change — to see what change and uncertainty do."},
 
-{id:"c2-term-imag", ch:2, sec:"§10 The procedure of economics", kind:"term",
+{id:"c2-term-imag", ch:2, s:10, kind:"term",
  q:"What is an <em>imaginary construction</em>?",
  a:"A mental model of a state of affairs built from explicit assumptions, including ones that cannot exist in reality, used to trace what would follow if they held. The method isolates the effect of a single factor by imagining it absent. It is justified by its usefulness in understanding real action, not by its realism.",
  pts:["A thought experiment built on explicit, possibly unrealisable assumptions","Isolates one factor by imagining it away","Judged by its usefulness in explaining real action, not by realism"],
  ana:"Physicists imagine a frictionless surface; economists imagine an economy where nothing ever changes. Neither exists; both reveal exactly what friction — or change — does."},
 
-{id:"c2-limits", ch:2, sec:"§11 The limitations on praxeological concepts", kind:"q",
+{id:"c2-limits", ch:2, s:11, kind:"q",
  q:"What are the <em>limitations</em> on praxeological concepts?",
  a:"The categories of action apply only to beings who face scarcity, time and uncertainty — that is, to finite beings. For an omnipotent, perfect being the concepts collapse: a being that is wholly content does not act; a being that can do anything has no need to choose or economise; ‘an almighty being that acts’ is self-contradictory. Praxeology is the science of the human condition — of striving under limits — and says nothing about perfection.",
  pts:["Action presupposes scarcity, time and uncertainty","Choice and uneasiness make no sense for an omnipotent being","Praxeology is about finite, acting humans only"],
  ana:"Chess strategy exists because you get one move at a time and cannot see the future. A player who could make every move at once with perfect foresight would not be playing chess, and praxeology would not apply to him."},
 
 /* ---------------- Chapter III: Economics and the revolt against reason ---------------- */
-{id:"c3-revolt", ch:3, sec:"§1 The revolt against reason", kind:"q",
+{id:"c3-revolt", ch:3, s:1, kind:"q",
  q:"What is the <em>revolt against reason</em>, and why, according to Mises, did it arise?",
  a:"A nineteenth- and twentieth-century movement that rejects reason’s authority over social doctrines — chiefly Marxism, racist doctrines and historicism. It arose because economics reached conclusions socialists and interventionists could neither accept nor refute: that their programmes would not produce what they promised. Unable to win the argument, they attacked the referee, denying that there is one logic valid for all humans and dismissing economics as ‘bourgeois ideology’.",
  pts:["Rejects reason as the judge of social and economic doctrines","Born of the socialists’ failure to refute economics on its merits","Takes the form of polylogism (class, race, nation) and historicism"],
  ana:"A debater who cannot answer the argument declares the referee biased and the rules rigged. The revolt against reason is that move, elevated into a philosophy."},
 
-{id:"c3-term-poly", ch:3, sec:"§2 The logical aspect of polylogism", kind:"term",
+{id:"c3-term-poly", ch:3, s:2, kind:"term",
  q:"Define <em>polylogism</em>.",
  a:"The doctrine that the logical structure of the mind differs between groups of people — social classes (Marxian polylogism), races (Nazi polylogism) or nations — so that there is no single logic valid for all. Each group has its own ‘logic’ and its own truth.",
  pts:["Denies a universal logic","Assigns a different logical structure to each class, race or nation","Marxian and racial versions are the two main forms"],
  ana:"Imagine claiming that arithmetic gives different sums for landlords and tenants. Polylogism makes that claim about reasoning itself."},
 
-{id:"c3-logical", ch:3, sec:"§2 The logical aspect of polylogism", kind:"q",
+{id:"c3-logical", ch:3, s:2, kind:"q",
  q:"What is Mises’s <em>logical</em> critique of polylogism?",
  a:"First, no polylogist has ever specified how the ‘proletarian’ or ‘Aryan’ logic actually differs from anyone else’s — which categories or rules of inference change. They only assert that opponents’ conclusions are ideology. Second, the doctrine refutes itself: if there is no universal logic, then Marx’s own theory is merely the ideology of his class, with no claim on anyone else. Marxists dodge this by declaring that proletarian logic happens to coincide with the truth — an unargued exception for themselves.",
  pts:["Polylogists never describe the alleged alternative logic","Self-refuting: it undercuts the polylogist’s own claim to truth","The ‘proletarian logic is the true logic’ move is special pleading"],
  ana:"Someone announces ‘every statement made by a man is a lie’. If he is a man, the announcement eats itself. Polylogism announces ‘each class’s logic is valid only for itself’ — and then expects you to accept that across class lines."},
 
-{id:"c3-term-ideology", ch:3, sec:"§3 The praxeological aspect of polylogism", kind:"term",
+{id:"c3-term-ideology", ch:3, s:3, kind:"term",
  q:"What does <em>ideology</em> mean in the Marxian sense?",
  a:"A doctrine that is false but serves the interest of the class that holds it — part of the ‘superstructure’ thrown up by a class’s position in production. On this view, bourgeois economics is bourgeois ideology: wrong, yet useful to the bourgeoisie.",
  pts:["A false doctrine","…that serves the interests of the class holding it","Produced by class position, not by reasoning"],
  ana:"The Marxian ‘ideology’ is a pair of tinted glasses handed out by your class: you see the world the colour that suits your side, and never know you are wearing them."},
 
-{id:"c3-ideology", ch:3, sec:"§3 The praxeological aspect of polylogism", kind:"q",
+{id:"c3-ideology", ch:3, s:3, kind:"q",
  q:"What is Mises’s <em>praxeological</em> objection to the Marxian theory of ideology?",
  a:"A false doctrine cannot serve anyone’s interests: action based on error fails to reach its ends. Only correct theories are useful. If ‘bourgeois economics’ were false, the bourgeois who acted on it would be the ones harmed. And in fact the mass of workers gained from the ideas Marx called bourgeois — capitalism raised their standard of living, contrary to his prediction of growing misery. Whose interest a doctrine serves says nothing about whether it is true.",
  pts:["False beliefs do not serve interests — acting on error backfires","Only correct theories are useful for action","Truth or falsity is settled by reasoning, not by asking who benefits","Capitalism in fact benefited the proletariat"],
  ana:"A bridge stands or falls on its engineering, not on whether the contractor was greedy. A doctor’s diagnosis is not wrong because the doctor gets paid for it."},
 
-{id:"c3-interest", ch:3, sec:"§3 The praxeological aspect of polylogism", kind:"q",
+{id:"c3-interest", ch:3, s:3, kind:"q",
  q:"Why can the question ‘whose <em>interest</em> does this theory serve?’ never decide a theory’s validity?",
  a:"Because a theory’s truth is a matter of logic and evidence, not of motives. Even if a theorist were biased, the bias would have to show up as detectable errors in the argument — and then those errors, not the bias, are the refutation. Moreover ‘interest’ cannot be known ahead of knowing what is true: only a correct theory tells you what really serves you. The Marxists assumed they already knew the proletariat’s interest and then rejected any theory that disagreed.",
  pts:["Motives do not make an argument wrong; only errors in it do","If bias produced an error, point to the error","Knowing your interest presupposes correct theory, not the other way round"],
  ana:"Ignoring the line judge’s call because he is from the other town does not move the ball. You still have to look at where it landed."},
 
-{id:"c3-race", ch:3, sec:"§4 Racial polylogism", kind:"q",
+{id:"c3-race", ch:3, s:4, kind:"q",
  q:"What is <em>racial polylogism</em>, and how does Mises answer it?",
  a:"The Nazi version: each race has its own logic, so ‘Aryan’ science and ‘Jewish’ science cannot be judged by common standards. Mises replies that no one has ever shown a difference in the logical structure of any race’s mind — only differences in what people have achieved or believed. Members of every race learn and apply the same mathematics and technology, which would be impossible under different logics. If logic really differed by race, cooperation and trade across races would be impossible, yet they occur every day.",
  pts:["Claims different races have different logical structures","No evidence of any such difference — only differences in content and attainment","Universal use of the same science and technology refutes it","Cross-racial cooperation shows a shared logic"],
  ana:"If different races had different arithmetic, an aeroplane designed in one country could not fly in another. Planes fly everywhere; the arithmetic is shared."},
 
-{id:"c3-und", ch:3, sec:"§5 Polylogism and understanding", kind:"q",
+{id:"c3-und", ch:3, s:5, kind:"q",
  q:"How does polylogism try to lean on <em>understanding</em>, and why does the move fail?",
  a:"Some argue that since historians of different backgrounds ‘understand’ the same events differently, there must be different logics. Mises replies that divergence in understanding is divergence in judging relevance and in values, not in logical structure. The a priori reasoning of praxeology and the findings of natural science are not matters of understanding at all and must be accepted alike by everyone. Polylogists confuse the legitimate room for judgement in history with a licence to reject theory.",
  pts:["Historians differ in understanding relevance, not in logic","Praxeological theorems are matters of conception, not understanding","Disagreement over relevance never licenses rejecting a valid theorem"],
  ana:"Two critics can rank the same ten films differently and still agree that each film is ninety minutes long. Understanding is the ranking; logic and theory are the running time."},
 
-{id:"c3-reason", ch:3, sec:"§6 The case for reason", kind:"q",
+{id:"c3-reason", ch:3, s:6, kind:"q",
  q:"What is Mises’s <em>case for reason</em>?",
  a:"Reason is the specifically human tool for coping with the world. It cannot deliver absolute metaphysical certainty and it cannot choose ultimate ends — but within its domain it is the only instrument we have. Abandon it and disputes can no longer be settled by argument, only by force: intuition against intuition leaves the stronger to decide. Social cooperation under the division of labour rests on people recognising, by reason, that cooperation serves them. So anti-rationalism is not merely a philosophical error; it dissolves the basis of peaceful society.",
  pts:["Reason has limits — no absolute truths, no choosing ultimate ends — but no substitute","Without reason, disagreements are settled by violence","Society (the division of labour) depends on reasoned recognition of mutual benefit","Irrationalism in practice meant dictatorship and war"],
  ana:"A lantern in a cave does not show you everything, but throwing it away does not give you daylight. It leaves you stumbling, and fighting whoever bumps into you."},
 
-{id:"c3-intuition", ch:3, sec:"§6 The case for reason", kind:"q",
+{id:"c3-intuition", ch:3, s:6, kind:"q",
  q:"Why does Mises regard the appeal to <em>intuition</em> or mystical insight against economics as dangerous rather than merely mistaken?",
  a:"Claims to truth beyond reason cannot be checked, so there is no criterion for deciding between competing intuitions. When two ‘intuitions’ clash, nothing is left but to see who can impose theirs — rule by the stronger. The anti-rational doctrines of the twentieth century bore this out in war and dictatorship. The danger is not private mysticism; it is the attempt to settle social questions by it.",
  pts:["Intuitions cannot be argued, so conflicting ones cannot be reconciled","That leaves only force as the arbiter","Historically it ended in dictatorship and war"],
- ana:"If two pilots each ‘just know’ the right heading and no instrument can arbitrate, the plane goes wherever the stronger arm turns the yoke."}
+ ana:"If two pilots each ‘just know’ the right heading and no instrument can arbitrate, the plane goes wherever the stronger arm turns the yoke."},
+
+/* ---------------- Added for per-section coverage ---------------- */
+{id:"c1-wish", ch:1, s:1, kind:"q",
+ q:"Why is merely <em>wishing</em> or preferring not action?",
+ a:"A person can prefer sunshine to rain, but if the weather is beyond their control that preference is only a wish. Action begins where someone chooses and tries to bring about: picks one state over another and applies means to reach it. Preferring between things one cannot influence expresses a valuation; it is not action. He who only wishes and hopes does not interfere with the course of events.",
+ pts:["Preferring among states one cannot influence is wishing, not acting","Action means choosing <i>and</i> trying to realise the choice through means","Action interferes with the course of events; a wish does not"],
+ ana:"Cheering for a team is preferring; stepping onto the pitch is acting. Both want the same result, but only one of them can change the score."},
+
+{id:"c1-omit", ch:1, s:1, kind:"q",
+ q:"Can <em>doing nothing</em> be action?",
+ a:"Yes. Deliberately refraining from doing what one could do, and putting up with a state of affairs one could change, is as much action as intervening. What matters is that the person could have acted differently and chose not to. The worker who turns down a job, the investor who sits on cash, the patient who declines treatment all act.",
+ pts:["Deliberate omission is action","Bearing a situation one could alter is a choice","The test is whether a different course was open and was rejected"],
+ ana:"A goalkeeper who stays rooted to the spot during a penalty has still made a decision. Standing still was one of the options, and she picked it."},
+
+{id:"c1-hedon", ch:1, s:2, sub:"On Happiness", kind:"q",
+ q:"What misunderstanding of <em>hedonism</em> and utilitarianism does Mises correct?",
+ a:"Critics took ‘pleasure’ and ‘utility’ to mean bodily or material gratification, and then objected that people also pursue honour, religion or self-sacrifice. In the formal sense praxeology intends, ‘pleasure’ is simply whatever state the acting person prefers, and ‘utility’ is whatever they judge serviceable to that end — so the ascetic’s renunciation is as ‘pleasurable’ in this sense as the glutton’s feast. Read formally, the doctrines are not a theory of what people should want but a description of what acting is.",
+ pts:["‘Pleasure’ in the formal sense is any preferred state, not sensual gratification","Honour, piety and sacrifice fall under it as readily as food","So read, hedonism and utilitarianism describe action rather than prescribe ends"],
+ ana:"‘Score’ in a game means whatever the rules count, not only goals kicked with the foot. Saying players try to score tells you nothing about which sport they chose."},
+
+{id:"c1-yield", ch:1, s:2, sub:"On Instincts and Impulses", kind:"q",
+ q:"Why is <em>yielding</em> to an impulse still a matter of choice?",
+ a:"Because a person who gives in to an urge has weighed it, however briefly, against the consequences of giving in. Hunger, fear or desire set the pressure, but whether to act on them is decided by the person, who often holds back for the sake of a later or larger gain. Praxeology does not need to rule on whether a given impulse was in fact irresistible; it is enough that humans can and regularly do subdue their instincts, which animals, so far as we know, cannot.",
+ pts:["Giving in follows a weighing of the urge against its consequences","People routinely subdue impulses for later or larger gains","Whether a specific impulse was resistible is a question for psychology, not praxeology"],
+ ana:"A dam does not choose the river’s pressure, but it decides whether the gate opens. The urge is the water; the decision is the gate."},
+
+{id:"c1-why", ch:1, s:3, kind:"q",
+ q:"Does praxeology ask <em>why</em> people value what they value?",
+ a:"No. Praxeology takes the ultimate ends and value judgements of acting people as given data. Psychology, physiology or history may try to explain where a particular preference comes from; praxeology begins after the preference exists and deals only with the fact of choosing and what follows from it. That is what makes action an ultimate given for its purposes.",
+ pts:["Ultimate ends and valuations are data, not problems, for praxeology","Explaining the origin of a preference belongs to other disciplines","Praxeology starts from the fact of choice and traces its consequences"],
+ ana:"A referee does not ask why either side wants to win. The game only needs that they do."},
+
+{id:"c1-regular", ch:1, s:5, kind:"q",
+ q:"Does praxeology have to settle the debates over <em>determinism</em>, free will or indeterminacy in physics?",
+ a:"No. The praxeological category of causality is the acting person’s category: to act, a person must assume that doing A will, at least as a rule, bring about B, so that there is something to exploit. Whether the deepest level of reality is strictly determined, probabilistic or free is irrelevant to that assumption. Imperfect, ‘as a rule’ regularities are quite enough for action, and the vain search for ultimate causes does not stop anyone from planting a field.",
+ pts:["Causality here means regularities the actor can exploit","Even rough, ‘as a rule’ regularities suffice for action","Metaphysical and physical questions about ultimate causation lie outside praxeology"],
+ ana:"A farmer sows in spring because rain usually follows, without a theory of meteorology. Action runs on ‘usually’; it never waited for ‘necessarily’."},
+
+{id:"c1-behav", ch:1, s:6, kind:"q",
+ q:"What is Mises’s objection to <em>behaviourism</em>, which wants to study human conduct ‘from outside’, without reference to purposes?",
+ a:"It cannot be carried through. Strip away meaning and a stock exchange becomes men gesturing and scribbling, a bank note a scrap of paper; nothing of interest can even be described, let alone explained. To say what a person is doing the behaviourist must quietly bring back the ends the person pursues. We grasp other people as acting beings not through the senses but by applying the category of action to what we observe.",
+ pts:["Without purposes, human conduct cannot even be described","Behaviourists smuggle ends back in whenever they say what someone is doing","Other people are grasped as acting by applying the category of action, not by perception"],
+ ana:"Watch a football match with no sound and no knowledge of the rules: you see men running about, not a game. The rules and the aim are what turn running into football."},
+
+{id:"c1-service", ch:1, s:6, sub:"On the Serviceableness of Instincts", kind:"q",
+ q:"What does the <em>serviceableness</em> of instincts — the fact that animal instincts and bodily reflexes tend to benefit the organism — show, and what does it not show?",
+ a:"It shows that behaviour can serve an end without anyone consciously aiming at it: the organism behaves <i>as if</i> it pursued its own preservation, and natural science may explain that purposiveness mechanically, for instance by selection. It does not show that human action is the same kind of thing. We cannot describe human conduct by its biological serviceableness; the human actor aims consciously at ends that are often anything but serviceable to survival. The instinct is purposive from the observer’s ‘as if’ standpoint; action is purposive from the actor’s own.",
+ pts:["Instincts and reflexes benefit the organism without conscious aim","Natural science can treat that as if-purposiveness and explain it mechanically","Human action differs: the end is consciously chosen by the actor, and need not serve survival"],
+ ana:"A sunflower turns toward the light and benefits from it, but nobody says it decided to. A sunbather who moves her chair into the sun has decided. Both end up in the sun; only one acted."},
+
+{id:"c1-devout", ch:1, s:6, sub:"The Absolute End", kind:"q",
+ q:"Does accepting a religious or ‘absolute’ end place a person <em>outside</em> praxeology?",
+ a:"No. Whatever the end, the person still faces scarcity, must choose means, and must decide how much of their time and effort to devote to this goal rather than that. Praxeology applies to the devout exactly as to the worldly. What praxeology leaves to theology and ethics is only the content and justification of the end, never the structure of pursuing it.",
+ pts:["Any end, sacred or profane, still has to be pursued through scarce means","The acting person must still rank and choose","Only the content of ends, not the form of action, lies outside praxeology"],
+ ana:"A pilgrim and a merchant both have to decide which road to take, how much bread to carry and what to leave behind. Different destinations, same arithmetic of the journey."},
+
+{id:"c2-complex", ch:2, s:1, kind:"q",
+ q:"Why can experience in the sciences of human action never settle a <em>theoretical</em> dispute?",
+ a:"Because it is always experience of complex phenomena: many factors acting at once, with no laboratory in which to isolate one. No experiment can be performed on human action. A historical fact is intelligible only in the light of a theory one already holds, so two people who disagree about theory read the same event differently. History can illustrate theory and furnish problems for it; it cannot be the source of theory.",
+ pts:["Human experience is always of complex phenomena, never of isolated variables","No experiments are possible in human action","Facts are interpreted through theory, so they cannot adjudicate between theories"],
+ ana:"You cannot learn the rules of chess by watching a thousand games if you do not already know what a ‘move’ is. And no tournament record will settle an argument about whether a rule exists."},
+
+{id:"c2-fit", ch:2, s:3, kind:"q",
+ q:"How does Mises explain that the mind’s a priori categories <em>fit</em> reality?",
+ a:"The human mind is not a blank slate on which events write their own story; it is equipped with a set of tools for grasping reality. Humans acquired this equipment, the logical structure of the mind, in the course of their evolution, and a mind whose categories did not fit the world would not have let its owners act successfully. So the categories are prior to any experience and nevertheless suited to the world we act in.",
+ pts:["The mind comes equipped with the categories; it is not a tabula rasa","That equipment arose in human evolution, and inadequate equipment would not have survived","The a priori is logically prior to experience yet adequate to reality"],
+ ana:"A key is cut to fit a lock, so its shape owes everything to the lock. But once cut, the key opens the door before you ever examine the tumblers."},
+
+{id:"c2-congeneric", ch:2, s:3, kind:"q",
+ q:"What does Mises mean when he says that <em>action and reason</em> are ‘congeneric and homogeneous’?",
+ a:"They are two aspects of one thing. To think is to deliberate beforehand over future action and to reflect afterwards on past action; to act is to put reasoning to work on the world. The categories of thought — ends and means, cause and effect — are the categories of action. There is no action without thinking, and no human thinking that is not ultimately about acting in the world.",
+ pts:["Thinking is deliberation about action, before or after it","The categories of reasoning are the categories of action","Action and reason spring from the same source and cannot be separated"],
+ ana:"Reason is the pre-flight checklist and action is the flight. The checklist exists for nothing else, and the flight does not happen without it."},
+
+{id:"c2-singular", ch:2, s:5, kind:"q",
+ q:"In what sense is every action <em>singular</em>, and what mistake does methodological singularism guard against?",
+ a:"A particular person acts at a particular moment, in a particular situation, applying particular means to a particular end. ‘Man in general’ does not act. The mistake guarded against is treating valuation as if it were about abstract classes of things — ‘gold versus iron’, ‘bread versus wine’ — when real choice is always about definite quantities here and now, in this situation. Keeping the singular action in view is what later makes the marginal reasoning of economics possible.",
+ pts:["Every action is by a definite person, at a definite time, with definite means and ends","‘Man in general’ never acts","Choice concerns definite quantities in a definite situation, never abstract classes"],
+ ana:"Nobody buys ‘bread’. Someone buys this loaf, at this bakery, on the way to this dinner."},
+
+{id:"c2-historicist", ch:2, s:6, kind:"q",
+ q:"Can a historian describe changing human conduct <em>without</em> praxeology?",
+ a:"No. To describe any action at all the historian must already use the categories of end, means, success and failure, preference and choice. Changing content presupposes the constant form. The historicists wanted to deny that there are universal laws of action and to replace them with the record of changing habits and institutions, but they could not write a single page of that record without the categories they disowned.",
+ pts:["Describing any action requires the praxeological categories","Changing content rests on unchanging form","Historicism uses the universal categories it claims to reject"],
+ ana:"A travel writer describing a hundred cuisines still needs the ideas of ‘ingredient’, ‘dish’ and ‘meal’. Those do not change from country to country; only what goes on the plate does."},
+
+{id:"c2-chronicle", ch:2, s:7, kind:"q",
+ q:"Is history a mere <em>chronicle</em> of facts? What role does theory play in it?",
+ a:"Facts never speak for themselves. A document, a price, a harvest becomes a historical fact only when some theory says how it is connected to other things, and only theory tells the historian which of countless details matter. History uses the natural sciences and praxeology to establish what happened and why, but it is neither a science of laws nor merely applied theory. Its own contribution is understanding: the meaning the actors gave events and the relative weight of the causes at work.",
+ pts:["Facts become historical facts only through theory","Theory determines relevance — what to select from the record","History uses natural science and praxeology as tools; its own work is understanding"],
+ ana:"A crime scene holds a million details. Only a theory of the crime tells the detective which five matter."},
+
+{id:"c2-everyday", ch:2, s:8, kind:"q",
+ q:"Is <em>understanding</em> a special faculty of historians?",
+ a:"No. It is the everyday method everyone uses in dealing with other people: judging what they value, what they know, and what they are likely to do. The businessman forecasting demand, the general anticipating the enemy, the friend guessing a mood all understand. The historian turns the same instrument on the past; the acting person turns it on the future, which is why the future can be anticipated but never known with certainty.",
+ pts:["Understanding is the ordinary way we deal with fellow humans","Forecasting others’ conduct in business, politics and daily life is understanding","The historian uses it backward; the actor uses it forward"],
+ ana:"A poker player reading an opponent and a historian reading Caesar use the same instrument. One looks forward, the other back."},
+
+{id:"c2-ideal-ex", ch:2, s:9, kind:"q",
+ q:"Give some examples of <em>ideal types</em>, and explain how the same word can be an ideal type in one use and a praxeological concept in another.",
+ a:"‘The entrepreneur’ as the historian means it — a class of men like the industrialists of the 1850s — is an ideal type, as are ‘the Elizabethan’, ‘the German’, ‘the proletariat’, ‘the Bonapartist general’. They are formed by understanding and by a judgement of which traits are relevant. The economist’s ‘entrepreneur’, by contrast, is a function — acting under uncertainty — that every acting person performs in some degree, whether they run a factory or not. The word is shared; the concepts are different kinds of thing.",
+ pts:["Historical ideal types: ‘the entrepreneur’ as a class of men, ‘the Elizabethan’, ‘the proletariat’","Formed by understanding and relevance, not by definition","The praxeological ‘entrepreneur’ is a function present in all action"],
+ ana:"‘Doctor’ on a hospital badge is a function anyone who treats patients fills. ‘The country doctor’ in a novel is a type with a bedside manner and a muddy Land Rover."},
+
+{id:"c2-perfect", ch:2, s:11, kind:"q",
+ q:"Why is the idea of a <em>perfect</em> state of affairs contradictory from the praxeological point of view?",
+ a:"Where everything is perfect there is no uneasiness, hence no action, no change and no striving — nothing we recognise as human life. A being in such a state would not act and so would not be human in the praxeological sense. Perfection, taken as a human goal, means the absence of exactly what makes a being human. The concepts of means and ends presuppose imperfection; they have no purchase on a state in which nothing is left to want.",
+ pts:["Perfection means no uneasiness, therefore no action","A perfectly satisfied being is not an acting being","The praxeological categories presuppose imperfection and scarcity"],
+ ana:"A finished jigsaw has nothing left to place. Describing someone as living inside a finished jigsaw is describing someone who no longer plays."},
+
+{id:"c3-selective", ch:3, s:1, kind:"q",
+ q:"Why does the revolt against reason attack the sciences of human action but leave <em>natural science</em> alone?",
+ a:"Because nobody’s political programme is obstructed by chemistry. The anti-rationalists need the technology that natural science delivers and have no quarrel with its results. It is praxeology and economics whose conclusions stand in the way of socialist and interventionist plans, so it is there, and only there, that logic was declared class-bound or race-bound. The selectivity gives the motive away.",
+ pts:["Natural science is accepted because its results are useful and politically harmless","Economics is attacked because its conclusions obstruct political programmes","Attacking reason only where it is inconvenient betrays the political motive"],
+ ana:"A man who disputes the referee only on the calls that go against his team is not disputing refereeing."},
+
+{id:"c3-bourgeois", ch:3, s:2, kind:"q",
+ q:"What inconsistency does Mises find in the fact that Marx, Engels and many Marxist leaders were themselves <em>bourgeois</em>?",
+ a:"If thinking is determined by class, then the doctrines of a lawyer’s son and a manufacturer’s son should be bourgeois ideology. Marxists reply that a few members of the bourgeoisie can rise above their class and see the truth. But that concession gives the game away: once class does not determine thought, there is no reason to deny the same escape to the economists they dismiss as class-bound, and the whole polylogist case collapses.",
+ pts:["By the doctrine’s own logic, Marx’s theory would be bourgeois ideology","The ‘some can rise above their class’ reply concedes that class does not determine thought","The same escape must then be allowed to the economists Marxists dismiss"],
+ ana:"If you insist that no one born in Italy can referee a match fairly, you cannot then appoint an Italian referee just because he happens to be on your side."},
+
+{id:"c3-classint", ch:3, s:3, kind:"q",
+ q:"Does a class have a single, uniform <em>interest</em>?",
+ a:"Marx assumed so, but it is unproven and in fact false. Members of a class have conflicting interests: workers in one trade against another, one country against another, the employed against those seeking jobs. And what counts as one’s interest depends on what one believes about means and about the longer run. With no uniform class interest there is nothing for ‘ideology’ to serve, and the engine of the Marxian account of thought stops.",
+ pts:["Interests within a class conflict — by trade, by nation, by position","What serves one’s interest depends on beliefs about means and the long run","Without a uniform class interest the theory of class ideology has no motor"],
+ ana:"‘The interest of all drivers’ sounds solid until the taxi drivers lobby against the ride-share drivers."},
+
+{id:"c3-concede", ch:3, s:4, kind:"q",
+ q:"What does Mises <em>concede</em> to the racial theorists, and why does it not help their case?",
+ a:"He concedes that there may be inborn differences in talent among individuals and perhaps among groups, and that different peoples have reached different levels of achievement. But differences in attainment, or in the content of what people believe, are not differences in the logical structure of the mind. The racial polylogists needed to show a different logic and have only pointed to different results. Their ‘Aryan logic’ remains an assertion without a single described feature.",
+ pts:["Differences in talent and achievement may exist","They concern content and attainment, not the structure of reasoning","No feature of a race-specific logic has ever been described"],
+ ana:"Two students scoring differently on an exam does not mean their papers were marked by different arithmetic."},
+
+{id:"c3-lineup", ch:3, s:5, kind:"q",
+ q:"Do disagreements of <em>understanding</em> line up with class or race, as polylogism would require?",
+ a:"No. Historians of the same class, nation and race disagree about the weight of causes, and historians of different ones often agree. Understanding is an individual judgement of relevance, open to anyone and settled by no group membership. So even the one place where the sciences of human action leave room for divergence gives polylogism no support.",
+ pts:["Members of the same group disagree in understanding; members of different groups agree","Understanding is individual judgement, not a group property","The room for divergence in history does not track class or race"],
+ ana:"Siblings raised in the same house still argue about which parent was the strict one."},
+
+{id:"c3-selfdefeat", ch:3, s:6, kind:"q",
+ q:"What is self-defeating about the irrationalist who <em>argues</em> that reason cannot judge human affairs?",
+ a:"He reasons in order to prove that reasoning is incompetent. Any doctrine that is addressed to other people and asks to be believed appeals to a logic they share. Mises grants the irrationalist’s premise that reason cannot answer every question or choose ultimate ends; what he denies is the conclusion. The real alternative to reason in social life is not some higher insight but arbitrary force.",
+ pts:["Arguing against reason uses reason","Any claim addressed to others presupposes a shared logic","The alternative to reason is not a higher faculty but force"],
+ ana:"Writing a carefully argued letter to prove that writing cannot communicate."}
 ];
 
 /* ============================================================
@@ -664,6 +854,27 @@ var chTag=$("chTag"), secTag=$("secTag"), kindTag=$("kindTag"), cardno=$("cardno
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function byId(id){ for(var i=0;i<CARDS.length;i++) if(CARDS[i].id===id) return CARDS[i]; return null; }
 function chLabel(c){ return "Chapter "+CHAPTERS[c.ch].num; }
+function secOf(c){ var ss=CHAPTERS[c.ch].secs; for(var i=0;i<ss.length;i++) if(ss[i].n===c.s) return ss[i]; return null; }
+function secLabel(c){ var sc=secOf(c); return "§"+c.s+" "+(sc?sc.t:"")+(c.sub?" · "+c.sub:""); }
+function cardsIn(ch,n){ return CARDS.filter(function(c){ return c.ch===ch && (n==null || c.s===n); }); }
+
+/* Decks: all | terms | trouble | c<ch> | c<ch>.<section> */
+function buildDeckSelect(){
+  var sel=$("deck"), html='';
+  html+='<option value="all">All chapters ('+CARDS.length+')</option>';
+  html+='<option value="terms">Key terms only</option>';
+  html+='<option value="trouble">My trouble spots</option>';
+  [1,2,3].forEach(function(ch){
+    var C=CHAPTERS[ch];
+    html+='<optgroup label="Chapter '+C.num+' · '+esc(C.title)+'">';
+    html+='<option value="c'+ch+'">Whole chapter ('+cardsIn(ch).length+')</option>';
+    C.secs.forEach(function(sc){
+      html+='<option value="c'+ch+'.'+sc.n+'">§'+sc.n+' '+esc(sc.t)+' ('+cardsIn(ch,sc.n).length+')</option>';
+    });
+    html+='</optgroup>';
+  });
+  sel.innerHTML=html;
+}
 
 /* ============================================================
    Session
@@ -682,7 +893,9 @@ function deckCards(){
     var soft=CARDS.filter(function(c){var m=mastery(c.id);return m==="weak"||m==="learning";});
     return soft.length?soft:CARDS.slice();
   }
-  return CARDS.filter(function(c){return String(c.ch)===deckName;});
+  var m=/^c(\d+)(?:\.(\d+))?$/.exec(deckName);
+  if(m) return cardsIn(+m[1], m[2]?+m[2]:null);
+  return CARDS.slice();
 }
 function shuffle(a){
   for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
@@ -733,7 +946,7 @@ function next(){
   store.seen[current.id]=(store.seen[current.id]||0)+1;
 
   chTag.textContent=chLabel(current)+" · "+CHAPTERS[current.ch].short;
-  secTag.textContent=current.sec;
+  secTag.textContent=secLabel(current);
   kindTag.hidden=(current.kind!=="term");
   qtext.innerHTML=current.q;
   cardno.textContent=(Object.keys(learned).length+1)+" / "+deckSize+"  ·  "+remaining()+" left";
@@ -826,7 +1039,7 @@ function finish(){
   var box=$("missedBox");
   if(miss.length){
     box.innerHTML='<div class="grouphead">Came back to bite you</div><ul>'+
-      miss.map(function(id){var c=byId(id);return "<li><b>"+c.q+"</b><br>"+esc(c.sec)+", "+chLabel(c)+"</li>";}).join("")+
+      miss.map(function(id){var c=byId(id);return "<li><b>"+c.q+"</b><br>"+chLabel(c)+", "+esc(secLabel(c))+"</li>";}).join("")+
       "</ul>";
     $("missOnlyBtn").style.display="";
     $("missOnlyBtn").onclick=function(){ startRun(miss.map(byId)); };
@@ -859,13 +1072,32 @@ function renderStats(){
                       solid+" solid, "+weak+" shaky";
   var opt=$("deck").querySelector('option[value="trouble"]');
   if(opt) opt.textContent = weak ? "My trouble spots ("+weak+")" : "My trouble spots";
-  var all=$("deck").querySelector('option[value="all"]');
-  if(all) all.textContent="All chapters ("+CARDS.length+")";
 }
 
 /* ============================================================
    Browse mode
    ============================================================ */
+function itemHtml(c){
+  var st=mastery(c.id);
+  return '<details class="item" data-id="'+c.id+'"><summary>'+
+    '<i class="st '+(st==="new"?"":st)+'"></i>'+
+    '<span class="q">'+c.q+'</span>'+
+    (c.kind==="term"?'<span class="t">term</span>':'')+
+    '</summary><div class="body">'+
+    '<p class="model">'+c.a+'</p>'+
+    '<ul>'+c.pts.map(function(p){return "<li>"+p+"</li>";}).join("")+'</ul>'+
+    '<div class="analogy"><b>Think of it like&hellip;</b> '+c.ana+'</div>'+
+    '</div></details>';
+}
+function tally(cs){
+  var n={solid:0,weak:0,learning:0,"new":0};
+  cs.forEach(function(c){ n[mastery(c.id)]++; });
+  var bits=[];
+  if(n.solid) bits.push('<b class="s">'+n.solid+' solid</b>');
+  if(n.weak) bits.push('<b class="w">'+n.weak+' shaky</b>');
+  if(n.learning) bits.push('<b class="l">'+n.learning+' getting there</b>');
+  return bits.length?bits.join(' · '):cs.length+' card'+(cs.length===1?'':'s');
+}
 function renderList(){
   var html='<div class="legend">'+
     '<span><i class="n"></i>Not yet reviewed</span>'+
@@ -874,25 +1106,33 @@ function renderList(){
     '<span><i class="w"></i>Shaky &mdash; missed in the last '+RECENT+'</span>'+
   '</div>';
   [1,2,3].forEach(function(ch){
-    var cs=CARDS.filter(function(c){return c.ch===ch;});
-    if(!cs.length) return;
-    html+='<div class="grouphead">Chapter '+CHAPTERS[ch].num+' &mdash; <b>'+esc(CHAPTERS[ch].title)+'</b></div>';
-    cs.forEach(function(c){
-      var st=mastery(c.id);
-      html+='<details class="item" data-id="'+c.id+'"><summary>'+
-        '<i class="st '+(st==="new"?"":st)+'"></i>'+
-        '<span class="q">'+c.q+'</span>'+
-        (c.kind==="term"?'<span class="t">term</span>':'')+
-        '<span class="sec">'+esc(c.sec)+'</span>'+
-        '</summary><div class="body">'+
-        '<p class="model">'+c.a+'</p>'+
-        '<ul>'+c.pts.map(function(p){return "<li>"+p+"</li>";}).join("")+'</ul>'+
-        '<div class="analogy"><b>Think of it like&hellip;</b> '+c.ana+'</div>'+
-        '</div></details>';
+    var C=CHAPTERS[ch];
+    html+='<div class="chaphead"><span>Chapter '+C.num+' &mdash; <b>'+esc(C.title)+'</b></span>'+
+          '<button class="drill" data-deck="c'+ch+'">Review chapter &rarr;</button></div>';
+    C.secs.forEach(function(sc){
+      var cs=cardsIn(ch,sc.n);
+      html+='<div class="sechead"><span class="num">&sect;'+sc.n+'</span><span class="t">'+esc(sc.t)+'</span>'+
+            '<span class="tally">'+tally(cs)+'</span>'+
+            (cs.length?'<button class="drill" data-deck="c'+ch+'.'+sc.n+'">Review &sect;'+sc.n+' &rarr;</button>':'')+
+            '</div>';
+      cs.filter(function(c){return !c.sub;}).forEach(function(c){ html+=itemHtml(c); });
+      (sc.subs||[]).forEach(function(sub){
+        var sub_cs=cs.filter(function(c){return c.sub===sub;});
+        html+='<div class="subhead">'+esc(sub)+(sub_cs.length?'':' <i>(no cards yet)</i>')+'</div>';
+        sub_cs.forEach(function(c){ html+=itemHtml(c); });
+      });
     });
   });
   $("list").innerHTML=html;
 }
+$("list").addEventListener("click",function(e){
+  var b=e.target.closest?e.target.closest(".drill"):null;
+  if(!b) return;
+  deckName=b.getAttribute("data-deck");
+  $("deck").value=deckName;
+  setMode("review"); startRun();
+  window.scrollTo({top:0,behavior:"smooth"});
+});
 
 /* ============================================================
    Mode + controls
@@ -953,6 +1193,7 @@ document.addEventListener("keydown",function(e){
 })();
 
 /* go */
+buildDeckSelect();
 setMode("review");
 renderList();
 })();
