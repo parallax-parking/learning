@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Human Action Review</title>
+<meta name="description" content="End-of-chapter review questions for Ludwig von Mises's Human Action, chapters I–III. Answer, reveal, grade yourself.">
+<style>
+  :root{
+    --bg:#0a0a0c;
+    --panel:#141419;
+    --panel-2:#1c1c23;
+    --line:#2a2a33;
+    --ink:#f2f2f4;
+    --ink-dim:#9a9aa6;
+    --ink-faint:#63636f;
+    --accent:#ff6b1a;
+    --ok:#31c26d;
+    --bad:#f0483e;
+    --warn:#f5b301;
+    --radius:14px;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+    padding:0 16px 64px;
+  }
+  .wrap{max-width:860px;margin:0 auto}
+
+  /* ---------- header ---------- */
+  header{
+    display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+    padding:20px 0 14px;border-bottom:1px solid var(--line);margin-bottom:18px;
+  }
+  h1{font-size:19px;margin:0;letter-spacing:-.2px;font-weight:650}
+  h1 .dot{color:var(--accent)}
+  .sub{color:var(--ink-faint);font-size:12.5px;margin:2px 0 0}
+  .sub i{font-style:italic}
+  .spacer{flex:1}
+
+  .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+  .seg button{
+    background:none;border:0;color:var(--ink-dim);font:inherit;font-size:13px;font-weight:550;
+    padding:6px 13px;border-radius:7px;cursor:pointer;transition:.14s;white-space:nowrap;
+  }
+  .seg button:hover{color:var(--ink)}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:#150c05}
+
+  select{
+    background:var(--panel);color:var(--ink);border:1px solid var(--line);
+    border-radius:10px;padding:7px 10px;font:inherit;font-size:13px;cursor:pointer;max-width:100%;
+  }
+
+  /* ---------- stats ---------- */
+  .stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .chip{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:7px 12px;display:flex;align-items:baseline;gap:7px;
+  }
+  .chip .k{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint)}
+  .chip .v{font-family:var(--mono);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+  .chip.ok .v{color:var(--ok)} .chip.bad .v{color:var(--bad)} .chip.hot .v{color:var(--accent)}
+
+  .bar{height:5px;background:var(--panel-2);border-radius:99px;overflow:hidden;margin:0 0 16px}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .35s cubic-bezier(.4,0,.2,1)}
+
+  /* ---------- card ---------- */
+  .card{
+    background:radial-gradient(120% 130% at 50% 0%, #17171d 0%, #0e0e11 70%);
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 22px 20px;position:relative;
+  }
+  .card.ok{border-color:rgba(49,194,109,.45)}
+  .card.bad{border-color:rgba(240,72,62,.45)}
+  .card.warn{border-color:rgba(245,179,1,.4)}
+  .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .tag{
+    font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;
+    background:var(--panel-2);border:1px solid var(--line);color:var(--ink-dim);
+    padding:3px 9px;border-radius:99px;
+  }
+  .tag.ch{border-color:#5a3412;background:#2a1a0e;color:var(--accent)}
+  .tag.term{border-color:#5a4a12;background:#2a2410;color:var(--warn)}
+  .tag.sec{text-transform:none;letter-spacing:0;font-weight:500}
+  .tag.n{margin-left:auto;font-family:var(--mono);text-transform:none;letter-spacing:0}
+  .question{
+    font-family:var(--serif);font-size:22px;line-height:1.35;margin:0 0 18px;font-weight:500;
+    letter-spacing:-.1px;
+  }
+  .question em{color:var(--accent);font-style:normal}
+
+  textarea{
+    width:100%;min-height:110px;resize:vertical;
+    background:var(--bg);border:1.5px solid var(--line);border-radius:11px;
+    padding:13px 15px;color:var(--ink);font:inherit;font-size:15.5px;line-height:1.5;outline:none;transition:.14s;
+  }
+  textarea::placeholder{color:var(--ink-faint)}
+  textarea:focus{border-color:var(--accent)}
+  textarea:disabled{opacity:.7}
+
+  .row{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+  button.btn{
+    background:var(--panel-2);color:var(--ink);border:1px solid var(--line);
+    border-radius:11px;padding:13px 18px;font:inherit;font-size:14.5px;font-weight:600;
+    cursor:pointer;transition:.14s;white-space:nowrap;
+  }
+  button.btn:hover{background:#26262f;border-color:#3a3a46}
+  button.btn.primary{background:var(--accent);color:#150c05;border-color:var(--accent)}
+  button.btn.primary:hover{filter:brightness(1.1)}
+  button.btn.ghost{background:none;color:var(--ink-dim)}
+  button.btn.ghost:hover{color:var(--ink)}
+  button.btn .kbd{margin-left:8px;opacity:.7}
+  .kbd{
+    font-family:var(--mono);font-size:11.5px;background:var(--panel-2);border:1px solid var(--line);
+    border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:var(--ink-dim);
+    white-space:nowrap;font-weight:500;
+  }
+  button.btn.primary .kbd{background:rgba(0,0,0,.18);border-color:rgba(0,0,0,.25);color:#150c05}
+  .hintline{color:var(--ink-faint);font-size:12.5px;margin-top:10px}
+
+  /* ---------- reveal ---------- */
+  .reveal{display:none;margin-top:18px;border-top:1px dashed var(--line);padding-top:16px}
+  .reveal.on{display:block}
+  .block{margin-bottom:16px}
+  .block h3{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
+    margin:0 0 7px;font-weight:600;
+  }
+  .yours{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 14px;
+    color:var(--ink-dim);font-size:14.5px;white-space:pre-wrap;
+  }
+  .model{font-family:var(--serif);font-size:17px;line-height:1.55;margin:0}
+  .points{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+  .points li{display:flex;align-items:flex-start;gap:10px}
+  .points label{
+    display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:14.5px;line-height:1.45;
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px;width:100%;
+    transition:.12s;
+  }
+  .points label:hover{border-color:#3a3a46}
+  .points input{margin:4px 0 0;accent-color:var(--ok);flex:none;width:16px;height:16px}
+  .points label.hit{border-color:rgba(49,194,109,.5);background:rgba(49,194,109,.07)}
+  .analogy{
+    background:linear-gradient(135deg,rgba(255,107,26,.12),rgba(255,107,26,.03));
+    border:1px solid rgba(255,107,26,.35);border-radius:11px;padding:12px 15px;
+    font-size:14.5px;line-height:1.55;
+  }
+  .analogy b{color:var(--accent);font-weight:600;margin-right:4px}
+  .grade{display:flex;gap:9px;flex-wrap:wrap;margin-top:4px}
+  .grade button.btn{flex:1;min-width:120px}
+  .grade button.btn.miss:hover{border-color:var(--bad);color:#ffc2be}
+  .grade button.btn.part:hover{border-color:var(--warn);color:#ffe7a0}
+  .grade button.btn.got:hover{border-color:var(--ok);color:#b6f0cf}
+  .grade button.btn.suggest{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+
+  /* ---------- summary ---------- */
+  .done{display:none;margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .done.on{display:block}
+  .done h2{margin:0 0 4px;font-size:20px}
+  .done p.lede{color:var(--ink-dim);margin:0 0 18px;font-size:14px}
+  .scoreline{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:18px}
+  .scoreline div span{display:block}
+  .scoreline .n{font-family:var(--mono);font-size:27px;font-weight:700;line-height:1.1}
+  .scoreline .l{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+  .missed{margin-bottom:18px}
+  .missed ul{margin:8px 0 0;padding-left:18px;color:var(--ink-dim);font-size:14px}
+  .missed li{margin-bottom:4px}
+  .missed li b{color:var(--ink);font-weight:500;font-family:var(--serif);font-size:15px}
+
+  /* ---------- browse ---------- */
+  .list{display:none}
+  .list.on{display:block}
+  .legend{display:flex;gap:15px;flex-wrap:wrap;margin:0 0 6px;font-size:12px;color:var(--ink-faint)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .legend i{width:9px;height:9px;border-radius:50%;flex:none}
+  .legend i.n{background:var(--ink-faint)}
+  .legend i.l{background:var(--warn)}
+  .legend i.s{background:var(--ok)}
+  .legend i.w{background:var(--bad)}
+  .grouphead{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
+    margin:18px 0 8px;font-weight:600;
+  }
+  .grouphead b{color:var(--ink-dim)}
+  details.item{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:7px;
+    transition:.12s;
+  }
+  details.item:hover{border-color:#3a3a46}
+  details.item[open]{border-color:var(--accent)}
+  details.item summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 13px;
+    font-size:14.5px;line-height:1.4;
+  }
+  details.item summary::-webkit-details-marker{display:none}
+  details.item summary i.st{width:8px;height:8px;border-radius:50%;flex:none;background:var(--ink-faint);opacity:.5}
+  details.item summary i.st.learning{background:var(--warn);opacity:.85}
+  details.item summary i.st.solid{background:var(--ok);opacity:.8}
+  details.item summary i.st.weak{background:var(--bad);opacity:.95}
+  details.item summary .q{flex:1;font-family:var(--serif);font-size:15.5px}
+  details.item summary .sec{font-size:11px;color:var(--ink-faint);white-space:nowrap}
+  details.item summary .t{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);border:1px solid #5a4a12;border-radius:99px;padding:1px 7px}
+  details.item .body{padding:2px 13px 14px;border-top:1px dashed var(--line);margin-top:0}
+  details.item .body .model{font-size:15.5px;margin:12px 0 10px}
+  details.item .body ul{margin:0 0 12px;padding-left:18px;color:var(--ink-dim);font-size:14px}
+  details.item .body .analogy{font-size:14px}
+
+  footer{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);
+    color:var(--ink-faint);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  footer button{background:none;border:0;color:var(--ink-faint);font:inherit;font-size:12.5px;cursor:pointer;text-decoration:underline;padding:0}
+  footer button:hover{color:var(--bad)}
+  footer a{color:var(--ink-dim);text-decoration:none;margin-left:auto}
+  footer a:hover{color:var(--accent)}
+
+  @media (max-width:640px){
+    h1{font-size:17px}
+    .stats{gap:6px}
+    .chip{padding:6px 10px}
+    .chip .v{font-size:14px}
+    .card{padding:16px 14px}
+    .question{font-size:19px}
+    .row{flex-direction:column}
+    button.btn{width:100%}
+    .row.ghostrow{flex-direction:row;gap:7px}
+    .row.ghostrow button.btn{width:auto;flex:1;padding:12px 6px;font-size:13.5px}
+    .grade{flex-direction:row}
+    .grade button.btn{min-width:0;padding:12px 6px;font-size:13.5px}
+    .grade button.btn .kbd{display:none}
+    details.item summary .sec{display:none}
+    footer a{margin-left:0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1>Human Action Review<span class="dot">.</span></h1>
+    <p class="sub">End-of-chapter questions for Mises&rsquo;s <i>Human Action</i>, chapters I&ndash;III &mdash; answer, reveal, grade yourself.</p>
+  </div>
+  <div class="spacer"></div>
+  <select id="deck" aria-label="Choose deck">
+    <option value="all">All chapters</option>
+    <option value="1">Chapter I · Acting Man</option>
+    <option value="2">Chapter II · Epistemological Problems</option>
+    <option value="3">Chapter III · Revolt Against Reason</option>
+    <option value="terms">Key terms only</option>
+    <option value="trouble">My trouble spots</option>
+  </select>
+  <div class="seg" role="group" aria-label="Mode">
+    <button id="mReview" aria-pressed="true">Review</button>
+    <button id="mBrowse" aria-pressed="false">Browse</button>
+  </div>
+</header>
+
+<div class="stats" id="stats"></div>
+<div class="bar"><i id="barfill"></i></div>
+
+<!-- REVIEW -->
+<div class="card" id="card">
+  <div class="meta">
+    <span class="tag ch" id="chTag">Chapter I</span>
+    <span class="tag sec" id="secTag">§1</span>
+    <span class="tag term" id="kindTag" hidden>Define</span>
+    <span class="tag n" id="cardno">1 / 40</span>
+  </div>
+  <p class="question" id="qtext"></p>
+  <textarea id="answer" placeholder="Think it through, then write your answer in your own words (optional)…" autocomplete="off" spellcheck="true"></textarea>
+  <div class="row">
+    <button class="btn primary" id="revealBtn">Reveal answer <span class="kbd">⌘ Enter</span></button>
+    <button class="btn ghost" id="skipBtn">Skip for now</button>
+  </div>
+
+  <div class="reveal" id="reveal">
+    <div class="block" id="yoursBlock" hidden>
+      <h3>What you wrote</h3>
+      <div class="yours" id="yours"></div>
+    </div>
+    <div class="block">
+      <h3>Model answer</h3>
+      <p class="model" id="model"></p>
+    </div>
+    <div class="block">
+      <h3>Did you hit these?</h3>
+      <ul class="points" id="points"></ul>
+    </div>
+    <div class="block">
+      <div class="analogy" id="analogy"></div>
+    </div>
+    <div class="block">
+      <h3>How did you do?</h3>
+      <div class="grade">
+        <button class="btn miss" id="gMiss">Missed it <span class="kbd">1</span></button>
+        <button class="btn part" id="gPart">Partly <span class="kbd">2</span></button>
+        <button class="btn got"  id="gGot">Got it <span class="kbd">3</span></button>
+      </div>
+      <p class="hintline">&ldquo;Got it&rdquo; retires the card for this run. &ldquo;Partly&rdquo; brings it back later without counting as a miss. &ldquo;Missed it&rdquo; brings it back soon.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="done" id="done">
+  <h2 id="doneTitle">Deck cleared</h2>
+  <p class="lede" id="doneLede"></p>
+  <div class="scoreline">
+    <div><span class="n" id="sAcc">—</span><span class="l">Got it first time</span></div>
+    <div><span class="n" id="sCards">—</span><span class="l">Questions</span></div>
+    <div><span class="n" id="sTime">—</span><span class="l">Time</span></div>
+    <div><span class="n" id="sStreak">—</span><span class="l">Best streak</span></div>
+  </div>
+  <div class="missed" id="missedBox"></div>
+  <div class="row">
+    <button class="btn primary" id="againBtn">Run the deck again</button>
+    <button class="btn" id="missOnlyBtn">Drill only what I missed</button>
+  </div>
+</div>
+
+<!-- BROWSE -->
+<div class="list" id="list"></div>
+
+<footer>
+  <span id="pb"></span>
+  <button id="resetBtn">Reset all saved progress</button>
+  <a href="index.html">Bike Anatomy Trainer &rarr;</a>
+</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   The deck
+   ------------------------------------------------------------
+   One entry per card. `kind` is "q" (a review question) or
+   "term" (define this concept). `pts` are the things a good
+   answer should contain — they become the self-marking
+   checklist. `ana` is the analogy shown with the answer.
+   ============================================================ */
+var CHAPTERS={
+  1:{num:"I",   title:"Acting Man",                                                    short:"Acting Man"},
+  2:{num:"II",  title:"The Epistemological Problems of the Sciences of Human Action", short:"Epistemological Problems"},
+  3:{num:"III", title:"Economics and the Revolt Against Reason",                      short:"Revolt Against Reason"}
+};
+
+var CARDS=[
+/* ---------------- Chapter I: Acting Man ---------------- */
+{id:"c1-term-action", ch:1, sec:"§1 Purposeful action and animal reaction", kind:"term",
+ q:"Define <em>human action</em> as Mises uses the term.",
+ a:"Human action is purposeful behaviour: will put into operation, aiming at ends and goals. It is the ego’s meaningful response to stimuli and to the conditions of its environment — a person’s conscious adjustment to the state of the universe that determines their life.",
+ pts:["Purposeful, conscious behaviour — not a reflex","Aims at ends and employs means","The ego responds <i>meaningfully</i> to its environment"],
+ ana:"A thermostat clicks on when the room gets cold; a person decides to light a fire. Both respond to cold, but only the second is action: there is an aim behind it, and the person could have chosen to shiver instead."},
+
+{id:"c1-term-prax", ch:1, sec:"§1 Purposeful action and animal reaction", kind:"term",
+ q:"Define <em>praxeology</em>.",
+ a:"The general theory of human action: the science of the formal, universal features of purposeful behaviour, without regard to the particular ends pursued. Economics is its best-developed branch.",
+ pts:["The science of human action as such","Formal and universal — indifferent to the content of ends","Economics is a part of it"],
+ ana:"If economics is a well-charted province, praxeology is the whole continent it sits on."},
+{id:"c1-reflex", ch:1, sec:"§1 Purposeful action and animal reaction", kind:"q",
+ q:"Why are reflexes and the body’s involuntary responses not action? Can a person nonetheless <em>act about</em> them?",
+ a:"The reactions of cells, nerves and organs to stimuli — digestion, heartbeat, a flinch — happen without the ego aiming at anything, so they fall outside praxeology. But a person can act about them: suppress a cough, resist an urge, postpone a meal. The dividing line is whether the ego consciously aims at an end. Even the ‘subconscious’ motives of psychoanalysis still describe behaviour aimed at ends, only ends the actor does not avow; what praxeology excludes is purely physiological reaction.",
+ pts:["Involuntary physiological responses are not action","The ego can take a stand toward its impulses — that stand is action","Unavowed motives still count; only purely physiological reaction is excluded"],
+ ana:"Your pulse is the engine idling; action is your hand on the wheel. You cannot stop the engine by wishing, but you decide where the car goes — and you can decide to hold your breath for a while."},
+
+{id:"c1-prereq", ch:1, sec:"§2 The prerequisites of human action", kind:"q",
+ q:"What are the three prerequisites of human action?",
+ a:"First, felt uneasiness: the actor is not fully content with the present state. Second, an image of a more satisfactory state. Third, the expectation that purposeful behaviour has the power to remove or lessen the uneasiness. Take any one away and no action follows: a perfectly contented being, a being that cannot picture anything better, and a being convinced nothing can be done all stay still.",
+ pts:["Felt uneasiness","An image of a more satisfactory state","The expectation that purposeful behaviour can reach it","Remove any one and there is no action"],
+ ana:"An itch (uneasiness), the thought of the relief of scratching (the better state), and a free hand (the belief you can do something about it). Tie your hands and the itch stays an itch — a sensation, not a project."},
+
+{id:"c1-term-uneasiness", ch:1, sec:"§2 The prerequisites of human action", kind:"term",
+ q:"What does Mises mean by <em>uneasiness</em>?",
+ a:"The felt dissatisfaction that is the first spring of action: a person’s sense that their present state could be better. It is not any particular pain but any felt gap between what is and what could be. Without it there is no reason to act.",
+ pts:["The felt gap between the present state and a preferable one","The trigger of all action","Purely formal — covers hunger, boredom and ambition alike"],
+ ana:"Uneasiness is the pebble in the shoe. Whether the pebble is hunger or a half-finished novel, the walk changes because of it."},
+
+{id:"c1-happiness", ch:1, sec:"§2 On happiness", kind:"q",
+ q:"In what sense does all action aim at <em>happiness</em>, and why does Mises call this a purely formal statement?",
+ a:"Every action tries to exchange a less satisfactory state for a more satisfactory one — call that the pursuit of happiness if you like. Said this way it carries no content: it does not say what makes anyone happy. ‘Pleasure’ and ‘pain’ here are formal and subjective, meaning whatever the acting person judges better or worse. Stated formally, eudaemonism and hedonism are not ethical programmes but descriptions of action as such.",
+ pts:["Action always substitutes a more satisfactory state for a less satisfactory one","‘Happiness’ or ‘pleasure’ is formal — it names no particular content","Praxeology does not say what people <i>ought</i> to want"],
+ ana:"Saying ‘everyone acts to be happier’ is like saying ‘everyone eats what they prefer’. It is true of the monk and the glutton alike, and therefore says nothing about what is on the plate."},
+
+{id:"c1-instinct", ch:1, sec:"§2 On instincts and impulses", kind:"q",
+ q:"What is Mises’s objection to ‘instinct sociology’ — explaining human behaviour by instincts?",
+ a:"Naming an instinct explains nothing; it merely relabels the behaviour (‘he fights because of a fighting instinct’). And humans are not driven as animals are: they can resist impulses, give up a gratification now for a gain later, and weigh competing urges against each other. Yielding to an impulse is itself a choice to yield. Praxeology does not need to settle whether a given impulse was resistible; it needs only that humans can and do choose among their urges.",
+ pts:["Labelling a drive an ‘instinct’ is not an explanation","Humans can override impulses; animals, as far as we know, cannot","Giving in to an impulse is itself a choice, hence an action"],
+ ana:"Calling conduct ‘instinctive’ is like explaining why a sleeping pill works by saying it has a ‘dormitive virtue’. The label just repeats the thing that was to be explained."},
+
+{id:"c1-given", ch:1, sec:"§3 Human action as an ultimate given", kind:"q",
+ q:"Why does Mises treat human action as an <em>ultimate given</em>, and what is methodological dualism?",
+ a:"Science cannot (yet) explain how physiological events produce thoughts and valuations; the gap between mind and body is unbridged. Rather than pretend to a monism we cannot use, praxeology takes purposeful action as an irreducible starting point — every science rests on ultimate givens it does not explain. This working stance is methodological dualism: we treat mind and matter as two realms not because we know they are, but because we lack any bridge between them.",
+ pts:["Every science has starting points it cannot reduce further","We cannot trace ideas and valuations back to physical processes","Methodological dualism is a pragmatic stance, not a metaphysical claim"],
+ ana:"Geometry does not prove its axioms; it builds on them. Action is praxeology’s axiom — the floor you stand on, not a result you derive."},
+
+{id:"c1-rational", ch:1, sec:"§4 Rationality and irrationality", kind:"q",
+ q:"Why does Mises insist that human action is <em>always</em> rational, and what does he make of the phrase ‘irrational action’?",
+ a:"‘Rational’ can refer only to means, never to ultimate ends. Action is by definition the use of means to reach chosen ends, so ‘rational action’ is a pleonasm — all action is rational. Ultimate ends are the actor’s own values and lie beyond reason’s reach. When a critic calls an end irrational, they are only saying they would have chosen differently. Action can be mistaken — the means may fail — but error is not irrationality.",
+ pts:["‘Rational’ applies to the choice of means, not to ends","‘Rational action’ is redundant; ‘irrational action’ is a contradiction","Calling an end ‘irrational’ is a value judgement in disguise","Mistaken action is still action"],
+ ana:"A satnav can tell you the quickest road (the means) but has no opinion on whether you should be driving to the coast at all (the end). Mises’s ‘rational’ is the satnav’s job description."},
+
+{id:"c1-material", ch:1, sec:"§4 Rationality and irrationality", kind:"q",
+ q:"Does praxeology treat only the pursuit of material wealth as ‘economic’ or ‘rational’? Why does Mises reject that view?",
+ a:"No. The older view held that only striving for material goods is ‘economic’ and everything else lies outside economics or is ‘irrational’. Mises replies that every action economises: it applies scarce means to chosen ends, and the end may be money, a cathedral, a friend’s welfare or a martyr’s cause. A person who starves rather than betray a belief acts exactly as purposefully as a merchant.",
+ pts:["Every action allocates scarce means — that is what makes it economic","Ends are subjective: charity, honour and asceticism count as much as profit","There is no separate ‘economic man’ with only material goals"],
+ ana:"A budget is a budget whether you spend it on bread or on candles for a shrine. Economics is about the budgeting, not about the bread."},
+
+{id:"c1-subj", ch:1, sec:"§4 Subjectivism and objectivity of praxeological research", kind:"q",
+ q:"How can praxeology be both <em>subjectivist</em> and <em>objective</em>?",
+ a:"It is subjectivist because it takes the acting person’s ends as given and passes no judgement on them. Precisely because of that it is objective and universal: its statements hold for all action whatever the goals. It is value-free (wertfrei) — it does not ask whether an end is good, only what follows when someone pursues it with given means.",
+ pts:["Takes ultimate ends as data and does not evaluate them","Therefore valid for every acting person, whatever they value","Value-freedom is the source of its objectivity"],
+ ana:"A kitchen scale is objective exactly because it does not care whether you are weighing gold or gravel. Praxeology weighs action without an opinion on what you are cooking."},
+
+{id:"c1-term-wertfrei", ch:1, sec:"§4 Subjectivism and objectivity of praxeological research", kind:"term",
+ q:"What is <em>Wertfreiheit</em> (value-freedom)?",
+ a:"The principle that praxeology and economics take no stand on the ends people pursue. They describe what follows from acting on given values with given means; they neither approve nor condemn the values. It is the stance that makes the science applicable to everyone.",
+ pts:["The science of action is neutral toward ends","It describes consequences; it does not prescribe goals","It is the ground of praxeology’s universality"],
+ ana:"A map shows every road, including the one to the cliff edge. The map is value-free; the choice of road is yours."},
+
+{id:"c1-cause", ch:1, sec:"§5 Causality as a requirement of action", kind:"q",
+ q:"Why is <em>causality</em> a requirement of action?",
+ a:"To act is to interfere with the course of events, and that makes sense only if one believes there are regular connections between causes and effects — that doing A brings about B. Where a person sees no causal link they cannot act, only wish or pray. Praxeology does not need the ultimate metaphysics of causation; it needs only that the actor believes in regularities, even mistaken ones, as in magic.",
+ pts:["Action means intervening in events to change their course","That presupposes belief in cause-and-effect regularities","A wrong causal theory still lets a person act; no causal theory leaves them helpless"],
+ ana:"You press a light switch because you expect it to be wired to the bulb. If you believed switch and bulb were unconnected you would sit in the dark. A person who believes a rain dance brings rain at least dances."},
+
+{id:"c1-alterego", ch:1, sec:"§6 The alter ego", kind:"q",
+ q:"What is the problem of the <em>alter ego</em>, and how does praxeology deal with it?",
+ a:"We cannot prove that other beings have minds and act; we only observe their behaviour. We apply the category of action to other people because it works: interpreting them as aiming at ends lets us predict their conduct and cooperate with them. Mechanism (explaining by blind causes) is used where it suffices; finalism (explaining by purposes) where it does not. Exactly where to draw the line is a practical question. For human beings, to deny that they act would be absurd.",
+ pts:["Other minds cannot be proven, only inferred from behaviour","We treat beings as acting when the category of action gives a workable explanation","The choice between finalistic and mechanistic explanation is pragmatic"],
+ ana:"You cannot see inside a chess program, but you play against it as if it ‘wants’ to win, because that stance predicts its moves. Praxeology takes the same stance toward other people, and with far better reason."},
+
+{id:"c1-absolute", ch:1, sec:"§6 The absolute end", kind:"q",
+ q:"What does Mises say about an <em>absolute end</em> — an end valid regardless of anyone’s valuation?",
+ a:"Praxeology deals only with the ends human beings actually pursue; every end is some actor’s end, relative to their valuations. Whether there is an absolute end, binding independently of human choice, is a question for theology or metaphysics, not for a science of action. When critics denounce other people’s ends as irrational and announce the ‘true’ end, they are advancing their own values under the name of the absolute.",
+ pts:["Praxeology knows only the ends that acting people choose","An ‘absolute end’ lies outside science — it is a religious or metaphysical claim","Appeals to the absolute end usually smuggle in the speaker’s own preferences"],
+ ana:"A compass points to magnetic north; it cannot tell you where you ought to go. Someone who insists there is one true destination for all travellers is reading a map praxeology does not carry."},
+
+{id:"c1-veg", ch:1, sec:"§6 Vegetative man", kind:"q",
+ q:"Who is <em>vegetative man</em>, and why does Mises bring him up?",
+ a:"Some doctrines hold up the ideal of complete renunciation: no desires, no striving, a life like a plant’s. Mises notes that a being who really reached that state would no longer act and would not be a human in the praxeological sense. In practice the ascetic who pursues renunciation is still acting — choosing one state over another and using means to reach it. Action is the human condition; one leaves it only by ceasing to be human.",
+ pts:["A being without uneasiness or striving would not act","Pursuing renunciation is itself purposeful action","Human action is inseparable from being human"],
+ ana:"A monk who sits down to meditate on nothing has still chosen the cushion over the marketplace. He is acting, however quietly. Only a potato truly vegetates."},
+
+
+/* ---------------- Chapter II: Epistemological problems ---------------- */
+{id:"c2-branches", ch:2, sec:"§1 Praxeology and history", kind:"q",
+ q:"What are the two branches of the sciences of human action, and how do they divide the work?",
+ a:"Praxeology and history. Praxeology is theoretical and systematic: its statements hold for all human action regardless of time and place. History is the collection and systematic arrangement of experience concerning human action — what particular people valued and did. History deals with the unique and individual; praxeology with the universal categories that make the unique intelligible.",
+ pts:["Praxeology: theoretical, universal, a priori","History: concrete past action, the unique and individual","Economics is the most developed part of praxeology"],
+ ana:"Praxeology is the grammar; history is the literature. You cannot read the novel without the grammar, and the grammar has nothing to say about which novel got written."},
+
+{id:"c2-apriori", ch:2, sec:"§2 The formal and aprioristic character of praxeology", kind:"q",
+ q:"In what sense is praxeology <em>a priori</em>? Where do its categories come from?",
+ a:"Its propositions are not derived from experience but from the category of action, which is part of the logical structure of the human mind. Like logic and mathematics they are true prior to and independently of any particular experience; experience can neither confirm nor refute them. ‘A priori’ does not mean innate contents — it means the mind’s necessary structure, without which experience would be unintelligible.",
+ pts:["Derived by reasoning from the category of action, not from observation","Same epistemological status as logic and mathematics","A priori means the mind’s logical structure, not inborn knowledge of facts"],
+ ana:"You do not measure thousands of triangles to confirm Pythagoras; the theorem follows from what a right triangle is. ‘People use means to reach ends’ follows from what action is."},
+
+{id:"c2-verify", ch:2, sec:"§2 The formal and aprioristic character of praxeology", kind:"q",
+ q:"Why can praxeological theorems be neither <em>verified</em> nor <em>falsified</em> by experience?",
+ a:"Because they are deductions from the concept of action, their validity is logical, not empirical: a correct chain of reasoning cannot be overturned by observation any more than a proof in arithmetic can. Besides, history offers no controlled experiments — every event is a tangle of many causes, so an apparent counter-example cannot isolate which assumption failed. Experience matters in one place only: deciding which real-world conditions (like the disutility of labour) are worth building into the theory.",
+ pts:["Validity is logical, like a mathematical proof","Historical events are complex — there are no controlled experiments","Experience selects which assumptions are relevant, but cannot test the deduction"],
+ ana:"Counting apples badly does not refute 2 + 2 = 4; it refutes your counting. A messy historical episode cannot refute ‘a price ceiling below the market price creates shortages’; at most it shows other things were also happening."},
+
+{id:"c2-primitive", ch:2, sec:"§2 The alleged logical heterogeneity of primitive man", kind:"q",
+ q:"How does Mises answer the claim that ‘primitive man’ has a different, <em>prelogical</em> mind?",
+ a:"The ethnological evidence shows the same logical structure: primitive people reason from means to ends just as we do. What differs is content — mistaken theories of cause (magic, rain dances) and fewer accumulated ideas. Their errors are errors inside the same logic, not a different logic. Magic is a technique: they applied causality, they just applied it wrongly.",
+ pts:["Same logical categories; different beliefs about causes","Magic is a mistaken causal theory, not a different way of thinking","Errors in applying logic do not prove a heterogeneous logic"],
+ ana:"A chess player who opens badly is playing chess, not a different game. The rain dancer uses the same if-this-then-that reasoning as the engineer; the engineer just has better data."},
+
+{id:"c2-reality", ch:2, sec:"§3 The a priori and reality", kind:"q",
+ q:"If praxeology is a priori, how does it connect to <em>reality</em>? Is it just an empty formalism?",
+ a:"No. Action is a real feature of the world — people actually act — so the category of action describes something that exists. And praxeology is not idle: its categories are what make experience of human affairs intelligible at all. Further, economics deliberately takes real conditions into account — scarcity, the disutility of labour, the fact that leisure is valued — by treating them as explicit assumptions. There is no useful distinction between ‘pure’ and ‘applied’ praxeology; the point is to understand the world we live in.",
+ pts:["Action is real; the category describes something that exists","A priori categories are the tools that make experience intelligible","Economics incorporates contingent real conditions as explicit assumptions"],
+ ana:"The rules of arithmetic are a priori, but you use them to count real sheep. Praxeology’s categories are the arithmetic; the sheep are the real conditions it reasons about."},
+
+{id:"c2-term-mi", ch:2, sec:"§4 The principle of methodological individualism", kind:"term",
+ q:"State the principle of <em>methodological individualism</em>.",
+ a:"All action is performed by individuals. A collective — a nation, a state, a firm, a church — has no existence apart from the actions of the individuals who constitute it; it is real only as the meaning those individuals attach to their actions. ‘The hangman, not the state, executes a criminal.’ This does not deny that collectives matter; it says the way to understand them is to understand how individuals’ actions are directed by the ideas that constitute the collective.",
+ pts:["Only individuals act","Collectives exist through the meaning individuals give their actions, not as separate agents","To grasp a collective, analyse the actions of its members"],
+ ana:"An orchestra never plays a note; only musicians do. ‘The orchestra’ is the shared intention that turns forty people’s bowing into one symphony — real, but living entirely in the players."},
+
+{id:"c2-weI", ch:2, sec:"§4 I and We", kind:"q",
+ q:"Why does Mises say collectives are objects of <em>understanding</em>, not perception — and what does he note about one person belonging to many?",
+ a:"We never see a nation or a class; we see people. The collective becomes visible only when we understand the meaning behind their actions. And a given person belongs to many collectives at once — a family, a church, a nation, a firm — which may conflict. That alone shows the collective cannot be the basic unit: you cannot reduce a person to ‘the nation’ when the same person is also ‘the church’.",
+ pts:["Collectives are grasped by understanding the meaning of actions, never by the senses","The same individual belongs to many, sometimes conflicting, collectives","That is why the individual, not the group, is the starting point"],
+ ana:"You can photograph a crowd but never ‘the public’. And one woman in the crowd is a mother, a taxpayer and a football fan — three collectives in one pair of shoes, so none of them can be the shoes."},
+
+{id:"c2-term-ms", ch:2, sec:"§5 The principle of methodological singularism", kind:"term",
+ q:"What is the principle of <em>methodological singularism</em>?",
+ a:"Praxeology begins not with ‘action in general’ but with the concrete action: a particular person acting at a definite time and place, in a definite situation, with definite means toward definite ends. From the study of the single action it rises to classes of action. Every action is a definite action.",
+ pts:["Start from the individual, concrete act, not from abstractions","Every action has a specific time, place, means and end","Classes of action are built up from singular actions"],
+ ana:"Biology does not start from ‘life in general’; it starts from this cell under this microscope. Praxeology starts from this person choosing this thing now."},
+
+{id:"c2-const", ch:2, sec:"§6 The individual and changing features of human action", kind:"q",
+ q:"Which features of human action are <em>constant</em> and which <em>change</em>? Why does that matter for the split between praxeology and history?",
+ a:"The formal categories — ends and means, scarcity, time, uncertainty, choice, preference — are the same for all people at all times. What changes is the content: what people value, what they know, what tools they have. Praxeology deals with the constant structure; history with the changing content. So praxeology never says what anyone will value, only what follows if they value something and act on it.",
+ pts:["The categories of action are invariant; the contents of action vary","Praxeology studies the invariant form, history the varying content","Praxeology is conditional: ‘if people value X, then…’"],
+ ana:"Grammar persists while vocabulary turns over. Praxeology is the grammar of choosing; history is the vocabulary of what was chosen in 1849 or 1949."},
+
+{id:"c2-hist", ch:2, sec:"§7 The scope and the specific method of history", kind:"q",
+ q:"What is the scope of <em>history</em>, and what is its specific method?",
+ a:"History covers all past human action in its concreteness. It cannot run experiments and it finds no ‘laws of history’. It uses natural science and praxeology as tools wherever they apply, but its own specific method is understanding (Verstehen): grasping the meaning the actors gave their actions and judging the relevance of the various factors at work. The historian also selects what to study by judging relevance — but a good historian’s judgements are about relevance, not about approving or condemning.",
+ pts:["Deals with concrete, unrepeatable past action","No experiments and no historical laws","Its specific tool is understanding: meaning and relevance","Uses praxeology and natural science as auxiliary tools"],
+ ana:"A detective cannot re-run the crime. He uses chemistry for the bloodstain and logic for the alibi, but the heart of the job is reading what the people in the room meant to do."},
+
+{id:"c2-conc", ch:2, sec:"§8 Conception and understanding", kind:"q",
+ q:"Distinguish <em>conception</em> from <em>understanding</em>.",
+ a:"Conception (Begreifen) is the tool of logic, mathematics and praxeology: grasping by reasoning what is necessary and universal. Understanding (Verstehen) is the historian’s tool: grasping the meaning of concrete action, the actors’ valuations, and the relevance — the qualitative weight — of the many causes at work, where no measurement is possible. Understanding never contradicts the theorems of praxeology or natural science; it fills in only what they leave open. Two historians can agree on all the facts and all the theory and still weigh relevance differently.",
+ pts:["Conception: a priori, necessary, universal — praxeology’s method","Understanding: grasps meaning and relevance in concrete cases — history’s method","Understanding works only where theory and natural science stop","Divergent judgements of relevance are the one place for subjectivity"],
+ ana:"Conception is the rulebook of football; understanding is the commentator explaining why this match turned on that substitution. The commentator cannot overrule the rulebook, but the rulebook cannot write the match report."},
+
+{id:"c2-nathist", ch:2, sec:"§8 Natural history and human history", kind:"q",
+ q:"How does human history differ from <em>natural history</em>, such as geology?",
+ a:"Natural history deals with past events of things that do not act — rocks, stars, species — explained by natural laws alone. Human history must also deal with meaning: what the people involved were striving for. That is why understanding is needed in human history and has no place in geology.",
+ pts:["Natural history: past events without actors, explained by natural laws","Human history: past events shaped by purposes, needing understanding","Natural science applies to both; only human history adds meaning"],
+ ana:"A glacier did not intend to carve the valley; Hannibal did intend to cross the Alps. You can explain the valley with physics, but you need Hannibal’s aims to explain the elephants."},
+
+{id:"c2-ideal", ch:2, sec:"§9 On ideal types", kind:"q",
+ q:"What is an <em>ideal type</em>, and how does it differ from a praxeological category?",
+ a:"An ideal type (the term comes from Max Weber) is a tool of history: a class concept — ‘the entrepreneur’, ‘the Roman legion’, ‘Napoleon’ — formed by understanding, which groups people, situations or institutions sharing the characteristics the historian judges relevant. It is neither a statistical average nor a deduction; whether something belongs is a matter of judgement. Praxeological categories, by contrast, are exact and a priori: the praxeological ‘entrepreneur’ is a function (bearing uncertainty) present in every acting person, not a type of person.",
+ pts:["Ideal types are history’s class concepts, built by understanding and relevance","Not averages and not definitions — membership is a judgement call","Praxeological concepts are exact, a priori and functional"],
+ ana:"Hollywood’s ‘gruff detective’ is an ideal type: you know one when you see one, but there is no checklist. Praxeology’s ‘entrepreneur’ is more like ‘the dealer’ in a card game — a role anyone fills the moment they pick up the deck."},
+
+{id:"c2-proc", ch:2, sec:"§10 The procedure of economics", kind:"q",
+ q:"Describe the <em>procedure of economics</em> — how it combines a priori reasoning with real conditions.",
+ a:"Economics starts from the category of action and then introduces assumptions that correspond to the real world — scarcity, the disutility of labour, that people prefer more satisfaction to less — and deduces what follows. Its favourite instrument is the imaginary construction: picturing a state of affairs under hypothetical conditions, even impossible ones such as a world without change, to isolate the effect of one factor. Which assumptions to study is chosen by their relevance to real problems, but the reasoning itself is a priori and its results apply to all action under those conditions.",
+ pts:["Starts from the category of action","Adds explicit assumptions drawn from real conditions","Uses imaginary constructions to isolate causes","Relevance guides what to study; logic guarantees what follows"],
+ ana:"An engineer draws a frictionless plane he knows does not exist in order to see what friction does. Economics builds a frictionless economy — one that rotates evenly, without change — to see what change and uncertainty do."},
+
+{id:"c2-term-imag", ch:2, sec:"§10 The procedure of economics", kind:"term",
+ q:"What is an <em>imaginary construction</em>?",
+ a:"A mental model of a state of affairs built from explicit assumptions, including ones that cannot exist in reality, used to trace what would follow if they held. The method isolates the effect of a single factor by imagining it absent. It is justified by its usefulness in understanding real action, not by its realism.",
+ pts:["A thought experiment built on explicit, possibly unrealisable assumptions","Isolates one factor by imagining it away","Judged by its usefulness in explaining real action, not by realism"],
+ ana:"Physicists imagine a frictionless surface; economists imagine an economy where nothing ever changes. Neither exists; both reveal exactly what friction — or change — does."},
+
+{id:"c2-limits", ch:2, sec:"§11 The limitations on praxeological concepts", kind:"q",
+ q:"What are the <em>limitations</em> on praxeological concepts?",
+ a:"The categories of action apply only to beings who face scarcity, time and uncertainty — that is, to finite beings. For an omnipotent, perfect being the concepts collapse: a being that is wholly content does not act; a being that can do anything has no need to choose or economise; ‘an almighty being that acts’ is self-contradictory. Praxeology is the science of the human condition — of striving under limits — and says nothing about perfection.",
+ pts:["Action presupposes scarcity, time and uncertainty","Choice and uneasiness make no sense for an omnipotent being","Praxeology is about finite, acting humans only"],
+ ana:"Chess strategy exists because you get one move at a time and cannot see the future. A player who could make every move at once with perfect foresight would not be playing chess, and praxeology would not apply to him."},
+
+/* ---------------- Chapter III: Economics and the revolt against reason ---------------- */
+{id:"c3-revolt", ch:3, sec:"§1 The revolt against reason", kind:"q",
+ q:"What is the <em>revolt against reason</em>, and why, according to Mises, did it arise?",
+ a:"A nineteenth- and twentieth-century movement that rejects reason’s authority over social doctrines — chiefly Marxism, racist doctrines and historicism. It arose because economics reached conclusions socialists and interventionists could neither accept nor refute: that their programmes would not produce what they promised. Unable to win the argument, they attacked the referee, denying that there is one logic valid for all humans and dismissing economics as ‘bourgeois ideology’.",
+ pts:["Rejects reason as the judge of social and economic doctrines","Born of the socialists’ failure to refute economics on its merits","Takes the form of polylogism (class, race, nation) and historicism"],
+ ana:"A debater who cannot answer the argument declares the referee biased and the rules rigged. The revolt against reason is that move, elevated into a philosophy."},
+
+{id:"c3-term-poly", ch:3, sec:"§2 The logical aspect of polylogism", kind:"term",
+ q:"Define <em>polylogism</em>.",
+ a:"The doctrine that the logical structure of the mind differs between groups of people — social classes (Marxian polylogism), races (Nazi polylogism) or nations — so that there is no single logic valid for all. Each group has its own ‘logic’ and its own truth.",
+ pts:["Denies a universal logic","Assigns a different logical structure to each class, race or nation","Marxian and racial versions are the two main forms"],
+ ana:"Imagine claiming that arithmetic gives different sums for landlords and tenants. Polylogism makes that claim about reasoning itself."},
+
+{id:"c3-logical", ch:3, sec:"§2 The logical aspect of polylogism", kind:"q",
+ q:"What is Mises’s <em>logical</em> critique of polylogism?",
+ a:"First, no polylogist has ever specified how the ‘proletarian’ or ‘Aryan’ logic actually differs from anyone else’s — which categories or rules of inference change. They only assert that opponents’ conclusions are ideology. Second, the doctrine refutes itself: if there is no universal logic, then Marx’s own theory is merely the ideology of his class, with no claim on anyone else. Marxists dodge this by declaring that proletarian logic happens to coincide with the truth — an unargued exception for themselves.",
+ pts:["Polylogists never describe the alleged alternative logic","Self-refuting: it undercuts the polylogist’s own claim to truth","The ‘proletarian logic is the true logic’ move is special pleading"],
+ ana:"Someone announces ‘every statement made by a man is a lie’. If he is a man, the announcement eats itself. Polylogism announces ‘each class’s logic is valid only for itself’ — and then expects you to accept that across class lines."},
+
+{id:"c3-term-ideology", ch:3, sec:"§3 The praxeological aspect of polylogism", kind:"term",
+ q:"What does <em>ideology</em> mean in the Marxian sense?",
+ a:"A doctrine that is false but serves the interest of the class that holds it — part of the ‘superstructure’ thrown up by a class’s position in production. On this view, bourgeois economics is bourgeois ideology: wrong, yet useful to the bourgeoisie.",
+ pts:["A false doctrine","…that serves the interests of the class holding it","Produced by class position, not by reasoning"],
+ ana:"The Marxian ‘ideology’ is a pair of tinted glasses handed out by your class: you see the world the colour that suits your side, and never know you are wearing them."},
+
+{id:"c3-ideology", ch:3, sec:"§3 The praxeological aspect of polylogism", kind:"q",
+ q:"What is Mises’s <em>praxeological</em> objection to the Marxian theory of ideology?",
+ a:"A false doctrine cannot serve anyone’s interests: action based on error fails to reach its ends. Only correct theories are useful. If ‘bourgeois economics’ were false, the bourgeois who acted on it would be the ones harmed. And in fact the mass of workers gained from the ideas Marx called bourgeois — capitalism raised their standard of living, contrary to his prediction of growing misery. Whose interest a doctrine serves says nothing about whether it is true.",
+ pts:["False beliefs do not serve interests — acting on error backfires","Only correct theories are useful for action","Truth or falsity is settled by reasoning, not by asking who benefits","Capitalism in fact benefited the proletariat"],
+ ana:"A bridge stands or falls on its engineering, not on whether the contractor was greedy. A doctor’s diagnosis is not wrong because the doctor gets paid for it."},
+
+{id:"c3-interest", ch:3, sec:"§3 The praxeological aspect of polylogism", kind:"q",
+ q:"Why can the question ‘whose <em>interest</em> does this theory serve?’ never decide a theory’s validity?",
+ a:"Because a theory’s truth is a matter of logic and evidence, not of motives. Even if a theorist were biased, the bias would have to show up as detectable errors in the argument — and then those errors, not the bias, are the refutation. Moreover ‘interest’ cannot be known ahead of knowing what is true: only a correct theory tells you what really serves you. The Marxists assumed they already knew the proletariat’s interest and then rejected any theory that disagreed.",
+ pts:["Motives do not make an argument wrong; only errors in it do","If bias produced an error, point to the error","Knowing your interest presupposes correct theory, not the other way round"],
+ ana:"Ignoring the line judge’s call because he is from the other town does not move the ball. You still have to look at where it landed."},
+
+{id:"c3-race", ch:3, sec:"§4 Racial polylogism", kind:"q",
+ q:"What is <em>racial polylogism</em>, and how does Mises answer it?",
+ a:"The Nazi version: each race has its own logic, so ‘Aryan’ science and ‘Jewish’ science cannot be judged by common standards. Mises replies that no one has ever shown a difference in the logical structure of any race’s mind — only differences in what people have achieved or believed. Members of every race learn and apply the same mathematics and technology, which would be impossible under different logics. If logic really differed by race, cooperation and trade across races would be impossible, yet they occur every day.",
+ pts:["Claims different races have different logical structures","No evidence of any such difference — only differences in content and attainment","Universal use of the same science and technology refutes it","Cross-racial cooperation shows a shared logic"],
+ ana:"If different races had different arithmetic, an aeroplane designed in one country could not fly in another. Planes fly everywhere; the arithmetic is shared."},
+
+{id:"c3-und", ch:3, sec:"§5 Polylogism and understanding", kind:"q",
+ q:"How does polylogism try to lean on <em>understanding</em>, and why does the move fail?",
+ a:"Some argue that since historians of different backgrounds ‘understand’ the same events differently, there must be different logics. Mises replies that divergence in understanding is divergence in judging relevance and in values, not in logical structure. The a priori reasoning of praxeology and the findings of natural science are not matters of understanding at all and must be accepted alike by everyone. Polylogists confuse the legitimate room for judgement in history with a licence to reject theory.",
+ pts:["Historians differ in understanding relevance, not in logic","Praxeological theorems are matters of conception, not understanding","Disagreement over relevance never licenses rejecting a valid theorem"],
+ ana:"Two critics can rank the same ten films differently and still agree that each film is ninety minutes long. Understanding is the ranking; logic and theory are the running time."},
+
+{id:"c3-reason", ch:3, sec:"§6 The case for reason", kind:"q",
+ q:"What is Mises’s <em>case for reason</em>?",
+ a:"Reason is the specifically human tool for coping with the world. It cannot deliver absolute metaphysical certainty and it cannot choose ultimate ends — but within its domain it is the only instrument we have. Abandon it and disputes can no longer be settled by argument, only by force: intuition against intuition leaves the stronger to decide. Social cooperation under the division of labour rests on people recognising, by reason, that cooperation serves them. So anti-rationalism is not merely a philosophical error; it dissolves the basis of peaceful society.",
+ pts:["Reason has limits — no absolute truths, no choosing ultimate ends — but no substitute","Without reason, disagreements are settled by violence","Society (the division of labour) depends on reasoned recognition of mutual benefit","Irrationalism in practice meant dictatorship and war"],
+ ana:"A lantern in a cave does not show you everything, but throwing it away does not give you daylight. It leaves you stumbling, and fighting whoever bumps into you."},
+
+{id:"c3-intuition", ch:3, sec:"§6 The case for reason", kind:"q",
+ q:"Why does Mises regard the appeal to <em>intuition</em> or mystical insight against economics as dangerous rather than merely mistaken?",
+ a:"Claims to truth beyond reason cannot be checked, so there is no criterion for deciding between competing intuitions. When two ‘intuitions’ clash, nothing is left but to see who can impose theirs — rule by the stronger. The anti-rational doctrines of the twentieth century bore this out in war and dictatorship. The danger is not private mysticism; it is the attempt to settle social questions by it.",
+ pts:["Intuitions cannot be argued, so conflicting ones cannot be reconciled","That leaves only force as the arbiter","Historically it ended in dictatorship and war"],
+ ana:"If two pilots each ‘just know’ the right heading and no instrument can arbitrate, the plane goes wherever the stronger arm turns the yoke."}
+];
+
+/* ============================================================
+   Storage
+   ============================================================ */
+var KEY="humanAction.v1";
+var store=load();
+function load(){
+  try{
+    var s=JSON.parse(localStorage.getItem(KEY)||"{}");
+    s.miss=s.miss||{}; s.seen=s.seen||{}; s.got=s.got||{}; s.hist=s.hist||{};
+    s.bestAcc=s.bestAcc||0; s.runs=s.runs||0;
+    return s;
+  }catch(e){ return {miss:{},seen:{},got:{},hist:{},bestAcc:0,runs:0}; }
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+
+/* ------------------------------------------------------------
+   Mastery: a rolling window of the last few self-grades.
+     1 = "Got it"   0 = "Missed it"
+   "Partly" records nothing: it is the hint-assisted answer of
+   this deck — neither proof you know it nor proof you don't.
+   ------------------------------------------------------------ */
+var WINDOW=6, SOLID_RUN=2, RECENT=3;
+function record(id,val){
+  var h=store.hist[id]||(store.hist[id]=[]);
+  h.push(val);
+  while(h.length>WINDOW) h.shift();
+}
+function mastery(id){
+  var h=store.hist[id]||[];
+  if(!h.length) return "new";
+  var run=0,i;
+  for(i=h.length-1;i>=0&&h[i]===1;i--) run++;
+  if(run>=SOLID_RUN) return "solid";
+  if(h.slice(-RECENT).indexOf(0)>=0) return "weak";
+  return "learning";
+}
+function countBy(state){
+  var n=0; CARDS.forEach(function(c){ if(mastery(c.id)===state) n++; });
+  return n;
+}
+
+/* ============================================================
+   DOM
+   ============================================================ */
+var $=function(id){return document.getElementById(id);};
+var card=$("card"), qtext=$("qtext"), ta=$("answer"), reveal=$("reveal");
+var chTag=$("chTag"), secTag=$("secTag"), kindTag=$("kindTag"), cardno=$("cardno");
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function byId(id){ for(var i=0;i<CARDS.length;i++) if(CARDS[i].id===id) return CARDS[i]; return null; }
+function chLabel(c){ return "Chapter "+CHAPTERS[c.ch].num; }
+
+/* ============================================================
+   Session
+   ============================================================ */
+var mode="review";
+var newQ=[], again=[], current=null, deckName="all", step=0;
+var firstTry={}, learned={}, missedThisRun={};
+var right=0, streak=0, bestStreak=0, startedAt=0, revealed=false, deckSize=0;
+
+function deckCards(){
+  if(deckName==="all") return CARDS.slice();
+  if(deckName==="terms") return CARDS.filter(function(c){return c.kind==="term";});
+  if(deckName==="trouble"){
+    var weak=CARDS.filter(function(c){return mastery(c.id)==="weak";});
+    if(weak.length) return weak;
+    var soft=CARDS.filter(function(c){var m=mastery(c.id);return m==="weak"||m==="learning";});
+    return soft.length?soft:CARDS.slice();
+  }
+  return CARDS.filter(function(c){return String(c.ch)===deckName;});
+}
+function shuffle(a){
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+function remaining(){ return newQ.length + again.length + (current?1:0); }
+function lapse(c,gap){
+  again.push({c:c, due:step+gap});
+  again.sort(function(a,b){ return a.due-b.due; });
+}
+// Serve a lapsed card once due, but never two in a row while new cards remain,
+// so the back of the deck still gets introduced.
+var servedNew=true;
+function pull(){
+  step++;
+  if(again.length && again[0].due<=step && (!newQ.length || servedNew)){
+    servedNew=false;
+    return again.shift().c;
+  }
+  if(newQ.length){ servedNew=true; return newQ.shift(); }
+  if(again.length) return again.shift().c;
+  return null;
+}
+
+function startRun(only){
+  var pool = only && only.length ? only.slice() : deckCards();
+  newQ=shuffle(pool.slice());
+  again=[]; step=0; servedNew=true;
+  deckSize=newQ.length;
+  firstTry={}; learned={}; missedThisRun={};
+  right=0; streak=0; bestStreak=0; revealed=false;
+  current=null; startedAt=Date.now();
+  $("done").classList.remove("on");
+  card.style.display="";
+  next();
+  renderStats();
+}
+
+function next(){
+  revealed=false;
+  reveal.classList.remove("on");
+  card.className="card";
+  ta.value=""; ta.disabled=false; ta.style.display="";
+  $("revealBtn").style.display=""; $("skipBtn").style.display="";
+
+  current=pull();
+  if(!current){ finish(); return; }
+  store.seen[current.id]=(store.seen[current.id]||0)+1;
+
+  chTag.textContent=chLabel(current)+" · "+CHAPTERS[current.ch].short;
+  secTag.textContent=current.sec;
+  kindTag.hidden=(current.kind!=="term");
+  qtext.innerHTML=current.q;
+  cardno.textContent=(Object.keys(learned).length+1)+" / "+deckSize+"  ·  "+remaining()+" left";
+  if(window.innerWidth>720) ta.focus();
+  renderStats();
+}
+
+function doReveal(){
+  if(revealed||!current) return;
+  revealed=true;
+  ta.disabled=true; ta.style.display="none";
+  var c=current;
+  var mine=ta.value.trim();
+  $("yoursBlock").hidden=!mine;
+  $("yours").textContent=mine;
+  $("model").innerHTML=c.a;
+  $("points").innerHTML=c.pts.map(function(p,i){
+    return '<li><label><input type="checkbox" data-i="'+i+'"><span>'+p+'</span></label></li>';
+  }).join("");
+  $("analogy").innerHTML="<b>Think of it like&hellip;</b> "+c.ana;
+  suggest();
+  reveal.classList.add("on");
+  card.className="card warn";
+  $("revealBtn").style.display="none"; $("skipBtn").style.display="none";
+  reveal.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+// tick the points you covered; the matching grade lights up as a suggestion
+function suggest(){
+  var boxes=$("points").querySelectorAll("input"), n=0, i;
+  for(i=0;i<boxes.length;i++){
+    boxes[i].parentNode.classList.toggle("hit",boxes[i].checked);
+    if(boxes[i].checked) n++;
+  }
+  $("gMiss").classList.toggle("suggest", n===0 && boxes.length>0 && touched);
+  $("gPart").classList.toggle("suggest", n>0 && n<boxes.length);
+  $("gGot").classList.toggle("suggest", boxes.length>0 && n===boxes.length);
+}
+var touched=false;
+$("points").addEventListener("change",function(){ touched=true; suggest(); });
+
+function gradeCard(g){
+  if(!revealed||!current) return;
+  var c=current; current=null; touched=false;
+  var wasFirst=(firstTry[c.id]===undefined);
+  if(wasFirst) firstTry[c.id]=(g==="got");
+  if(g==="got"){
+    learned[c.id]=true;
+    store.got[c.id]=(store.got[c.id]||0)+1;
+    record(c.id,1);
+    if(wasFirst) right++;
+    streak++; if(streak>bestStreak) bestStreak=streak;
+    card.className="card ok";
+  }else if(g==="part"){
+    streak=0;
+    lapse(c, 4+Math.floor(Math.random()*3));   // comes back later, records nothing
+    card.className="card warn";
+  }else{
+    streak=0;
+    missedThisRun[c.id]=true;
+    store.miss[c.id]=(store.miss[c.id]||0)+1;
+    record(c.id,0);
+    lapse(c, 2+Math.floor(Math.random()*3));   // the Anki "again" pile
+    card.className="card bad";
+  }
+  save(); renderStats();
+  next();
+  window.scrollTo({top:card.getBoundingClientRect().top+window.scrollY-80, behavior:"smooth"});
+}
+
+function finish(){
+  card.style.display="none";
+  var d=$("done"); d.classList.add("on");
+  var secs=Math.round((Date.now()-startedAt)/1000);
+  var acc=deckSize?Math.round(right/deckSize*100):0;
+  $("sAcc").textContent=acc+"%";
+  $("sCards").textContent=deckSize;
+  $("sTime").textContent=(secs>=60?Math.floor(secs/60)+"m "+(secs%60)+"s":secs+"s");
+  $("sStreak").textContent=bestStreak;
+  store.runs++;
+  var pb=acc>store.bestAcc;
+  if(pb) store.bestAcc=acc;
+  save();
+  $("doneTitle").textContent = acc===100 ? "Clean sweep." : "Deck cleared.";
+  $("doneLede").textContent = acc===100
+    ? "Every question answered in full on the first pass. Mises would call that acting rationally."
+    : (pb ? "New personal best — "+right+" of "+deckSize+" in full on the first pass."
+          : right+" of "+deckSize+" in full on the first pass. The rest came back until they stuck.");
+  var miss=Object.keys(missedThisRun);
+  var box=$("missedBox");
+  if(miss.length){
+    box.innerHTML='<div class="grouphead">Came back to bite you</div><ul>'+
+      miss.map(function(id){var c=byId(id);return "<li><b>"+c.q+"</b><br>"+esc(c.sec)+", "+chLabel(c)+"</li>";}).join("")+
+      "</ul>";
+    $("missOnlyBtn").style.display="";
+    $("missOnlyBtn").onclick=function(){ startRun(miss.map(byId)); };
+  }else{
+    box.innerHTML="";
+    $("missOnlyBtn").style.display="none";
+  }
+  renderList();
+  renderStats();
+}
+
+/* ============================================================
+   Stats + progress
+   ============================================================ */
+function renderStats(){
+  var doneN=Object.keys(learned).length;
+  var accShown=doneN?Math.round(right/doneN*100):0;
+  var chips=[
+    ["Retired",doneN+" / "+deckSize,""],
+    ["First pass",accShown+"%",accShown>=80?"ok":(doneN&&accShown<50?"bad":"")],
+    ["Streak",streak,streak>=4?"hot":""],
+    ["Best ever",(store.bestAcc||0)+"%",""]
+  ];
+  $("stats").innerHTML=chips.map(function(c){
+    return '<div class="chip '+c[2]+'"><span class="k">'+c[0]+'</span><span class="v">'+c[1]+'</span></div>';
+  }).join("");
+  $("barfill").style.width=(deckSize?(doneN/deckSize*100):0)+"%";
+  var solid=countBy("solid"), weak=countBy("weak");
+  $("pb").textContent=store.runs+" run"+(store.runs===1?"":"s")+" saved on this device · "+
+                      solid+" solid, "+weak+" shaky";
+  var opt=$("deck").querySelector('option[value="trouble"]');
+  if(opt) opt.textContent = weak ? "My trouble spots ("+weak+")" : "My trouble spots";
+  var all=$("deck").querySelector('option[value="all"]');
+  if(all) all.textContent="All chapters ("+CARDS.length+")";
+}
+
+/* ============================================================
+   Browse mode
+   ============================================================ */
+function renderList(){
+  var html='<div class="legend">'+
+    '<span><i class="n"></i>Not yet reviewed</span>'+
+    '<span><i class="l"></i>Getting there</span>'+
+    '<span><i class="s"></i>Solid &mdash; got it '+SOLID_RUN+' times running</span>'+
+    '<span><i class="w"></i>Shaky &mdash; missed in the last '+RECENT+'</span>'+
+  '</div>';
+  [1,2,3].forEach(function(ch){
+    var cs=CARDS.filter(function(c){return c.ch===ch;});
+    if(!cs.length) return;
+    html+='<div class="grouphead">Chapter '+CHAPTERS[ch].num+' &mdash; <b>'+esc(CHAPTERS[ch].title)+'</b></div>';
+    cs.forEach(function(c){
+      var st=mastery(c.id);
+      html+='<details class="item" data-id="'+c.id+'"><summary>'+
+        '<i class="st '+(st==="new"?"":st)+'"></i>'+
+        '<span class="q">'+c.q+'</span>'+
+        (c.kind==="term"?'<span class="t">term</span>':'')+
+        '<span class="sec">'+esc(c.sec)+'</span>'+
+        '</summary><div class="body">'+
+        '<p class="model">'+c.a+'</p>'+
+        '<ul>'+c.pts.map(function(p){return "<li>"+p+"</li>";}).join("")+'</ul>'+
+        '<div class="analogy"><b>Think of it like&hellip;</b> '+c.ana+'</div>'+
+        '</div></details>';
+    });
+  });
+  $("list").innerHTML=html;
+}
+
+/* ============================================================
+   Mode + controls
+   ============================================================ */
+function setMode(m){
+  mode=m;
+  $("mReview").setAttribute("aria-pressed", m==="review");
+  $("mBrowse").setAttribute("aria-pressed", m==="browse");
+  $("list").classList.toggle("on", m==="browse");
+  var live=remaining()>0;
+  card.style.display=(m==="review" && live)?"":"none";
+  $("done").classList.toggle("on", m==="review" && !live && deckSize>0);
+  if(m==="review"){
+    if(!live) startRun(); else if(!revealed) next();
+  }else{
+    renderList();
+  }
+}
+$("mReview").onclick=function(){setMode("review");};
+$("mBrowse").onclick=function(){setMode("browse");};
+$("deck").onchange=function(){ deckName=this.value; setMode("review"); startRun(); };
+$("revealBtn").onclick=doReveal;
+$("againBtn").onclick=function(){ startRun(); };
+$("skipBtn").onclick=function(){
+  if(revealed||!current) return;
+  if(firstTry[current.id]===undefined) firstTry[current.id]=false;
+  streak=0;
+  lapse(current,5); current=null;
+  next();
+};
+$("gMiss").onclick=function(){ gradeCard("miss"); };
+$("gPart").onclick=function(){ gradeCard("part"); };
+$("gGot").onclick=function(){ gradeCard("got"); };
+$("resetBtn").onclick=function(){
+  if(!confirm("Wipe all saved progress and trouble spots on this device?")) return;
+  store={miss:{},seen:{},got:{},hist:{},bestAcc:0,runs:0}; save();
+  startRun(); renderList();
+};
+ta.addEventListener("keydown",function(e){
+  if(e.key==="Enter" && (e.metaKey||e.ctrlKey)){ e.preventDefault(); doReveal(); }
+});
+document.addEventListener("keydown",function(e){
+  if(mode!=="review" || !current) return;
+  var a=document.activeElement;
+  if(a && (a.tagName==="TEXTAREA" || a.tagName==="INPUT" || a.tagName==="SELECT")) return;
+  if(!revealed){
+    if(e.key==="Enter"||e.key===" "){ if(a&&a.tagName==="BUTTON") return; e.preventDefault(); doReveal(); }
+    return;
+  }
+  if(e.key==="1"){ e.preventDefault(); gradeCard("miss"); }
+  else if(e.key==="2"){ e.preventDefault(); gradeCard("part"); }
+  else if(e.key==="3"){ e.preventDefault(); gradeCard("got"); }
+});
+// ⌘/Ctrl hint: show the right modifier for the platform
+(function(){
+  var mac=/Mac|iPhone|iPad/.test(navigator.platform||"");
+  $("revealBtn").querySelector(".kbd").textContent=(mac?"⌘":"Ctrl")+" Enter";
+})();
+
+/* go */
+setMode("review");
+renderList();
+})();
+</script>
+</body>
+</html>

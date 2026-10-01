@@ -1,6 +1,19 @@
-# Bike Anatomy Trainer
+# Learning
 
-### 👉 https://parallax-parking.github.io/learning/
+Two self-contained flashcard pages, no build step, nothing sent anywhere:
+
+| | |
+|---|---|
+| **Bike Anatomy Trainer** — `index.html` | Name the highlighted part of a road bike. 👉 https://parallax-parking.github.io/learning/ |
+| **Human Action Review** — `human-action.html` | End-of-chapter questions for Mises's *Human Action*, chapters I–III. 👉 https://parallax-parking.github.io/learning/human-action.html |
+
+Both share the same look, the same mastery scoring and the same scheduler; they differ in how you
+answer. The bike has one right word, so you type it and the page marks it. A philosophy chapter has
+no single right sentence, so you write your answer, reveal the model answer, and grade yourself.
+
+---
+
+# Bike Anatomy Trainer
 
 An Anki-style flashcard trainer for the **30 named parts of a road bike**, built as a single
 self-contained HTML page. A part of the bike lights up, you type its name, and it turns green
@@ -114,3 +127,76 @@ back a miss still counts as shaky).
 The quiz engine doesn't know anything about bicycles. To retrain it on another diagram, replace
 the `<svg id="bike">` contents and rewrite `PARTS` with markers in the new coordinate space —
 the scheduler, matcher, stats and both modes carry over unchanged.
+
+---
+
+# Human Action Review
+
+End-of-chapter review for Ludwig von Mises's *Human Action*. One card per question, 42 cards
+across chapters I–III (Acting Man · The Epistemological Problems of the Sciences of Human Action ·
+Economics and the Revolt Against Reason), including nine **key terms** to define.
+
+## How it works
+
+A question is like an essay prompt, not a label on a diagram, so the page can't mark you. Instead
+it runs the way a good study partner would:
+
+| | |
+|---|---|
+| **Prompt** | One question, tagged with its chapter and section. Write your answer in the box, or just think it through. |
+| **Reveal** | <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd>, or the button. Shows what you wrote, the **model answer**, a checklist of the points a full answer should hit, and an analogy. |
+| **Grade** | Tick the points you covered — the matching grade lights up as a suggestion — then pick <kbd>1</kbd> Missed it, <kbd>2</kbd> Partly, or <kbd>3</kbd> Got it. |
+| **Skip** | Parks it for later without logging a miss. |
+
+The three grades do different things to the schedule:
+
+- **Got it** retires the card for this run and records a hit.
+- **Partly** brings it back after a few other cards and records *nothing* — the equivalent of the
+  bike trainer's hint-assisted answer. It neither proves you know it nor proves you don't.
+- **Missed it** brings it back soon and records a miss.
+
+### Think of it like…
+
+Every answer comes with an analogy, because a formal definition is a photograph of a concept and an
+analogy is a handle on it. "Rationality refers to means, not ends" is the photograph; "a satnav can
+pick the fastest road but has no opinion on whether you should be going to the coast" is the handle.
+The checklist carries the photograph; the orange box carries the handle.
+
+### Browse mode
+
+Every question grouped by chapter, with the same grey / amber / green / red mastery dot as the bike.
+Open any one to read the answer, points and analogy without being quizzed — useful right after
+finishing a chapter, before the first run.
+
+### Decks
+
+All chapters, any single chapter, **Key terms only**, or **My trouble spots**, which rebuilds itself
+from whatever is currently shaky.
+
+Mastery, scheduling and storage are the same rolling-window scheme as the bike trainer (see above),
+kept under a separate `localStorage` key, so resetting one page leaves the other alone.
+
+## Adding chapters
+
+Everything lives in the `CARDS` array near the top of the `<script>` in `human-action.html`. One
+entry per card:
+
+```js
+{id:"c1-prereq", ch:1, sec:"§2 The prerequisites of human action", kind:"q",
+ q:"What are the three prerequisites of human action?",
+ a:"First, felt uneasiness …",
+ pts:["Felt uneasiness","An image of a more satisfactory state","…"],
+ ana:"An itch (uneasiness), the thought of the relief of scratching …"},
+```
+
+| field | what it does |
+|---|---|
+| `ch` | Chapter number. Add the chapter to `CHAPTERS` (numeral, full title, short title) and to the deck `<select>`. |
+| `sec` | Section label shown on the card and in Browse |
+| `kind` | `"q"` for a review question, `"term"` for a definition (goes in the Key terms deck) |
+| `q` | The question. `<em>` highlights a word in orange. |
+| `a` | The model answer |
+| `pts` | The checklist — the things a complete answer should contain |
+| `ana` | The analogy shown under "Think of it like…" |
+
+Browse mode lists chapters from the `[1,2,3]` array in `renderList`; extend it when you add a chapter.
