@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Human Action Review</title>
-<meta name="description" content="End-of-chapter review questions for Ludwig von Mises's Human Action, chapters I–III. Answer, reveal, grade yourself.">
+<meta name="description" content="End-of-chapter review questions for Ludwig von Mises's Human Action, chapters I–VI. Answer, reveal, grade yourself.">
 <style>
   :root{
     --bg:#0a0a0c;
@@ -275,7 +275,7 @@
 <header>
   <div>
     <h1>Human Action Review<span class="dot">.</span></h1>
-    <p class="sub">End-of-chapter questions for Mises&rsquo;s <i>Human Action</i>, chapters I&ndash;III &mdash; answer, reveal, grade yourself.</p>
+    <p class="sub">End-of-chapter questions for Mises&rsquo;s <i>Human Action</i>, chapters I&ndash;VI &mdash; answer, reveal, grade yourself.</p>
   </div>
   <div class="spacer"></div>
   <select id="deck" aria-label="Choose deck"></select>
@@ -399,8 +399,30 @@ var CHAPTERS={
     {n:4, t:"Racial Polylogism"},
     {n:5, t:"Polylogism and Understanding"},
     {n:6, t:"The Case for Reason"}
+  ]},
+  4:{num:"IV",  title:"A First Analysis of the Category of Action", short:"Category of Action", secs:[
+    {n:1, t:"Ends and Means"},
+    {n:2, t:"The Scale of Value"},
+    {n:3, t:"The Scale of Needs"},
+    {n:4, t:"Action as an Exchange"}
+  ]},
+  5:{num:"V",   title:"Time", short:"Time", secs:[
+    {n:1, t:"Time as a Praxeological Factor"},
+    {n:2, t:"Past, Present, and Future"},
+    {n:3, t:"The Economization of Time"},
+    {n:4, t:"The Temporal Relation Between Actions"}
+  ]},
+  6:{num:"VI",  title:"Uncertainty", short:"Uncertainty", secs:[
+    {n:1, t:"Uncertainty and Acting"},
+    {n:2, t:"The Meaning of Probability"},
+    {n:3, t:"Class Probability"},
+    {n:4, t:"Case Probability"},
+    {n:5, t:"Numerical Evaluation of Case Probability"},
+    {n:6, t:"Betting, Gambling, and Playing Games"},
+    {n:7, t:"Praxeological Prediction"}
   ]}
 };
+var CHAPTER_ORDER=Object.keys(CHAPTERS).map(Number).sort(function(a,b){return a-b;});
 
 var CARDS=[
 /* ---------------- Chapter I: Acting Man ---------------- */
@@ -801,7 +823,262 @@ var CARDS=[
  q:"What is self-defeating about the irrationalist who <em>argues</em> that reason cannot judge human affairs?",
  a:"He reasons in order to prove that reasoning is incompetent. Any doctrine that is addressed to other people and asks to be believed appeals to a logic they share. Mises grants the irrationalist’s premise that reason cannot answer every question or choose ultimate ends; what he denies is the conclusion. The real alternative to reason in social life is not some higher insight but arbitrary force.",
  pts:["Arguing against reason uses reason","Any claim addressed to others presupposes a shared logic","The alternative to reason is not a higher faculty but force"],
- ana:"Writing a carefully argued letter to prove that writing cannot communicate."}
+ ana:"Writing a carefully argued letter to prove that writing cannot communicate."},
+
+/* ---------------- Chapter IV: A First Analysis of the Category of Action ---------------- */
+{id:"c4-term-means", ch:4, s:1, kind:"term",
+ q:"What makes a thing a <em>means</em>?",
+ a:"Nothing in the universe is a means by itself; there are only things. A thing becomes a means when a human mind plans to employ it for the attainment of some end and action actually puts it to that use. Means are thus defined by the ends they serve, and a thing that serves no one’s purpose is not a means at all, however useful it might be in principle.",
+ pts:["In the given universe there are only things, not means","A thing becomes a means through being planned and used for an end","Means are defined by ends, not by physical properties"],
+ ana:"A rock on a beach is just a rock. The moment you pick it up to crack a shell, it is a hammer. The rock did not change; your plan did."},
+
+{id:"c4-orders", ch:4, s:1, kind:"q",
+ q:"What are goods of the <em>first order</em> and goods of <em>higher orders</em>, and why is the distinction relative?",
+ a:"Goods of the first order, or consumers’ goods, satisfy wants directly: bread, a coat, a concert. Goods of higher orders, or producers’ goods, serve only indirectly, by helping to make goods of a lower order: flour, the loom, the musician’s training. Where a given thing sits depends on how it is used in a particular plan: the same wheat is a consumers’ good when eaten and a producers’ good when sown, so the order describes the thing’s place in a chain of means and ends, not a fixed property.",
+ pts:["First-order (consumers’) goods satisfy wants directly","Higher-order (producers’) goods serve by producing lower-order goods","The classification follows the use in a given plan, not the thing itself"],
+ ana:"An egg is breakfast in one kitchen and the start of a chicken in another. Which it is depends on what the cook intends, not on the egg."},
+
+{id:"c4-econgood", ch:4, s:1, kind:"q",
+ q:"What makes a good an <em>economic</em> good, and what is a free good?",
+ a:"Means that are scarce in relation to the uses people would make of them are economic goods: every use of them means forgoing another, so they must be economised. Means available in such abundance that no use crowds out any other, like air in most places, are free goods; nobody has to choose how to allocate them, so they are not objects of action and economics has nothing to say about them. Whether a thing is economic or free depends on circumstances, not on the thing.",
+ pts:["Economic goods are scarce relative to the wants they could satisfy","Free goods are so abundant that using them costs no other use","The same thing can be free in one setting and economic in another"],
+ ana:"Sunlight in the Sahara is a free good; sunlight in a basement flat with one window is fought over. Same sun, different scarcity."},
+
+{id:"c4-usevalue", ch:4, s:1, kind:"q",
+ q:"Distinguish <em>objective</em> from <em>subjective</em> use-value, and explain how a mistaken belief can still make something a means.",
+ a:"Objective use-value is a thing’s actual capacity to bring about an effect, such as coal’s heating power. Subjective use-value is the importance an acting person attaches to it on account of the end it is expected to serve, and it need not match the objective facts: people may value a thing for what it cannot do and overlook what it can. Praxeologically a thing is a means whenever someone employs it as one, even if their belief is wrong; the error will show up as a failed action, but the action was action all the same.",
+ pts:["Objective use-value: a thing’s real causal capacity","Subjective use-value: the importance the actor attaches, judged by their own expectations","A thing employed under a mistaken belief is still a means; the mistake makes the action fail, not cease to be action"],
+ ana:"A talisman carried into battle is a means in the soldier’s plan, whether or not it stops arrows. Its objective use-value is zero; its subjective use-value kept him marching."},
+
+{id:"c4-scalereal", ch:4, s:2, kind:"q",
+ q:"Where does a person’s <em>scale of value</em> show itself, and does it exist apart from action?",
+ a:"Only in actual action. The scale of value is not a list stored somewhere in the mind that action then consults; it is nothing but the ordering that a person’s choices manifest. Praxeology knows a person’s values only through what they do, and it makes no sense to say someone ‘really’ ranks things differently from how they choose. The scale has no existence independent of the real behaviour of real people.",
+ pts:["The scale of value is manifest only in actual choices","It has no independent existence apart from action","What a person ‘really’ values is what they choose, not what they say"],
+ ana:"A river’s course is not a map it follows; the course is where the water goes. Values are where the choices go."},
+
+{id:"c4-valuelives", ch:4, s:2, kind:"q",
+ q:"Is value <em>in things</em>? How are ends and means valued differently?",
+ a:"Value is not intrinsic to things; it is not in them but in us, the way acting people react to the conditions of their environment. Primary and original value attaches only to ultimate ends, the states of affairs people want for their own sake. Means are valued derivatively, according to how well they are expected to serve those ends. A hammer has no value apart from what someone wants to build.",
+ pts:["Value is a relation between a person and a thing, not a property of the thing","Ultimate ends carry primary value","Means are valued only for the ends they serve"],
+ ana:"Beauty is not in the painting; it is in the eye. And the frame is valued only because of the painting it holds."},
+
+{id:"c4-ordinal", ch:4, s:2, kind:"q",
+ q:"Can values be <em>measured</em>?",
+ a:"No. Action shows that A was preferred to B; it never shows by how much. There is no unit of value and no scale on which to place quantities of it. Valuation ranks, it does not measure, and arithmetical operations on values are meaningless. Two people, or one person at two moments, can be compared only in what they chose, never in some quantity of value behind the choice.",
+ pts:["Action reveals an ordering: preferred, set aside","There is no unit of value and no measurement","Values can be ranked but never added, subtracted or compared in amount"],
+ ana:"A race tells you who came first, second and third. It does not tell you that the winner was ‘twice as fast’ at wanting to win."},
+
+{id:"c4-objneeds", ch:4, s:3, kind:"q",
+ q:"What is wrong with judging action against an <em>objective scale of needs</em>?",
+ a:"Physiologists, moralists and reformers like to rank needs in some order they consider proper, food before ornament, health before pleasure, and then to call action that departs from it irrational or ‘uneconomic’. But people routinely choose otherwise, going hungry for a cause or spending on finery before medicine, and their action is no less action for it. Praxeology deals with what people actually prefer; an external scale of ‘true’ needs is merely someone else’s value judgement.",
+ pts:["People regularly rank their wants differently from any outside standard","Such action is still fully action, not a lapse from it","An ‘objective’ scale of needs is a value judgement imported from outside"],
+ ana:"A dietician can tell you what you ought to eat. The menu you actually order is what economics studies, and the dietician’s frown is not data about your choice."},
+
+{id:"c4-need", ch:4, s:3, kind:"q",
+ q:"What does praxeology mean by a <em>need</em>, and why does it refuse to separate ‘rational’ from other needs?",
+ a:"A need is whatever a person in fact wants and acts to attain, nothing more. Praxeology does not ask whether the want is wholesome, sensible or befitting a reasonable person; it takes the want as given and studies the action. To call some wants rational and others irrational is to grade them by one’s own standard, which is ethics or taste, not economics. Economics describes the actions of people pursuing all their ends, the vulgar and the lofty alike.",
+ pts:["A need is any want that action tries to satisfy","Praxeology does not sort wants into legitimate and illegitimate","‘Rational needs’ is a moral or aesthetic judgement wearing a scientific coat"],
+ ana:"The ticket office does not ask why you want to see the film. It records that you bought a ticket."},
+
+{id:"c4-exchange", ch:4, s:4, kind:"q",
+ q:"In what sense is <em>every</em> action an exchange?",
+ a:"Action substitutes one state of affairs for another: the actor gives up something in order to get something they prefer. The condition surrendered is the price paid, the condition gained is the result. Even a lone person on an island acts this way, trading rest for food or the present hour for a future harvest. Exchange in this sense is not a feature of markets; it is the structure of action itself, and interpersonal exchange is only one special case.",
+ pts:["Action gives up one state to obtain a preferred one","What is given up is the price; what is attained is the return","This holds for isolated action; market exchange is a special case"],
+ ana:"Every choice is a swap at a counter with only you on both sides: you hand over the afternoon and take away the painted fence."},
+
+{id:"c4-term-costs", ch:4, s:4, kind:"term",
+ q:"Define <em>costs</em> (price) and <em>profit</em> in the praxeological sense.",
+ a:"Costs are the value of the satisfaction the actor must forgo to attain the end chosen; they equal the value attached to the most desirable alternative that is given up. Profit, in this primary sense, is the gain derived from action: the amount by which the value of the end attained exceeds the value of the costs. If the costs exceed the value of what was attained, the difference is a loss. All three are subjective and psychic, matters of felt satisfaction rather than money.",
+ pts:["Costs: the value of what must be forgone","Profit: value attained exceeds costs","Loss: costs exceed value attained","All are psychic, not monetary"],
+ ana:"Choosing the window seat costs you the aisle. If the view turns out worth it, that is profit; if your legs cramp, that is loss. Nobody paid a penny either way."},
+
+{id:"c4-psychic", ch:4, s:4, kind:"q",
+ q:"Why can <em>profit and loss</em> in the praxeological sense never be measured?",
+ a:"Because they are differences between valuations, and valuations have no unit. Profit is an increase in the acting person’s happiness, a psychic phenomenon that can only be felt. There is a more and a less in the removal of uneasiness, but how much one satisfaction surpasses another cannot be established objectively. Money profit, which can be counted, is a different and later thing, available only where there is a market and calculation in money.",
+ pts:["Psychic profit is a difference between valuations, which have no unit","There is a more and a less, but no amount","Money profit is a separate, later concept that depends on market prices"],
+ ana:"You can say that today’s walk was better than yesterday’s. You cannot say it was 1.3 walks better."},
+
+{id:"c4-loss", ch:4, s:4, kind:"q",
+ q:"How does <em>uncertainty</em> turn an action’s expected profit into a loss?",
+ a:"Every action is undertaken because the actor expects the result to be worth more than its cost; otherwise they would not act. But the future is uncertain, so the result may fall short: the means may fail, conditions may change, or the actor may find the end less satisfying than imagined. Then the costs exceed what was attained and the action yields a loss. Profit and loss in this sense are the gap between what was expected and what came to pass.",
+ pts:["At the moment of choosing, the actor always expects a profit","The outcome can disappoint because of error or changed conditions","Loss is the shortfall of result against cost, seen after the fact"],
+ ana:"You order the special expecting the best dish on the menu. It arrives cold. You paid the price of the dish you turned down, and got less than you bargained for."},
+
+/* ---------------- Chapter V: Time ---------------- */
+{id:"c5-change", ch:5, s:1, kind:"q",
+ q:"Why is <em>time</em> implied in the very idea of action?",
+ a:"Action aims at change: at replacing a less satisfactory state with a more satisfactory one. Change means a before and an after, which is to say time. The actor distinguishes the time before the action, the time absorbed by it, and the time after it; action is therefore always directed toward the future, however near. A timeless action would be one that changed nothing, which is no action at all.",
+ pts:["Action aims at change; change implies before and after","Action is always directed to the future","The notions of action and of time cannot be separated"],
+ ana:"A photograph has no plot. A story needs a before and an after, and so does every act, which is a very short story with you as its author."},
+
+{id:"c5-logictime", ch:5, s:1, kind:"q",
+ q:"How does the time of <em>action</em> differ from the timelessness of <em>logic</em>?",
+ a:"The categories of logic and praxeology are outside time: a valid inference is valid at every moment, and ‘sooner’ and ‘later’ have no meaning for it. Action, by contrast, happens in time and is shot through with it: the actor ages, the past cannot be undone, means are used up, and the goal lies ahead. Praxeology’s theorems are timeless statements about a phenomenon that is essentially temporal.",
+ pts:["Logical and praxeological truths hold timelessly","Action itself occurs in irreversible time","Praxeology makes timeless statements about temporal acts"],
+ ana:"The rules of chess do not change between moves. The game is nothing but moves, one after another, with no taking back."},
+
+{id:"c5-subject", ch:5, s:1, kind:"q",
+ q:"What does it mean that acting man is <em>subject to time</em>?",
+ a:"Time passes whether or not anyone wishes it to. The actor grows older, the opportunity of this moment will not return, and what has been done cannot be reversed. The past is fixed and serves only as data; only the future is open to influence. That is why action is always a planning for a better future, never a repair of the past, and why time can never be a matter of indifference to anyone who acts.",
+ pts:["Time is irreversible: the past is fixed, only the future is open","The actor ages and opportunities pass","All action is planning for the future on the basis of a given past"],
+ ana:"You can read yesterday’s diary, but you can only write in today’s. The pen never moves backward."},
+
+{id:"c5-term-present", ch:5, s:2, kind:"term",
+ q:"What is the <em>present</em> in the praxeological sense?",
+ a:"Not a mathematical instant but a span: the stretch of time during which the conditions and opportunities for a given action remain as they are. The present is the opportunity to act. Its length depends on the action in view: for a trader on the exchange it may be seconds, for a farmer a season, for a statesman the years during which a certain constellation of forces persists.",
+ pts:["The present is the duration of a given opportunity, not a point","It is defined by action: the time in which these conditions hold","Its length varies with the kind of action considered"],
+ ana:"‘Now’ for a surfer is the few seconds the wave stands up. ‘Now’ for a vintner is the whole autumn. Each has as much present as their act needs."},
+
+{id:"c5-ppf", ch:5, s:2, kind:"q",
+ q:"How does action mark off <em>past</em>, <em>present</em> and <em>future</em>?",
+ a:"The past is what action can no longer influence; it is given, and enters action only as knowledge and as the conditions it has left behind. The future is what action aims to shape; it is the realm of ends. The present is the hinge between them, the opportunity in which choosing and doing occur. These are praxeological distinctions, drawn by the acting person’s situation, not chronological ones read off a clock.",
+ pts:["Past: unchangeable, enters action as data","Future: the field of ends, what action tries to shape","Present: the opportunity to act, the hinge between the two"],
+ ana:"Driving: the road behind is in the mirror, the road ahead is where you steer, and the wheel is in your hands only now."},
+
+{id:"c5-timescarce", ch:5, s:3, kind:"q",
+ q:"Why would time remain <em>scarce</em> even in a world where every material good was abundant?",
+ a:"Because a person cannot enjoy every satisfaction at once. Even in a land of plenty, with all goods free for the taking, one would still have to decide what to do first and what to postpone, since experiences come one after another and the hours of a life are finite. So action, the choosing between alternatives, would persist even if economising of goods vanished. Time is the one thing that would remain to be allocated.",
+ pts:["Satisfactions must be taken in sequence, not all at once","A life has only so many hours","Even with no other scarcity, the order of wants would still have to be chosen"],
+ ana:"Give a child the whole sweet shop for free. They still have to decide what to eat first, and still only have one mouth."},
+
+{id:"c5-timeunique", ch:5, s:3, kind:"q",
+ q:"How does economising <em>time</em> differ from economising other goods?",
+ a:"Other goods can often be stored, saved, exchanged or used in several ways; time can only be spent, and it passes whether or not it is used. The hour not used now is gone, not kept for later. Hence time brings a special dimension into every valuation: sooner and later are never the same, and every plan must rank not only what to want but when. The economising of time is independent of, and additional to, the economising of all other means.",
+ pts:["Time cannot be stored or saved; it passes regardless","Sooner and later are different goods to the actor","Allocating time is a problem distinct from allocating other means"],
+ ana:"Money left in a drawer is still there next week. An afternoon left in a drawer is not."},
+
+{id:"c5-nosync", ch:5, s:4, kind:"q",
+ q:"Why are two actions of one person never <em>synchronous</em>, and what follows from it?",
+ a:"A person does one thing at a time; the relation between any two of their actions is always that of sooner and later. So each action is taken under its own momentary conditions and its own momentary valuations, which may have shifted since the last. It follows that comparing actions across time tells us about a sequence of value scales, not about one fixed scale, and that no single ‘scale of value’ can be assembled from choices made at different moments.",
+ pts:["Actions follow one another; none are simultaneous","Each action expresses the valuations of its own moment","Choices at different times reveal a sequence of scales, not one timeless scale"],
+ ana:"Snapshots of the same person at nine, noon and six are three portraits, not one. The face moved between them."},
+
+{id:"c5-constancy", ch:5, s:4, kind:"q",
+ q:"Is a person <em>irrational</em> if their choices change from one day to the next? Distinguish consistency from constancy.",
+ a:"No. In logic, consistency means not asserting a proposition and its contrary at the same time, and it is a timeless requirement. Critics transfer this to action and demand constancy: that a person who preferred A yesterday should prefer A today. But valuations are made at a moment, in response to a situation, and may legitimately change. Someone would contradict themselves only by valuing A over B and B over A at the same instant, which no one does. Rationality does not require that a person never change their mind.",
+ pts:["Logical consistency is timeless; constancy of valuation is something else","Changing preferences over time is not a contradiction","Contradiction would require opposite valuations at the same instant"],
+ ana:"A thermometer is not ‘inconsistent’ for reading 10 at dawn and 20 at noon. It is reporting different moments."},
+
+{id:"c5-transitive", ch:5, s:4, kind:"q",
+ q:"Someone prefers A to B, B to C, and then C to A. Does this show that preferences can be <em>intransitive</em>, and what is Mises’s reply?",
+ a:"The three choices were made at three different times, and between them the person’s situation and valuations may have changed. At any single instant a person has a definite preference, and action shows it; the apparent circle appears only when one stitches together choices from different moments and treats them as one scale. The charge of intransitivity rests on the false assumption of constant valuations over time.",
+ pts:["The three preferences belong to three different moments","At each instant the preference was definite","The apparent circle comes from assuming constancy across time"],
+ ana:"On Monday you wanted the beach more than the mountains, on Tuesday the mountains more than the city, on Wednesday the city more than the beach. You did not contradict yourself; you had three Tuesdays’ worth of weather."},
+
+/* ---------------- Chapter VI: Uncertainty ---------------- */
+{id:"c6-correl", ch:6, s:1, kind:"q",
+ q:"Why are <em>uncertainty</em> and <em>action</em> correlatives?",
+ a:"Action is choosing among alternatives in order to shape the future. If the future were known with certainty, there would be nothing to decide: a person who knew exactly what would happen would not act but merely watch events unfold, or would move like an automaton. The uncertainty of the future is implied in the very notion of action; take it away and action goes with it.",
+ pts:["Action means choosing in the face of an open future","A perfectly known future would leave nothing to decide","Uncertainty is not an obstacle to action but part of its definition"],
+ ana:"A game whose result is printed on the box is not played. People only take the field because the score is still unknown."},
+
+{id:"c6-determ", ch:6, s:1, kind:"q",
+ q:"Does praxeology have to decide whether the universe is <em>determined</em>?",
+ a:"No. Even if every event were strictly determined by prior causes, the acting person does not and cannot know the chain in advance; for them the future is uncertain all the same, and that is what matters for action. Praxeology deals with the actor’s situation, not with metaphysics. Whether the world is a clockwork or not, no one has read the whole clock.",
+ pts:["Determinism, if true, would not give the actor knowledge of the future","Uncertainty for the actor stems from the limits of knowledge","Praxeology deals with the human situation, not with ultimate metaphysics"],
+ ana:"A sealed envelope may already contain the winning numbers. For the person holding it, the draw is still uncertain until it is opened."},
+
+{id:"c6-sources", ch:6, s:1, kind:"q",
+ q:"What are the two <em>sources</em> of the actor’s uncertainty, and how do they differ?",
+ a:"First, insufficient knowledge of natural events: the weather, the harvest, the behaviour of materials. Second, and more radically, the future conduct of other people, which depends on their valuations and choices and can be anticipated only by understanding, never calculated from laws. Natural uncertainty can sometimes be tamed by class probability; the uncertainty about human conduct belongs to case probability and remains open to judgement alone.",
+ pts:["Natural events: unknown but, in part, subject to regularities","Other people’s conduct: anticipated only by understanding","The second is the specific uncertainty of the sciences of human action"],
+ ana:"A sailor can learn the tides but never the other captains. The sea follows rules; the fleet follows minds."},
+
+{id:"c6-probmeaning", ch:6, s:2, kind:"q",
+ q:"What does it mean to say a statement is <em>probable</em>? What is wrong with ‘probability is a measure of our ignorance’?",
+ a:"A probable statement is one made by someone who knows something relevant but not everything: it expresses knowledge, not merely its absence. We say an outcome is probable when we know enough to rule out some things and not enough to settle the matter. Complete ignorance yields no probable statements at all, only silence. The task is therefore to ask what exactly is known and what is not, and that question splits probability into two quite different kinds.",
+ pts:["A probable statement contains knowledge as well as ignorance","Total ignorance would permit no probable statement","What is known and what is not determines the kind of probability"],
+ ana:"A weather forecast is not a confession of not knowing. It says: we know the pattern well enough to call rain likely, not well enough to call it certain."},
+
+{id:"c6-twokinds", ch:6, s:2, kind:"q",
+ q:"What distinguishes the <em>two kinds</em> of probability Mises identifies?",
+ a:"Class probability: we know, or assume we know, everything about the behaviour of a whole class of events, but about any individual event nothing except that it belongs to the class. Case probability: we know some of the factors that will determine the outcome of a particular event, but there are others we do not know, and there is no class with a known frequency to fall back on. The first is the probability of the mathematician and the insurer; the second belongs to the historian, the statesman and the entrepreneur.",
+ pts:["Class probability: knowledge of the class, none of the individual case","Case probability: partial knowledge of the factors determining a unique event","They share only the incompleteness of knowledge; otherwise they are different things"],
+ ana:"Knowing that one card in fifty-two is the ace of spades is one kind of knowledge. Knowing that your opponent likes to bluff is another. Neither helps with the other’s problem."},
+
+{id:"c6-term-class", ch:6, s:3, kind:"term",
+ q:"Define <em>class probability</em>.",
+ a:"We know, or assume we know, everything about the behaviour of a whole class of events or phenomena, but about the actual singular events we know nothing except that they are elements of this class. We may know that a mortality table holds for the class of forty-year-olds without knowing anything about which of them will die this year. Class probability can be expressed numerically, as a frequency.",
+ pts:["Full knowledge of the class’s behaviour","No knowledge of the individual event beyond its membership","Expressible as a numerical frequency"],
+ ana:"You know a bag holds ten red and ninety white marbles. You know nothing about the one your hand is closing on except that it came from that bag."},
+
+{id:"c6-nextevent", ch:6, s:3, kind:"q",
+ q:"If class probability is known, what does it tell us about the <em>next</em> individual event? What is the gambler’s mistake?",
+ a:"Nothing. Knowing that one ticket in ten wins tells the holder of a particular ticket only that it belongs to the class; it does not make the ticket more or less likely to win than any other, and it says nothing about which. The gambler who believes a number is ‘due’ after a run of absences, or that the class knowledge can be made to bear on the single throw, has confused knowledge of the class with knowledge of the case. The frequency is about the whole, never about this.",
+ pts:["Class knowledge gives no information about any particular member","No event is ‘due’; past outcomes do not alter the next one","Treating class frequency as knowledge of the single case is the gambler’s error"],
+ ana:"That one in every ten umbrellas sold is faulty tells you nothing about the one in your hand. Opening the box is the only way to find out."},
+
+{id:"c6-insurance", ch:6, s:3, kind:"q",
+ q:"Why does <em>insurance</em> depend on class probability, and why can it not cover a unique risk?",
+ a:"An insurer pools a large number of cases drawn from a class whose frequency of loss is known: so many houses burn each year, so many of these lives end. The premium is set on the class, and the pooling makes the individual uncertainty irrelevant to the insurer’s result. Where there is no class with a known frequency, where the event is unique in its relevant features, there is nothing to pool and nothing to compute; what passes for insurance there is really a bet.",
+ pts:["Insurance pools many members of a class with a known loss frequency","The pool makes individual outcomes cancel out","A unique event offers no class to pool; covering it is betting, not insuring"],
+ ana:"A baker can price bread knowing that about one loaf in forty will not sell. No one can price ‘one loaf in forty’ for a single, never-repeated banquet."},
+
+{id:"c6-term-case", ch:6, s:4, kind:"term",
+ q:"Define <em>case probability</em>.",
+ a:"We know, with regard to a particular event, some of the factors that determine its outcome, but there are other determining factors about which we know nothing. The event is unique in the features that matter; there is no class of similar cases with a known frequency. Case probability is the situation of anyone judging an election, a war, a negotiation or a new venture, and it cannot be expressed as a number.",
+ pts:["Partial knowledge of the factors determining one particular event","No class with a known frequency to fall back on","The relevant features are unique; the judgement is not numerical"],
+ ana:"You know this team’s form, its injuries and its coach. You do not know how Saturday will go, and no number of other Saturdays will tell you."},
+
+{id:"c6-casetool", ch:6, s:4, kind:"q",
+ q:"What mental tool deals with <em>case probability</em>, and why is a frequency of no help?",
+ a:"Understanding: the weighing of the known factors in a particular situation and a judgement about their relevance and the probable conduct of the people involved. The cases that look similar, other elections or other wars, differ precisely in the features that decide the outcome, so they do not form a class whose frequency bears on this case. The entrepreneur, the general and the historian all work with case probability, and their success depends on the quality of their understanding.",
+ pts:["Case probability is handled by understanding, not computation","Apparently similar cases differ in exactly the decisive features","It is the working condition of the entrepreneur, the statesman and the historian"],
+ ana:"A doctor facing a rare patient reads the chart and uses judgement. A textbook average of other patients does not decide what is wrong with this one."},
+
+{id:"c6-casefields", ch:6, s:4, kind:"q",
+ q:"Is case probability confined to human affairs?",
+ a:"No, though it is the specific condition of the sciences of human action. Some natural events also present it, such as tomorrow’s weather at a given place, where we know some determining factors and not others and cannot treat the day as a draw from a class. But all the matters that depend on people’s valuations and choices are of this kind, which is why forecasting in human affairs is always a matter of understanding and never of a frequency table.",
+ pts:["Some natural events, such as weather, also fall under case probability","Every question that turns on human choices is case probability","Hence forecasting human affairs is understanding, not statistics"],
+ ana:"You can compute how often it rains in April. Whether it rains on your wedding day is a different question, and it is the one you care about."},
+
+{id:"c6-ninetoone", ch:6, s:5, kind:"q",
+ q:"When someone says the odds are ‘<em>nine to one</em>’ that a candidate wins, what does the number actually express?",
+ a:"Only the strength of the speaker’s confidence, put in the language of class probability as a figure of speech. There is no class of elections of which this is a draw and no frequency behind the figure; the number has none of the logical standing of a frequency and cannot be checked against anything. It is a metaphor, useful for settling a wager, but it does not turn a judgement of understanding into a measurement.",
+ pts:["The figure expresses a degree of confidence, not a frequency","There is no class and no count behind it","It borrows the form of class probability without its substance"],
+ ana:"Saying ‘I am ninety per cent sure I left the keys in the car’ reports a feeling in the costume of a statistic. Nothing was counted."},
+
+{id:"c6-physician", ch:6, s:5, kind:"q",
+ q:"A surgeon says seventy per cent of patients survive this operation. May the patient conclude they have a <em>seventy per cent chance</em>?",
+ a:"Not in the same sense. The surgeon’s figure is class probability about the class of patients who have had the operation. Applied to this patient, it becomes case probability: the surgeon knows some of the factors bearing on this person, age, condition, complications, and not others. Translating the class figure into a chance for the individual is the familiar confusion of the two kinds. What the patient can get is the surgeon’s judgement, which the number only dresses up.",
+ pts:["The survival rate is class probability about the whole class","The individual case is unique in its determining features","Assigning the class figure to the single patient confuses the two kinds"],
+ ana:"One car in ten of this model has a gearbox fault. Whether yours does is not ten per cent; it is yes or no, and a mechanic’s inspection, not the recall notice, is how you find out."},
+
+{id:"c6-betgamble", ch:6, s:6, kind:"q",
+ q:"Distinguish <em>betting</em> from <em>gambling</em>.",
+ a:"Betting is staking money on the outcome of an event about which one believes one knows some of the determining factors better than others do: a horse race, an election, a match. It is a wager on case probability, and the bettor relies on understanding. Gambling is staking money on an event about which nothing is known beyond its class probability: dice, roulette, the lottery. The gambler has nothing to understand and relies on nothing but the frequency, which tells them nothing about this throw.",
+ pts:["Betting: staking on case probability, using judgement of the particular event","Gambling: staking on pure class probability, with no knowledge of the single case","The bettor can know more than others; the gambler cannot"],
+ ana:"Wagering on your friend’s chess game, having watched him play for years, is betting. Wagering on a coin is gambling. One rewards study; the other cannot."},
+
+{id:"c6-notgame", ch:6, s:6, kind:"q",
+ q:"Why does Mises reject the idea that business is a <em>game</em>?",
+ a:"A game is a contest in which one party’s gain is the other’s loss and the aim is to defeat an opponent by strategy. Business is nothing of the kind: it is production for the satisfaction of consumers, and in exchange both parties gain. The entrepreneur does not beat the customer; they serve the customer better than rivals do, and the rivals lose only in the sense that they served less well. The game analogy imports an antagonism that the market does not contain, and it misleads the theory that builds on it.",
+ pts:["Games are zero-sum contests aimed at an opponent’s defeat","Business aims at serving consumers; exchange benefits both sides","Competition among producers is rivalry in service, not combat"],
+ ana:"Two restaurants on a street are not playing chess against each other. Each is cooking for the diners, who are the ones that decide, and the street can hold two good kitchens."},
+
+{id:"c6-speculator", ch:6, s:6, kind:"q",
+ q:"Every action is a speculation about an uncertain future. Does that make the actor a <em>gambler</em>?",
+ a:"No. The gambler stakes on a class frequency and can know nothing about the single event. The acting person, and the entrepreneur above all, acts on understanding of the particular situation: judging the factors known, anticipating other people’s conduct, and adapting as conditions change. That is speculation in the praxeological sense, and it resembles betting, not gambling: skill and knowledge make a difference to the outcome, which is precisely what the roulette wheel denies.",
+ pts:["All action speculates on an uncertain future","Speculation uses understanding of the particular case; gambling cannot","The entrepreneur is a speculator in this sense, never a gambler"],
+ ana:"A farmer choosing what to plant is not spinning a wheel. He reads the soil, the market and the sky, and a better reader harvests more."},
+
+{id:"c6-predict", ch:6, s:7, kind:"q",
+ q:"What can praxeology <em>predict</em> with certainty, and what can it never predict?",
+ a:"It can predict, with apodictic certainty, the direction of the effect of a definite change in conditions, other things being equal: that a price fixed below the market price brings a shortage, that an increase in the quantity of money lowers its purchasing power. What it can never predict is anything quantitative: how much, how fast, or by what date. Praxeological prediction is qualitative only.",
+ pts:["Qualitative predictions follow with certainty from the theorems","They hold other things being equal","Magnitudes and timing are outside praxeology altogether"],
+ ana:"A physician can say with certainty that a heavy smoker’s lungs will suffer. The date of the first cough is another matter, and no textbook contains it."},
+
+{id:"c6-noquant", ch:6, s:7, kind:"q",
+ q:"Why are <em>quantitative</em> predictions impossible in praxeology?",
+ a:"Because there are no constant relations in human action. Valuations, which drive every price and quantity, cannot be measured, and they change from moment to moment and person to person. A doubling of the money supply raises prices, but by how much depends on how people react, which is not fixed. Where natural science finds constants to plug into equations, the sciences of human action find only the shifting judgements of people, so there is nothing to compute with.",
+ pts:["Human action exhibits no constant relations between magnitudes","Valuations cannot be measured and are always changing","Without constants there is nothing on which to base a quantitative forecast"],
+ ana:"You can state with certainty that adding fuel makes a fire hotter. If the fuel were people’s moods, no gauge could tell you how much hotter."},
+
+{id:"c6-quantunderstand", ch:6, s:7, kind:"q",
+ q:"If praxeology cannot forecast magnitudes, where do quantitative <em>forecasts</em> of future prices and events come from?",
+ a:"From understanding, in the same way a historian weighs the relevance of causes but turned toward the future. The entrepreneur who guesses that demand will rise by a tenth, the forecaster who expects prices to double within a year, is making a judgement of case probability on the basis of the specific situation and expected human conduct. It may be well or badly informed, and praxeology can show when it is inconsistent with theory, but it is never deduced from theory. The quantitative is always the province of understanding.",
+ pts:["Quantitative forecasting is understanding, applied to the future","It is a judgement of case probability, not a deduction","Theory can check such forecasts for consistency but never supply them"],
+ ana:"Economics tells you the tide is coming in. How far up the beach it reaches by three o’clock is read by someone standing on the sand, watching."}
 ];
 
 /* ============================================================
@@ -864,7 +1141,7 @@ function buildDeckSelect(){
   html+='<option value="all">All chapters ('+CARDS.length+')</option>';
   html+='<option value="terms">Key terms only</option>';
   html+='<option value="trouble">My trouble spots</option>';
-  [1,2,3].forEach(function(ch){
+  CHAPTER_ORDER.forEach(function(ch){
     var C=CHAPTERS[ch];
     html+='<optgroup label="Chapter '+C.num+' · '+esc(C.title)+'">';
     html+='<option value="c'+ch+'">Whole chapter ('+cardsIn(ch).length+')</option>';
@@ -1105,7 +1382,7 @@ function renderList(){
     '<span><i class="s"></i>Solid &mdash; got it '+SOLID_RUN+' times running</span>'+
     '<span><i class="w"></i>Shaky &mdash; missed in the last '+RECENT+'</span>'+
   '</div>';
-  [1,2,3].forEach(function(ch){
+  CHAPTER_ORDER.forEach(function(ch){
     var C=CHAPTERS[ch];
     html+='<div class="chaphead"><span>Chapter '+C.num+' &mdash; <b>'+esc(C.title)+'</b></span>'+
           '<button class="drill" data-deck="c'+ch+'">Review chapter &rarr;</button></div>';
