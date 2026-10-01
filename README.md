@@ -206,6 +206,30 @@ entry per card:
 | `pts` | The checklist — the things a complete answer should contain |
 | `ana` | The analogy shown under "Think of it like…" |
 
+### Roadmap
+
+Chapters I–III are in the deck. The rest of the book, from the 4th revised edition (FEE, 1996), for
+when the next chapters are read — section lists are included where they will be needed next:
+
+- [x] **Introduction** — not in the deck; the review starts at Part One
+- [x] **I. Acting Man**
+- [x] **II. The Epistemological Problems of the Sciences of Human Action**
+- [x] **III. Economics and the Revolt Against Reason**
+- [ ] **IV. A First Analysis of the Category of Action** — 1 Ends and Means · 2 The Scale of Value · 3 The Scale of Needs · 4 Action as an Exchange
+- [ ] **V. Time** — 1 Time as a Praxeological Factor · 2 Past, Present, and Future · 3 The Economization of Time · 4 The Temporal Relation Between Actions
+- [ ] **VI. Uncertainty** — 1 Uncertainty and Acting · 2 The Meaning of Probability · 3 Class Probability · 4 Case Probability · 5 Numerical Evaluation of Case Probability · 6 Betting, Gambling, and Playing Games · 7 Praxeological Prediction
+- [ ] **VII. Action Within the World** — 1 The Law of Marginal Utility · 2 The Law of Returns · 3 Human Labor as a Means · 4 Production
+- [ ] **Part Two: Action Within the Framework of Society** — VIII Human Society · IX The Role of Ideas · X Exchange Within Society
+- [ ] **Part Three: Economic Calculation** — XI Valuation Without Calculation · XII The Sphere of Economic Calculation · XIII Monetary Calculation as a Tool of Action
+- [ ] **Part Four: Catallactics or Economics of the Market Society** — XIV The Scope and Method of Catallactics · XV The Market · XVI Prices · XVII Indirect Exchange · XVIII Action in the Passing of Time · XIX Interest · XX Interest, Credit Expansion, and the Trade Cycle · XXI Work and Wages · XXII The Nonhuman Original Factors of Production · XXIII The Data of the Market · XXIV Harmony and Conflict of Interests
+- [ ] **Part Five: Social Cooperation Without a Market** — XXV The Imaginary Construction of a Socialist Society · XXVI The Impossibility of Economic Calculation Under Socialism
+- [ ] **Part Six: The Hampered Market Economy** — XXVII The Government and the Market · XXVIII Interference by Taxation · XXIX Restriction of Production · XXX Interference with the Structure of Prices · XXXI Currency and Credit Manipulation · XXXII Confiscation and Redistribution · XXXIII Syndicalism and Corporativism · XXXIV The Economics of War · XXXV The Welfare Principle Versus the Market Principle · XXXVI The Crisis of Interventionism
+- [ ] **Part Seven: The Place of Economics in Society** — XXXVII The Nondescript Character of Economics · XXXVIII The Place of Economics in Learning · XXXIX Economics and the Essential Problems of Human Existence
+
+The printed contents page also lists unnumbered sub-headings inside some sections (*On Happiness*,
+*I and We*, *Vegetative Man* …). Those are what the `sub` field holds; copy them from the book when
+adding a chapter, since the online contents list leaves them out.
+
 To add a chapter, add it to `CHAPTERS` — numeral, full title, short title, and its `secs` list copied
 from the book's contents page (`{n, t, subs:[…]}`) — and add its number to the `[1,2,3]` arrays in
 `buildDeckSelect` and `renderList`. The deck menu and Browse layout are generated from `CHAPTERS`, so a
