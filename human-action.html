@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Human Action Review</title>
-<meta name="description" content="End-of-chapter review questions for Ludwig von Mises's Human Action, chapters I–VI. Answer, reveal, grade yourself.">
+<meta name="description" content="End-of-chapter review questions for Ludwig von Mises's Human Action, chapters I–VII. Answer, reveal, grade yourself.">
 <style>
   :root{
     --bg:#0a0a0c;
@@ -275,7 +275,7 @@
 <header>
   <div>
     <h1>Human Action Review<span class="dot">.</span></h1>
-    <p class="sub">End-of-chapter questions for Mises&rsquo;s <i>Human Action</i>, chapters I&ndash;VI &mdash; answer, reveal, grade yourself.</p>
+    <p class="sub">End-of-chapter questions for Mises&rsquo;s <i>Human Action</i>, chapters I&ndash;VII &mdash; answer, reveal, grade yourself.</p>
   </div>
   <div class="spacer"></div>
   <select id="deck" aria-label="Choose deck"></select>
@@ -420,6 +420,12 @@ var CHAPTERS={
     {n:5, t:"Numerical Evaluation of Case Probability"},
     {n:6, t:"Betting, Gambling, and Playing Games"},
     {n:7, t:"Praxeological Prediction"}
+  ]},
+  7:{num:"VII", title:"Action Within the World", short:"Action Within the World", secs:[
+    {n:1, t:"The Law of Marginal Utility"},
+    {n:2, t:"The Law of Returns"},
+    {n:3, t:"Human Labor as a Means", subs:["Immediately Gratifying Labor and Mediately Gratifying Labor","The Creative Genius"]},
+    {n:4, t:"Production"}
   ]}
 };
 var CHAPTER_ORDER=Object.keys(CHAPTERS).map(Number).sort(function(a,b){return a-b;});
@@ -1078,7 +1084,128 @@ var CARDS=[
  q:"If praxeology cannot forecast magnitudes, where do quantitative <em>forecasts</em> of future prices and events come from?",
  a:"From understanding, in the same way a historian weighs the relevance of causes but turned toward the future. The entrepreneur who guesses that demand will rise by a tenth, the forecaster who expects prices to double within a year, is making a judgement of case probability on the basis of the specific situation and expected human conduct. It may be well or badly informed, and praxeology can show when it is inconsistent with theory, but it is never deduced from theory. The quantitative is always the province of understanding.",
  pts:["Quantitative forecasting is understanding, applied to the future","It is a judgement of case probability, not a deduction","Theory can check such forecasts for consistency but never supply them"],
- ana:"Economics tells you the tide is coming in. How far up the beach it reaches by three o’clock is read by someone standing on the sand, watching."}
+ ana:"Economics tells you the tide is coming in. How far up the beach it reaches by three o’clock is read by someone standing on the sand, watching."},
+
+/* ---------------- Chapter VII: Action Within the World ---------------- */
+{id:"c7-term-mu", ch:7, s:1, kind:"term",
+ q:"State the <em>law of marginal utility</em>.",
+ a:"A person who has a supply of a homogeneous good values any one unit of it by the least urgent want that the whole supply allows them to satisfy, because if one unit were lost it is that want, and only that want, which would go unsatisfied. As the supply grows, each additional unit is put to a less urgent use, so the value attached to a unit falls. Marginal utility is the serviceableness of the marginal unit, the one at the edge of the supply.",
+ pts:["A unit is valued by the least urgent want the supply serves","Losing one unit would forgo only that least urgent want","A larger supply means a less urgent marginal use, hence lower value per unit"],
+ ana:"You own five identical buckets of water: one to drink, one to cook, one to wash, one for the garden, one for the car. Asked what a bucket is worth to you, you think of the car, because that is what you would give up if you lost one."},
+
+{id:"c7-derive", ch:7, s:1, kind:"q",
+ q:"Why does marginal utility <em>decrease</em> as the supply grows? Where does the law come from?",
+ a:"From the category of action itself. Acting people rank their wants and apply each unit of a means to the most urgent want it can still serve; the first unit goes to the most pressing use, the next to the next. Since a means is a means only because people prefer more of it to less, every additional unit is bound to serve a want ranked below those already served. The law is not a report about how pleasure fades; it is a consequence of grading and of having to deal in definite quantities.",
+ pts:["Units are assigned to wants in order of urgency","Each further unit therefore serves a lower-ranked want","The law follows from action’s grading of ends and quantities of means, not from psychology"],
+ ana:"A triage nurse treats the most serious patient first. The tenth stretcher is not less welcome because the nurse is tired of stretchers; it simply arrives when the worst cases are already dealt with."},
+
+{id:"c7-notpsych", ch:7, s:1, kind:"q",
+ q:"Why does Mises insist the law of marginal utility is <em>not a psychological law</em> of satiation?",
+ a:"Earlier writers tied it to the fading of pleasure with repetition, or to the Weber–Fechner law relating stimulus to sensation. Mises says those are facts, or alleged facts, about the mind, and the economic law needs none of them. It would hold even for someone whose enjoyment never dulled, because it rests on the ordering of wants and the application of scarce units to them in order of urgency. ‘Utility’ here means serviceableness for removing uneasiness, as judged by the actor, not a quantity of pleasure.",
+ pts:["It does not depend on pleasure fading with repetition","It is independent of psychophysical laws such as Weber–Fechner","Utility means serviceableness as judged by the actor, not an amount of felt pleasure"],
+ ana:"A chess rule such as ‘a bishop moves diagonally’ holds whether the players are bored or thrilled. The law of marginal utility is a rule of choosing, not a mood report."},
+
+{id:"c7-paradox", ch:7, s:1, kind:"q",
+ q:"Water is indispensable and diamonds are not, yet diamonds command a far higher price. How does marginal utility resolve this <em>paradox of value</em>?",
+ a:"Nobody ever chooses between all water and all diamonds. People choose between one more unit of water and one more unit of diamonds given the supplies they already have. Water is abundant, so its marginal unit serves a trivial want: rinsing a pavement. Diamonds are scarce, so even the marginal diamond serves a highly ranked want. Value attaches to marginal units, not to classes of goods, and the paradox dissolves once that is seen. In a desert the ranking would reverse.",
+ pts:["Choices are always about marginal units, not whole classes of goods","Abundant water has a low-ranked marginal use; scarce diamonds a high-ranked one","Change the supplies and the valuation changes"],
+ ana:"Nobody asks whether oxygen is worth more than a parachute. Ask instead what one more lungful is worth on a hillside, and what it is worth at the bottom of a lake."},
+
+{id:"c7-unit", ch:7, s:1, kind:"q",
+ q:"Can the value of a whole supply be found by <em>adding up</em> the values of its units? What role does the choice of unit play?",
+ a:"No. Values are rankings, not quantities, so they cannot be summed; the whole supply is valued by the whole set of wants it serves, which is a different judgement from valuing one unit. And what counts as a unit is set by the action in view: a pair of shoes, not a shoe; a dose, not a drop. A larger quantity taken as one unit may serve a want that no number of smaller units could, so the law speaks of units as the actor defines them, not of physical atoms.",
+ pts:["Values rank; they cannot be added","The supply as a whole is valued by all the wants it meets, not by unit-value times count","The unit is defined by the use, and a bigger unit can serve different wants"],
+ ana:"Half a bridge is not half as useful as a bridge. It is not a bridge."},
+
+{id:"c7-term-returns", ch:7, s:2, kind:"term",
+ q:"State the <em>law of returns</em>.",
+ a:"For any combination of complementary factors of production there is an optimum proportion. If the quantity of one factor is increased while the others are held fixed, output beyond that optimum rises less than in proportion to the added input, or not at all; below it, output rises more than in proportion. The law is often called the law of diminishing returns and was first noticed in farming, but it holds for every kind of production.",
+ pts:["Factors combine in an optimum proportion","Adding one factor beyond it yields less than proportionate output","Applies to all production, not just land"],
+ ana:"One cook in a small kitchen is slow; two are efficient; the eighth is standing in the doorway holding a spoon."},
+
+{id:"c7-returnswhy", ch:7, s:2, kind:"q",
+ q:"Why does Mises say the existence of an optimum is <em>implied by scarcity</em>, rather than being merely an empirical finding?",
+ a:"Suppose the law failed and output could always be raised in proportion by adding more of one factor to a fixed quantity of another. Then any amount of output could be had from that fixed quantity, and the fixed factor would not be scarce at all: no more of it would ever be wanted. But it is scarce, by the assumption that it is an economic good. So there must be some proportion beyond which adding the variable factor stops paying. The fact that an optimum exists follows from the factors being economic goods; where exactly it lies is a matter of experience.",
+ pts:["If returns never diminished, a fixed factor could yield unlimited output","It would then not be scarce, contradicting its being an economic good","Hence an optimum must exist; its location is empirical"],
+ ana:"If one teabag could flavour any quantity of water you liked, nobody would ever need a second teabag. Teabags are scarce, so there is an amount of water past which the tea is just water."},
+
+{id:"c7-returnslimits", ch:7, s:2, kind:"q",
+ q:"What does the law of returns <em>tell</em> us, and what does it leave to experience?",
+ a:"It tells us only that an optimum combination exists and that departures from it lower the return per unit of the variable factor. It does not tell us where the optimum lies, how fast returns fall beyond it, or whether more output is possible at all; those are questions of technology to be answered by experience, and they differ from case to case. Mises also stresses that the law is not peculiar to agriculture, as the classical economists supposed: every production process, from a factory to a kitchen, has its own optimum proportions.",
+ pts:["The law establishes the existence of an optimum, not its position","The shape of the curve and the actual quantities are empirical","It is a law of all production, not of land alone"],
+ ana:"Knowing that every road has a speed at which fuel economy peaks is one thing. Finding that speed for a particular car needs a test drive."},
+
+{id:"c7-laborscarce", ch:7, s:3, kind:"q",
+ q:"Why is <em>labour</em> a scarce means?",
+ a:"For two reasons. A person can perform only a limited quantity of work, and of only certain kinds. And labour has disutility: people prefer leisure to toil, so they do not work until every use of their labour is exhausted but stop when the satisfaction from further output no longer outweighs the burden. Leisure is itself a consumers’ good, chosen like any other. If labour had no disutility, people would work as long as any want remained that work could satisfy, and labour would be scarce only in the first sense.",
+ pts:["Capacity for work is limited in quantity and kind","Labour has disutility; leisure is a good people choose","Work stops where further output no longer outweighs the burden"],
+ ana:"You could mow the lawn every day. You do not, because at some point the mown stripe is worth less to you than the hour on the deckchair."},
+
+{id:"c7-term-disutility", ch:7, s:3, kind:"term",
+ q:"What is the <em>disutility of labour</em>, and what is its status in praxeology?",
+ a:"The fact that people experience work as a burden and, other things equal, prefer leisure, so that labour is expended only for the sake of its product. This is not a theorem derived from the category of action but a datum of experience about the world we live in; a world without it is conceivable. Praxeology nonetheless builds it in as an explicit assumption, because it is a general feature of the real conditions under which humans act, and economics would be of no use for understanding our world without it.",
+ pts:["Work is felt as a burden; leisure is preferred, other things equal","An empirical fact about our world, not an a priori truth","Deliberately adopted as an assumption because it is universal in practice"],
+ ana:"That the chessboard has sixty-four squares is not a rule of logic; it is the board we play on. Disutility of labour is the board economics plays on."},
+
+{id:"c7-landlabor", ch:7, s:3, kind:"q",
+ q:"Why does Mises say labour is the <em>scarcest</em> of the primary means of production, and what evidence does he give?",
+ a:"If nature-given factors were scarcer than labour, every scrap of usable land and every deposit would be worked and some workers would be idle for lack of anything to apply themselves to. The opposite is what we see: there is submarginal land left uncultivated and resources left in the ground because there is not enough labour to make working them worthwhile. Labour is the binding constraint, so output is limited more by the hands available than by the earth.",
+ pts:["Were nature scarcer than labour, all land would be worked and labour would lie idle","In fact land and resources go unused for want of labour to apply to them","Labour, not nature, is the binding constraint on output"],
+ ana:"A library with more shelves than books is short of books, not shelves. The world has more acres than hands."},
+
+{id:"c7-laborhetero", ch:7, s:3, kind:"q",
+ q:"Is labour a <em>uniform</em> factor of production?",
+ a:"No. People differ in inborn abilities and in acquired skills, and the labour of a surgeon, a mason and a singer are different means, not quantities of one thing. What all labour has in common is only the formal feature of being the use of a human being’s capacities as a means, and the disutility that attends it. Economics must therefore treat labour as a bundle of qualitatively distinct factors, each scarce in its own way and valued by the law of marginal utility like any other.",
+ pts:["Innate and acquired differences make kinds of labour different means","Only the formal character and the disutility are common to all","Each kind is valued marginally like any other scarce factor"],
+ ana:"‘Fruit’ is a useful word, but you cannot bake an apple pie with bananas. Labour is a word of that kind."},
+
+{id:"c7-immediate", ch:7, s:3, sub:"Immediately Gratifying Labor and Mediately Gratifying Labor", kind:"q",
+ q:"Distinguish <em>immediately</em> from <em>mediately</em> gratifying labour.",
+ a:"Mediately gratifying labour is valued for its product or its wage; the activity itself is a burden borne for the sake of the result, and this is labour in the praxeological sense. Immediately gratifying labour is enjoyed for its own sake: the amateur who gardens, hunts or paints for pleasure. The same physical activity can be either, depending on the person’s aim. But immediately gratifying activity is really a consumers’ good, a form of enjoyment, not a means; and such enjoyment is strictly limited, which is why it cannot be relied on to get the world’s work done.",
+ pts:["Mediate: endured for the sake of the product; this is labour as a means","Immediate: enjoyed in itself; really a consumers’ good","The same activity can be either, depending on the aim; immediate gratification is limited"],
+ ana:"A chef cooking a Saturday dinner for friends and the same chef cooking the Tuesday lunch service are doing the same thing with their hands. Only one of them would do it for free."},
+
+{id:"c7-joy", ch:7, s:3, sub:"Immediately Gratifying Labor and Mediately Gratifying Labor", kind:"q",
+ q:"What does Mises make of the romantic claim that pre-capitalist workers enjoyed a <em>joy of labour</em> that capitalism destroyed?",
+ a:"He unpicks ‘joy of labour’ into distinct things: the anticipation of the wage or product; the pride and relief of having completed a task; the satisfaction of being useful and respected; and, rarely, pleasure in the activity itself. The first three attach to mediately gratifying labour and are as available to a factory hand as to a medieval craftsman. The romantic picture mistakes a few artisans’ immediate enjoyment for the general condition of pre-capitalist toil, which for most people was brutal. Capitalism did not abolish any of these joys; it shortened the hours and multiplied the product.",
+ pts:["‘Joy of labour’ bundles several different satisfactions","Most of them belong to mediate labour and survive under any system","The pre-capitalist idyll ignores how most labour was then actually experienced"],
+ ana:"Finishing a marathon is a joy. It is not the same joy as the running, and no one who has run one confuses the two."},
+
+{id:"c7-genius", ch:7, s:3, sub:"The Creative Genius", kind:"q",
+ q:"Why is the work of the <em>creative genius</em> not labour in the praxeological sense?",
+ a:"The pioneering thinker, artist or inventor does not toil in order to produce a good for others; creating is, for them, the way they live, driven by an inner urge and pursued regardless of pay or recognition. Their achievement is not a means in anyone’s production plan and is not called forth by demand. It is often a torment rather than a pleasure, yet it is not endured for the sake of a product. Praxeology’s categories of labour, wage and disutility simply do not fit; Mises calls the genius’s achievement a gift to mankind, not a product of the division of labour.",
+ pts:["Creation is a form of life for the genius, not a means to a product","Not called forth by demand or reward","Neither labour nor consumption in the usual sense; outside the categories of economics"],
+ ana:"You can hire a pianist to play at a wedding. You cannot hire anyone to compose the Goldberg Variations; Bach did that for reasons that had nothing to do with the booking."},
+
+{id:"c7-geniusplan", ch:7, s:3, sub:"The Creative Genius", kind:"q",
+ q:"Can a society <em>produce</em> geniuses, or buy their achievements, by spending more?",
+ a:"No. Pioneering achievements cannot be ordered, scheduled or multiplied by investment; they appear where and when they appear, and contemporaries often reject them. What society can do is leave people free so that the genius, when one arises, is not stifled, and so that the ordinary labour of the many can take up and spread what the genius has given. The division of labour can exploit a discovery; it cannot manufacture the discoverer.",
+ pts:["Genius cannot be planned, scheduled or bought","Society can only avoid stifling it and then build on what it gives","The division of labour spreads discoveries; it does not produce discoverers"],
+ ana:"A city can build concert halls. It cannot pass a budget line for the next Beethoven, though it can make sure the halls are open if one turns up."},
+
+{id:"c7-term-production", ch:7, s:4, kind:"term",
+ q:"Define <em>production</em> in the praxeological sense.",
+ a:"Production is the employment of means to make things more serviceable for the removal of human uneasiness. It is not confined to shaping physical goods: transporting, storing, trading and performing also make things more useful to the people who want them and so are production. Consumption is the use of the result; everything that leads up to it, from the mine to the shop counter, is production. There is no economically meaningful line between productive and unproductive work; whatever serves wants that people act to satisfy is productive.",
+ pts:["Production: using means to make things more serviceable for want-satisfaction","Includes transport, trade, storage and services, not only manufacture","No valid distinction between productive and unproductive labour"],
+ ana:"A loaf in a bakery you cannot reach is not yet bread to you. The van driver who brings it is as much a baker as the baker."},
+
+{id:"c7-notcreation", ch:7, s:4, kind:"q",
+ q:"Why does Mises say that production is <em>not creation</em>?",
+ a:"Human beings cannot create matter or energy; nothing comes into existence that was not there before. What production does is rearrange and combine the given elements of the world so that they serve human ends better: the ore becomes a blade, the seed becomes a harvest. Man is creative only in thought and imagination, in conceiving the arrangement. The hands and the materials execute what the mind has planned.",
+ pts:["No matter or energy is brought into being by production","Production transforms and rearranges what already exists","Creativity lies in thinking and imagining the arrangement, not in the material change"],
+ ana:"A sculptor does not add a single atom to the marble. The statue was a matter of taking away and of having seen it there first."},
+
+{id:"c7-spiritual", ch:7, s:4, kind:"q",
+ q:"In what sense is production a <em>spiritual and intellectual</em> phenomenon rather than a physical one?",
+ a:"What turns labour and materials into a product is the idea that directs them: the recipe, the plan, the decision about what to make and how. Without the directing mind the same muscles and the same iron produce nothing of use. So the essential requisites of production are not the material factors, which were always there, but the reasoning that arranges them. This is why Mises rejects the materialist picture of production as a mechanical process of ‘making things’ and treats changes in ideas and knowledge as the real source of growth in output.",
+ pts:["The directing idea or recipe is what makes materials and labour productive","Material factors were always present; the mind’s arrangement is what changes","Hence the materialist account of production as mere physical making is wrong"],
+ ana:"The ingredients of a cake have been on earth since long before cakes. The cake is a recipe that happened to those ingredients."},
+
+{id:"c7-unproductive", ch:7, s:4, kind:"q",
+ q:"The classical economists distinguished <em>productive</em> labour, which makes material goods, from <em>unproductive</em> labour, such as services. Why does Mises reject the distinction?",
+ a:"Because what matters to acting people is the satisfaction of wants, and a want satisfied by a performance, a lesson or a delivery is as real as one satisfied by a loaf. Materiality is irrelevant to the economic question; the singer, the doctor and the shopkeeper all make the world more serviceable to those who pay them, exactly as the farmer does. The old distinction smuggled in a prejudice that only tangible things are wealth. For praxeology everything that serves ends people act to reach is productive, and nothing else is.",
+ pts:["Economic value lies in want-satisfaction, not in material form","Services make things more serviceable just as manufacture does","The classical distinction rests on a prejudice for tangible goods"],
+ ana:"Nobody says the orchestra was unproductive because you could not take the symphony home in a bag."}
 ];
 
 /* ============================================================

@@ -5,7 +5,7 @@ Two self-contained flashcard pages, no build step, nothing sent anywhere:
 | | |
 |---|---|
 | **Bike Anatomy Trainer** — `index.html` | Name the highlighted part of a road bike. 👉 https://parallax-parking.github.io/learning/ |
-| **Human Action Review** — `human-action.html` | End-of-chapter questions for Mises's *Human Action*, chapters I–VI. 👉 https://parallax-parking.github.io/learning/human-action.html |
+| **Human Action Review** — `human-action.html` | End-of-chapter questions for Mises's *Human Action*, chapters I–VII. 👉 https://parallax-parking.github.io/learning/human-action.html |
 
 Both share the same look, the same mastery scoring and the same scheduler; they differ in how you
 answer. The bike has one right word, so you type it and the page marks it. A philosophy chapter has
@@ -132,10 +132,10 @@ the scheduler, matcher, stats and both modes carry over unchanged.
 
 # Human Action Review
 
-End-of-chapter review for Ludwig von Mises's *Human Action*. One card per question, 108 cards
-across chapters I–VI (Acting Man · The Epistemological Problems of the Sciences of Human Action ·
+End-of-chapter review for Ludwig von Mises's *Human Action*. One card per question, 128 cards
+across chapters I–VII (Acting Man · The Epistemological Problems of the Sciences of Human Action ·
 Economics and the Revolt Against Reason · A First Analysis of the Category of Action · Time ·
-Uncertainty), including 14 **key terms** to define. Every numbered
+Uncertainty · Action Within the World), including 18 **key terms** to define. Every numbered
 section and every unnumbered sub-heading on the book's contents page (*On Happiness*, *I and We*,
 *Vegetative Man* …) has its own questions.
 
@@ -209,7 +209,7 @@ entry per card:
 
 ### Roadmap
 
-Chapters I–VI are in the deck. The rest of the book, from the 4th revised edition (FEE, 1996), for
+Chapters I–VII are in the deck. The rest of the book, from the 4th revised edition (FEE, 1996), for
 when the next chapters are read — section lists are included where they will be needed next:
 
 - [x] **Introduction** — not in the deck; the review starts at Part One
@@ -219,7 +219,7 @@ when the next chapters are read — section lists are included where they will b
 - [x] **IV. A First Analysis of the Category of Action** — 1 Ends and Means · 2 The Scale of Value · 3 The Scale of Needs · 4 Action as an Exchange
 - [x] **V. Time** — 1 Time as a Praxeological Factor · 2 Past, Present, and Future · 3 The Economization of Time · 4 The Temporal Relation Between Actions
 - [x] **VI. Uncertainty** — 1 Uncertainty and Acting · 2 The Meaning of Probability · 3 Class Probability · 4 Case Probability · 5 Numerical Evaluation of Case Probability · 6 Betting, Gambling, and Playing Games · 7 Praxeological Prediction
-- [ ] **VII. Action Within the World** — 1 The Law of Marginal Utility · 2 The Law of Returns · 3 Human Labor as a Means · 4 Production
+- [x] **VII. Action Within the World** — 1 The Law of Marginal Utility · 2 The Law of Returns · 3 Human Labor as a Means · 4 Production
 - [ ] **Part Two: Action Within the Framework of Society** — VIII Human Society · IX The Role of Ideas · X Exchange Within Society
 - [ ] **Part Three: Economic Calculation** — XI Valuation Without Calculation · XII The Sphere of Economic Calculation · XIII Monetary Calculation as a Tool of Action
 - [ ] **Part Four: Catallactics or Economics of the Market Society** — XIV The Scope and Method of Catallactics · XV The Market · XVI Prices · XVII Indirect Exchange · XVIII Action in the Passing of Time · XIX Interest · XX Interest, Credit Expansion, and the Trade Cycle · XXI Work and Wages · XXII The Nonhuman Original Factors of Production · XXIII The Data of the Market · XXIV Harmony and Conflict of Interests
