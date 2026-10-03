@@ -207,6 +207,18 @@ entry per card:
 | `pts` | The checklist — the things a complete answer should contain |
 | `ana` | The analogy shown under "Think of it like…" |
 
+### House style for cards
+
+- **Plain English.** Write the answer the way you would explain it aloud to a friend who has not read
+  the book. No textbook vocabulary (*praxeological*, *a priori*, *heterogeneous*, *serviceableness*)
+  unless the card is *about* that term, in which case the first sentence explains it in everyday words.
+- **Short.** Answers run 50–90 words, never more than about 110. Term cards can be shorter.
+- **One question per card.** If it asks two things, split it or drop one.
+- **Checklist points restate the answer.** Three points, occasionally four, each under about 14 words,
+  each a plain restatement of a claim the answer explicitly makes, in the order the answer makes them.
+  Nothing appears in a point that does not appear in the answer.
+- **Keep Mises's claims.** Simplify the language; do not add claims, examples or opinions.
+
 ### Roadmap
 
 Chapters I–VII are in the deck. The rest of the book, from the 4th revised edition (FEE, 1996), for
