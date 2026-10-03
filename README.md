@@ -218,6 +218,10 @@ entry per card:
   each a plain restatement of a claim the answer explicitly makes, in the order the answer makes them.
   Nothing appears in a point that does not appear in the answer.
 - **Keep Mises's claims.** Simplify the language; do not add claims, examples or opinions.
+- **Bump the revision stamp.** `REV` near the top of the script is shown in the footer as "deck
+  2026-10-03". Change it with every content PR (add a letter, `2026-10-03b`, for a second one the
+  same day). GitHub Pages lets browsers cache the page for ten minutes, so the stamp is how you tell
+  whether a refresh actually picked up the latest merge.
 
 ### Roadmap
 
