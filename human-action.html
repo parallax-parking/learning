@@ -353,6 +353,7 @@
 
 <footer>
   <span id="pb"></span>
+  <span id="rev" title="Deck revision. If this does not match the latest merge, hard-refresh the page."></span>
   <button id="resetBtn">Reset all saved progress</button>
   <a href="index.html">Bike Anatomy Trainer &rarr;</a>
 </footer>
@@ -370,6 +371,10 @@
    answer should contain — they become the self-marking
    checklist. `ana` is the analogy shown with the answer.
    ============================================================ */
+/* Bump this with every content change so a reader can tell which build they are
+   looking at (GitHub Pages lets browsers cache the page for ten minutes). */
+var REV="2026-10-03";
+
 var CHAPTERS={
   1:{num:"I",   title:"Acting Man", short:"Acting Man", secs:[
     {n:1, t:"Purposeful Action and Animal Reaction"},
@@ -1118,8 +1123,8 @@ var CARDS=[
 
 {id:"c7-term-returns", ch:7, s:2, kind:"term",
  q:"State the <em>law of returns</em>.",
- a:"Whenever several inputs are used together to make something, there is a best proportion between them. Hold all but one input fixed and keep adding more of that one. Beyond the best proportion, output rises by less than the added input, or not at all. Below it, output rises by more than the added input. The law is often called the law of diminishing returns. It was first noticed in farming, but it holds for every kind of production.",
- pts:["Inputs used together have a best proportion","Adding one input past that point raises output less than in proportion","It holds for all production, not just farming"],
+ a:"To make anything you combine several things: a field, workers, tools. For any such mix there is a sweet spot. Keep adding more of just one thing, say workers on the same field, and past the sweet spot each extra worker adds less than the one before, until eventually an extra worker adds nothing. Mises calls this the law of returns; most people call it the law of diminishing returns. Farmers noticed it first, but it holds for every kind of production.",
+ pts:["Things used together to produce have a sweet spot","Past it, each extra unit of one input adds less than the one before","It holds for all production, not just farming"],
  ana:"One cook in a small kitchen is slow; two are efficient; the eighth is standing in the doorway holding a spoon."},
 
 {id:"c7-returnswhy", ch:7, s:2, kind:"q",
@@ -1596,6 +1601,7 @@ document.addEventListener("keydown",function(e){
 })();
 
 /* go */
+$("rev").textContent="deck "+REV;
 buildDeckSelect();
 setMode("review");
 renderList();
