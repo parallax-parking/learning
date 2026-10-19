@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Human Action Review</title>
-<meta name="description" content="End-of-chapter review questions for Ludwig von Mises's Human Action, chapters I–VII. Answer, reveal, grade yourself.">
+<meta name="description" content="End-of-chapter review questions for Ludwig von Mises's Human Action, chapters I–VIII. Answer, reveal, grade yourself.">
 <style>
   :root{
     --bg:#0a0a0c;
@@ -191,6 +191,10 @@
     margin:18px 0 8px;font-weight:600;
   }
   .grouphead b{color:var(--ink-dim)}
+  .parthead{
+    margin:34px 0 -14px;font-family:var(--serif);font-size:17px;color:var(--ink-dim);letter-spacing:.01em;
+  }
+  .parthead:first-of-type{margin-top:22px}
   .chaphead{
     display:flex;align-items:center;gap:12px;flex-wrap:wrap;
     margin:26px 0 6px;padding-bottom:8px;border-bottom:1px solid var(--line);
@@ -275,7 +279,7 @@
 <header>
   <div>
     <h1>Human Action Review<span class="dot">.</span></h1>
-    <p class="sub">End-of-chapter questions for Mises&rsquo;s <i>Human Action</i>, chapters I&ndash;VII &mdash; answer, reveal, grade yourself.</p>
+    <p class="sub">End-of-chapter questions for Mises&rsquo;s <i>Human Action</i>, chapters I&ndash;VIII &mdash; answer, reveal, grade yourself.</p>
   </div>
   <div class="spacer"></div>
   <select id="deck" aria-label="Choose deck"></select>
@@ -373,10 +377,10 @@
    ============================================================ */
 /* Bump this with every content change so a reader can tell which build they are
    looking at (GitHub Pages lets browsers cache the page for ten minutes). */
-var REV="2026-10-03";
+var REV="2026-10-19";
 
 var CHAPTERS={
-  1:{num:"I",   title:"Acting Man", short:"Acting Man", secs:[
+  1:{num:"I",   title:"Acting Man", short:"Acting Man", part:"Part One · Human Action", secs:[
     {n:1, t:"Purposeful Action and Animal Reaction"},
     {n:2, t:"The Prerequisites of Human Action", subs:["On Happiness","On Instincts and Impulses"]},
     {n:3, t:"Human Action as an Ultimate Given"},
@@ -431,6 +435,16 @@ var CHAPTERS={
     {n:2, t:"The Law of Returns"},
     {n:3, t:"Human Labor as a Means", subs:["Immediately Gratifying Labor and Mediately Gratifying Labor","The Creative Genius"]},
     {n:4, t:"Production"}
+  ]},
+  8:{num:"VIII", title:"Human Society", short:"Human Society", part:"Part Two · Action Within the Framework of Society", secs:[
+    {n:1, t:"Human Cooperation"},
+    {n:2, t:"A Critique of the Holistic and Metaphysical View of Society", subs:["Praxeology and Liberalism","Liberalism and Religion"]},
+    {n:3, t:"The Division of Labor"},
+    {n:4, t:"The Ricardian Law of Association", subs:["Current Errors Concerning the Law of Association"]},
+    {n:5, t:"The Effects of the Division of Labor"},
+    {n:6, t:"The Individual Within Society", subs:["The Fable of the Mystic Communion"]},
+    {n:7, t:"The Great Society"},
+    {n:8, t:"The Instinct of Aggression and Destruction", subs:["Current Misinterpretations of Modern Natural Science, Especially of Darwinism"]}
   ]}
 };
 var CHAPTER_ORDER=Object.keys(CHAPTERS).map(Number).sort(function(a,b){return a-b;});
@@ -1209,7 +1223,50 @@ var CARDS=[
  q:"The classical economists split labour into productive work, which makes material goods, and <em>unproductive</em> work, such as services. Why does Mises reject the distinction?",
  a:"Because what matters to people acting is that wants get satisfied, and a want met by a performance, a lesson or a delivery is as real as one met by a loaf. Whether the result is a physical thing is beside the point. The singer, the doctor and the shopkeeper all make the world more useful to those who pay them, exactly as the farmer does. The old distinction smuggled in a prejudice that only things you can touch count as wealth. For Mises, everything that serves ends people act to reach is productive, and nothing else is.",
  pts:["What matters is satisfying wants, not whether the result is a physical thing","Services make the world more useful just as farming does","The classical distinction rests on a prejudice for things you can touch"],
- ana:"Nobody says the orchestra was unproductive because you could not take the symphony home in a bag."}
+ ana:"Nobody says the orchestra was unproductive because you could not take the symphony home in a bag."},
+
+/* ---------------- Chapter VIII: Human Society ---------------- */
+{id:"c8-term-society", ch:8, s:1, kind:"term",
+ q:"What is <em>society</em>, in Mises’s sense?",
+ a:"Society is people acting together: cooperation, concerted action. It is the whole web of relationships that grows up when people work with one another to reach their own particular goals. It is not a thing standing over and above people. It is nothing more than individuals combined for cooperative effort, and it exists only in what those individuals think and do.",
+ pts:["Society is people cooperating, acting in concert","It is the web of relationships created by working together","It is nothing beyond individuals combined for cooperative effort"],
+ ana:"A traffic flow is real: you can see it, measure it, get stuck in it. But there is no traffic apart from the cars. Society is the flow; people are the cars."},
+
+{id:"c8-means", ch:8, s:1, kind:"q",
+ q:"Is society an <em>end</em> in itself, or a means?",
+ a:"A means. Seen from any one person’s point of view, society is the great means for reaching all their ends, whatever those ends are. Keeping society going is a condition of any plan a person might want to carry out. Even the criminal who will not play by the rules of cooperation still wants every advantage that cooperation produces. Being a means does not make society any less real.",
+ pts:["Society is the great means to each person’s own ends","Preserving it is a condition of carrying out any plan at all","Even the criminal wants the advantages cooperation produces"],
+ ana:"A road is not where you are going; it is how you get there. Nobody loves the motorway, and nobody who wants to arrive would do without it."},
+
+{id:"c8-contract", ch:8, s:1, kind:"q",
+ q:"Did people <em>found</em> society by agreeing to it?",
+ a:"No. There was never a moment when people sat down and signed a contract to set up society. What happened, and happens afresh every day, is that people act to reach their own particular goals and find that working with others is the way to get there. Each of those actions aims only at cooperation for some definite purpose. The sum of all the relationships they create is what we call society. It is the product of purposeful action, but not of a plan to build it.",
+ pts:["There was no founding agreement or contract","People cooperate to reach their own particular goals","Society is the sum of those relationships, a product of action but not of design"],
+ ana:"Nobody decided to make a footpath across the park. Thousands of people each took the shortest way to the gate, and the path is what their footsteps left behind."},
+
+{id:"c8-entity", ch:8, s:1, kind:"q",
+ q:"Does society exist as a <em>separate being</em>, apart from the people in it?",
+ a:"No, and Mises thinks the question itself is a false one. Society is neither more nor less than the actions of individuals combined. It is an aspect of what people do, not a second thing alongside them with a life of its own. That does not make it unreal: cooperation really happens and really changes what people can achieve. But everything that is real about society is found in the thoughts and actions of individuals.",
+ pts:["Society is the combined actions of individuals, nothing extra","It is an aspect of what people do, not a being of its own","It is real, but its reality lives entirely in individuals’ thoughts and actions"],
+ ana:"A choir has a sound no single singer makes. Yet if the singers walk out, nothing is left on the stage. There is no choir that could stay behind."},
+
+{id:"c8-sympathy", ch:8, s:1, kind:"q",
+ q:"Did <em>sympathy</em> and friendship bring society into being?",
+ a:"No. Friendly feeling between people is real and among life’s best things, but Mises says it is a fruit of cooperation, not its seed. People did not first love one another and then decide to work together. They found that working together got them more of what they wanted, and warm feelings grew up inside that cooperation. The cause is the higher output of working together and the ability of reason to see it; the feelings come afterwards and thrive only within it.",
+ pts:["Sympathy and friendship are fruits of cooperation, not its cause","Cooperation arises because it produces more and reason can see that","Warm feelings grow up inside cooperation and depend on it"],
+ ana:"Teammates often become friends. But the team was formed to win matches, and the friendship grew in the changing room afterwards, not the other way round."},
+
+{id:"c8-twofacts", ch:8, s:1, kind:"q",
+ q:"What two facts, according to Mises, turned the <em>animal</em> man into a human being?",
+ a:"First, that work done by people dividing tasks among themselves produces more than the same people working alone. Second, that human reason is able to recognise this. Put the two together and cooperation follows: people see that they get more of what they want by working with others, and they act on it. Society, and with it civilisation, grows out of that recognition and that action.",
+ pts:["Dividing work among people produces more than working alone","Human reason can recognise that fact","Cooperation, and so society, grows out of acting on it"],
+ ana:"Two people can carry a sofa that neither can lift alone. The sofa is the first fact; noticing it is the second; the move is society."},
+
+{id:"c8-social", ch:8, s:1, kind:"q",
+ q:"Mises says a person <em>becomes human</em> only in society. How does that square with his view that only individuals act?",
+ a:"Both are true. Thinking and speaking are social: a person grows up into reason and language among others, and the individual as we know him is a product of a long history of cooperation. But that does not put society ahead of individuals as a thing that acts. Society is still nothing more than individuals combined for cooperative effort. People are shaped by society and then act within it; the acting is always theirs.",
+ pts:["Reason and language are social, learned among other people","The individual as we know him is a product of a history of cooperation","Yet society is still only individuals combined, and only individuals act"],
+ ana:"A chess player learned the game from others and could not play alone. Still, when it is her move, nobody moves the piece but her."}
 ];
 
 /* ============================================================
@@ -1274,10 +1331,13 @@ function buildDeckSelect(){
   html+='<option value="trouble">My trouble spots</option>';
   CHAPTER_ORDER.forEach(function(ch){
     var C=CHAPTERS[ch];
+    if(!cardsIn(ch).length) return;                     // chapter not started yet
     html+='<optgroup label="Chapter '+C.num+' · '+esc(C.title)+'">';
     html+='<option value="c'+ch+'">Whole chapter ('+cardsIn(ch).length+')</option>';
     C.secs.forEach(function(sc){
-      html+='<option value="c'+ch+'.'+sc.n+'">§'+sc.n+' '+esc(sc.t)+' ('+cardsIn(ch,sc.n).length+')</option>';
+      var n=cardsIn(ch,sc.n).length;
+      if(!n) return;                                    // section not written yet
+      html+='<option value="c'+ch+'.'+sc.n+'">§'+sc.n+' '+esc(sc.t)+' ('+n+')</option>';
     });
     html+='</optgroup>';
   });
@@ -1513,8 +1573,10 @@ function renderList(){
     '<span><i class="s"></i>Solid &mdash; got it '+SOLID_RUN+' times running</span>'+
     '<span><i class="w"></i>Shaky &mdash; missed in the last '+RECENT+'</span>'+
   '</div>';
+  var lastPart=null;
   CHAPTER_ORDER.forEach(function(ch){
     var C=CHAPTERS[ch];
+    if(C.part && C.part!==lastPart){ html+='<div class="parthead">'+esc(C.part)+'</div>'; lastPart=C.part; }
     html+='<div class="chaphead"><span>Chapter '+C.num+' &mdash; <b>'+esc(C.title)+'</b></span>'+
           '<button class="drill" data-deck="c'+ch+'">Review chapter &rarr;</button></div>';
     C.secs.forEach(function(sc){
