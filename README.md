@@ -132,10 +132,10 @@ the scheduler, matcher, stats and both modes carry over unchanged.
 
 # Human Action Review
 
-End-of-chapter review for Ludwig von Mises's *Human Action*. One card per question, 143 cards
+End-of-chapter review for Ludwig von Mises's *Human Action*. One card per question, 153 cards
 across chapters I–VII and the start of VIII (Acting Man · The Epistemological Problems of the Sciences
 of Human Action · Economics and the Revolt Against Reason · A First Analysis of the Category of Action ·
-Time · Uncertainty · Action Within the World · Human Society), including 20 **key terms** to define. Every numbered
+Time · Uncertainty · Action Within the World · Human Society), including 22 **key terms** to define. Every numbered
 section and every unnumbered sub-heading on the book's contents page (*On Happiness*, *I and We*,
 *Vegetative Man* …) has its own questions.
 
@@ -223,13 +223,13 @@ entry per card:
   Nothing appears in a point that does not appear in the answer.
 - **Keep Mises's claims.** Simplify the language; do not add claims, examples or opinions.
 - **Bump the revision stamp.** `REV` near the top of the script is shown in the footer as "deck
-  2026-10-20b". Change it with every content PR (add a letter, `2026-10-03b`, for a second one the
+  2026-10-20c". Change it with every content PR (add a letter, `2026-10-03b`, for a second one the
   same day). GitHub Pages lets browsers cache the page for ten minutes, so the stamp is how you tell
   whether a refresh actually picked up the latest merge.
 
 ### Roadmap
 
-Chapters I–VII are in the deck, and chapter VIII is in progress (sections 1–2 so far). The rest of the book, from the 4th revised edition (FEE, 1996), for
+Chapters I–VII are in the deck, and chapter VIII is in progress (sections 1–4 so far). The rest of the book, from the 4th revised edition (FEE, 1996), for
 when the next chapters are read — section lists are included where they will be needed next:
 
 - [x] **Introduction** — not in the deck; the review starts at Part One
@@ -241,7 +241,7 @@ when the next chapters are read — section lists are included where they will b
 - [x] **VI. Uncertainty** — 1 Uncertainty and Acting · 2 The Meaning of Probability · 3 Class Probability · 4 Case Probability · 5 Numerical Evaluation of Case Probability · 6 Betting, Gambling, and Playing Games · 7 Praxeological Prediction
 - [x] **VII. Action Within the World** — 1 The Law of Marginal Utility · 2 The Law of Returns · 3 Human Labor as a Means · 4 Production
 - [ ] **Part Two: Action Within the Framework of Society**
-  - [ ] **VIII. Human Society** *(in progress)* — 1 Human Cooperation ✓ · 2 A Critique of the Holistic and Metaphysical View of Society (Praxeology and Liberalism · Liberalism and Religion) ✓ · 3 The Division of Labor · 4 The Ricardian Law of Association (Current Errors Concerning the Law of Association) · 5 The Effects of the Division of Labor · 6 The Individual Within Society (The Fable of the Mystic Communion) · 7 The Great Society · 8 The Instinct of Aggression and Destruction (Current Misinterpretations of Modern Natural Science, Especially of Darwinism)
+  - [ ] **VIII. Human Society** *(in progress)* — 1 Human Cooperation ✓ · 2 A Critique of the Holistic and Metaphysical View of Society (Praxeology and Liberalism · Liberalism and Religion) ✓ · 3 The Division of Labor ✓ · 4 The Ricardian Law of Association (Current Errors Concerning the Law of Association) ✓ · 5 The Effects of the Division of Labor · 6 The Individual Within Society (The Fable of the Mystic Communion) · 7 The Great Society · 8 The Instinct of Aggression and Destruction (Current Misinterpretations of Modern Natural Science, Especially of Darwinism)
   - [ ] IX The Role of Ideas · X Exchange Within Society
 - [ ] **Part Three: Economic Calculation** — XI Valuation Without Calculation · XII The Sphere of Economic Calculation · XIII Monetary Calculation as a Tool of Action
 - [ ] **Part Four: Catallactics or Economics of the Market Society** — XIV The Scope and Method of Catallactics · XV The Market · XVI Prices · XVII Indirect Exchange · XVIII Action in the Passing of Time · XIX Interest · XX Interest, Credit Expansion, and the Trade Cycle · XXI Work and Wages · XXII The Nonhuman Original Factors of Production · XXIII The Data of the Market · XXIV Harmony and Conflict of Interests
