@@ -214,12 +214,16 @@ entry per card:
   unless the card is *about* that term, in which case the first sentence explains it in everyday words.
 - **Short.** Answers run 50–90 words, never more than about 110. Term cards can be shorter.
 - **One question per card.** If it asks two things, split it or drop one.
+- **No yes/no questions.** "Is liberalism hostile to religion?" can be answered with one word and tells
+  you nothing about what else you were meant to say. Ask instead for the content: "What is liberalism's
+  attitude to religion, and what is the one thing it opposes?" The question should name what a complete
+  answer has to contain, and the answer should not open with a bare "Yes" or "No".
 - **Checklist points restate the answer.** Three points, occasionally four, each under about 14 words,
   each a plain restatement of a claim the answer explicitly makes, in the order the answer makes them.
   Nothing appears in a point that does not appear in the answer.
 - **Keep Mises's claims.** Simplify the language; do not add claims, examples or opinions.
 - **Bump the revision stamp.** `REV` near the top of the script is shown in the footer as "deck
-  2026-10-20". Change it with every content PR (add a letter, `2026-10-03b`, for a second one the
+  2026-10-20b". Change it with every content PR (add a letter, `2026-10-03b`, for a second one the
   same day). GitHub Pages lets browsers cache the page for ten minutes, so the stamp is how you tell
   whether a refresh actually picked up the latest merge.
 
