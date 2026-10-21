@@ -132,10 +132,10 @@ the scheduler, matcher, stats and both modes carry over unchanged.
 
 # Human Action Review
 
-End-of-chapter review for Ludwig von Mises's *Human Action*. One card per question, 143 cards
+End-of-chapter review for Ludwig von Mises's *Human Action*. One card per question, 174 cards
 across chapters I–VII and the start of VIII (Acting Man · The Epistemological Problems of the Sciences
 of Human Action · Economics and the Revolt Against Reason · A First Analysis of the Category of Action ·
-Time · Uncertainty · Action Within the World · Human Society), including 20 **key terms** to define. Every numbered
+Time · Uncertainty · Action Within the World · Human Society), including 22 **key terms** to define and 21 **multiple-choice** questions. Every numbered
 section and every unnumbered sub-heading on the book's contents page (*On Happiness*, *I and We*,
 *Vegetative Man* …) has its own questions.
 
@@ -149,6 +149,7 @@ it runs the way a good study partner would:
 | **Prompt** | One question, tagged with its chapter and section. Write your answer in the box, or just think it through. |
 | **Reveal** | <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd>, or the button. Shows what you wrote, the **model answer**, a checklist of the points a full answer should hit, and an analogy. |
 | **Grade** | Tick the points you covered — the matching grade lights up as a suggestion — then pick <kbd>1</kbd> Missed it, <kbd>2</kbd> Partly, or <kbd>3</kbd> Got it. |
+| **Multiple choice** | Some cards offer four options instead of a box. Pick one (click, or keys <kbd>1</kbd>–<kbd>4</kbd>); it is marked at once, the explanation appears, and the card is graded for you: right retires it, wrong brings it back soon. <kbd>Enter</kbd> moves on. Option order is shuffled every time so the letter cannot be memorised. |
 | **Skip** | Parks it for later without logging a miss. |
 
 The three grades do different things to the schedule:
@@ -175,7 +176,7 @@ heading has a **Review →** button that starts a run on just those cards.
 
 ### Decks
 
-The deck menu mirrors the same structure: all chapters, **Key terms only**, **My trouble spots** (which
+The deck menu mirrors the same structure: all chapters, **Key terms only**, **Multiple choice only**, **My trouble spots** (which
 rebuilds itself from whatever is currently shaky), and then, per chapter, the whole chapter or any one
 numbered section — so you can drill §2 *The Prerequisites of Human Action* on its own the evening you
 read it.
@@ -201,7 +202,8 @@ entry per card:
 | `ch` | Chapter number |
 | `s` | Numbered section within the chapter, as on the contents page |
 | `sub` | Optional: the unnumbered sub-heading the question belongs to (`"On Happiness"`). Omit for questions on the section proper. |
-| `kind` | `"q"` for a review question, `"term"` for a definition (goes in the Key terms deck) |
+| `kind` | `"q"` for a review question, `"term"` for a definition (goes in the Key terms deck), `"mc"` for multiple choice |
+| `opts`, `ans` | Multiple choice only: four options, and the index (0–3) of the right one. The answer field `a` then holds the explanation and there is no `pts`. |
 | `q` | The question. `<em>` highlights a word in orange. |
 | `a` | The model answer |
 | `pts` | The checklist — the things a complete answer should contain |
@@ -222,14 +224,19 @@ entry per card:
   each a plain restatement of a claim the answer explicitly makes, in the order the answer makes them.
   Nothing appears in a point that does not appear in the answer.
 - **Keep Mises's claims.** Simplify the language; do not add claims, examples or opinions.
+- **Multiple choice.** Four options, one clearly best. The wrong options should be real misreadings a
+  reader might hold (the holist view, the instinct view, the social-Darwinist view), not nonsense, and
+  not noticeably longer or shorter than the right one. The explanation says why the right option is
+  right and, where it helps, what is wrong with the tempting one. Ask what Mises says, not whether a
+  statement is true.
 - **Bump the revision stamp.** `REV` near the top of the script is shown in the footer as "deck
-  2026-10-20b". Change it with every content PR (add a letter, `2026-10-03b`, for a second one the
+  2026-10-21". Change it with every content PR (add a letter, `2026-10-03b`, for a second one the
   same day). GitHub Pages lets browsers cache the page for ten minutes, so the stamp is how you tell
   whether a refresh actually picked up the latest merge.
 
 ### Roadmap
 
-Chapters I–VII are in the deck, and chapter VIII is in progress (sections 1–2 so far). The rest of the book, from the 4th revised edition (FEE, 1996), for
+Chapters I–VII are in the deck, and chapter VIII is complete. The rest of the book, from the 4th revised edition (FEE, 1996), for
 when the next chapters are read — section lists are included where they will be needed next:
 
 - [x] **Introduction** — not in the deck; the review starts at Part One
@@ -241,7 +248,7 @@ when the next chapters are read — section lists are included where they will b
 - [x] **VI. Uncertainty** — 1 Uncertainty and Acting · 2 The Meaning of Probability · 3 Class Probability · 4 Case Probability · 5 Numerical Evaluation of Case Probability · 6 Betting, Gambling, and Playing Games · 7 Praxeological Prediction
 - [x] **VII. Action Within the World** — 1 The Law of Marginal Utility · 2 The Law of Returns · 3 Human Labor as a Means · 4 Production
 - [ ] **Part Two: Action Within the Framework of Society**
-  - [ ] **VIII. Human Society** *(in progress)* — 1 Human Cooperation ✓ · 2 A Critique of the Holistic and Metaphysical View of Society (Praxeology and Liberalism · Liberalism and Religion) ✓ · 3 The Division of Labor · 4 The Ricardian Law of Association (Current Errors Concerning the Law of Association) · 5 The Effects of the Division of Labor · 6 The Individual Within Society (The Fable of the Mystic Communion) · 7 The Great Society · 8 The Instinct of Aggression and Destruction (Current Misinterpretations of Modern Natural Science, Especially of Darwinism)
+  - [x] **VIII. Human Society** — 1 Human Cooperation · 2 A Critique of the Holistic and Metaphysical View of Society (Praxeology and Liberalism · Liberalism and Religion) · 3 The Division of Labor · 4 The Ricardian Law of Association (Current Errors Concerning the Law of Association) · 5 The Effects of the Division of Labor · 6 The Individual Within Society (The Fable of the Mystic Communion) · 7 The Great Society · 8 The Instinct of Aggression and Destruction (Current Misinterpretations of Modern Natural Science, Especially of Darwinism). Sections 5–8 are multiple choice.
   - [ ] IX The Role of Ideas · X Exchange Within Society
 - [ ] **Part Three: Economic Calculation** — XI Valuation Without Calculation · XII The Sphere of Economic Calculation · XIII Monetary Calculation as a Tool of Action
 - [ ] **Part Four: Catallactics or Economics of the Market Society** — XIV The Scope and Method of Catallactics · XV The Market · XVI Prices · XVII Indirect Exchange · XVIII Action in the Passing of Time · XIX Interest · XX Interest, Credit Expansion, and the Trade Cycle · XXI Work and Wages · XXII The Nonhuman Original Factors of Production · XXIII The Data of the Market · XXIV Harmony and Conflict of Interests

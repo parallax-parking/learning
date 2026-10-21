@@ -149,6 +149,30 @@
   .points label:hover{border-color:#3a3a46}
   .points input{margin:4px 0 0;accent-color:var(--ok);flex:none;width:16px;height:16px}
   .points label.hit{border-color:rgba(49,194,109,.5);background:rgba(49,194,109,.07)}
+  /* multiple choice */
+  .choices{display:grid;gap:8px;margin:0 0 4px}
+  .choice{
+    display:flex;align-items:flex-start;gap:12px;text-align:left;width:100%;
+    background:var(--bg);border:1.5px solid var(--line);border-radius:11px;padding:12px 14px;
+    color:var(--ink);font:inherit;font-size:15.5px;line-height:1.45;cursor:pointer;transition:.14s;
+  }
+  .choice:hover{border-color:var(--accent)}
+  .choice .key{
+    flex:none;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink-dim);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:2px 7px;margin-top:1px;
+  }
+  .choice:disabled{cursor:default}
+  .choice.right{border-color:var(--ok);background:rgba(49,194,109,.09)}
+  .choice.right .key{background:var(--ok);color:#06321a;border-color:var(--ok)}
+  .choice.wrong{border-color:var(--bad);background:rgba(240,72,62,.09)}
+  .choice.wrong .key{background:var(--bad);color:#3a0704;border-color:var(--bad)}
+  .choice.dim{opacity:.5}
+  .verdict{font-size:15px;font-weight:600;margin:0 0 6px}
+  .verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+  .mcopts{list-style:none;margin:10px 0 12px;padding:0;display:grid;gap:5px;font-size:14px;color:var(--ink-dim)}
+  .mcopts li{display:flex;gap:9px;align-items:flex-start}
+  .mcopts li i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--ink-faint);min-width:14px;margin-top:3px}
+  .mcopts li.ok{color:var(--ink)} .mcopts li.ok i{color:var(--ok)}
   .analogy{
     background:linear-gradient(135deg,rgba(255,107,26,.12),rgba(255,107,26,.03));
     border:1px solid rgba(255,107,26,.35);border-radius:11px;padding:12px 15px;
@@ -301,9 +325,11 @@
     <span class="tag n" id="cardno">1 / 40</span>
   </div>
   <p class="question" id="qtext"></p>
+  <div class="choices" id="choices" hidden></div>
   <textarea id="answer" placeholder="Think it through, then write your answer in your own words (optional)…" autocomplete="off" spellcheck="true"></textarea>
   <div class="row">
     <button class="btn primary" id="revealBtn">Reveal answer <span class="kbd">⌘ Enter</span></button>
+    <button class="btn primary" id="nextBtn" hidden>Next <span class="kbd">Enter</span></button>
     <button class="btn ghost" id="skipBtn">Skip for now</button>
   </div>
 
@@ -313,17 +339,18 @@
       <div class="yours" id="yours"></div>
     </div>
     <div class="block">
-      <h3>Model answer</h3>
+      <p class="verdict" id="verdict" hidden></p>
+      <h3 id="modelHead">Model answer</h3>
       <p class="model" id="model"></p>
     </div>
-    <div class="block">
+    <div class="block" id="ptsBlock">
       <h3>Did you hit these?</h3>
       <ul class="points" id="points"></ul>
     </div>
     <div class="block">
       <div class="analogy" id="analogy"></div>
     </div>
-    <div class="block">
+    <div class="block" id="gradeBlock">
       <h3>How did you do?</h3>
       <div class="grade">
         <button class="btn miss" id="gMiss">Missed it <span class="kbd">1</span></button>
@@ -377,7 +404,7 @@
    ============================================================ */
 /* Bump this with every content change so a reader can tell which build they are
    looking at (GitHub Pages lets browsers cache the page for ten minutes). */
-var REV="2026-10-20b";
+var REV="2026-10-21";
 
 var CHAPTERS={
   1:{num:"I",   title:"Acting Man", short:"Acting Man", part:"Part One · Human Action", secs:[
@@ -1314,7 +1341,215 @@ var CARDS=[
  q:"Why does liberalism demand religious <em>tolerance</em>?",
  a:"Not because it thinks religious questions do not matter, but because they cannot be settled by force without wrecking cooperation. People of different faiths have to live and work together, and the moment one creed is imposed by the state, cooperation among them breaks down into persecution and war. Tolerance is the condition under which people who disagree about ultimate things can still cooperate about earthly ones. Liberalism asks for it for that reason alone.",
  pts:["Religious disputes cannot be settled by force without wrecking cooperation","Imposing one creed by the state turns cooperation into persecution and war","Tolerance lets people who disagree about ultimate things still cooperate on earthly ones"],
- ana:"Housemates who argue about politics over dinner still share the kitchen. The house works as long as nobody tries to settle the argument by changing the locks."}
+ ana:"Housemates who argue about politics over dinner still share the kitchen. The house works as long as nobody tries to settle the argument by changing the locks."},
+
+{id:"c8-term-dol", ch:8, s:3, kind:"term",
+ q:"What is the <em>division of labour</em>, and why does Mises call it the fundamental social fact?",
+ a:"The division of labour is the splitting of work among people so that each does a part and the parts are put together: one farms, one weaves, one heals. It is the other face of cooperation; to divide work is to work together. Mises calls it the fundamental social fact because it is what society consists of. People form a society by dividing work among themselves and combining the results, and everything else in social life grows out of that.",
+ pts:["Work is split among people and the parts combined","Dividing work is the same thing as working together","Society consists of this; everything else in social life grows from it"],
+ ana:"A single violinist can play a tune. An orchestra exists the moment the parts are handed out and played together. Society is the handing out of parts."},
+
+{id:"c8-twofacts-dol", ch:8, s:3, kind:"q",
+ q:"What two <em>natural facts</em> make work divided among people more productive than everyone working alone?",
+ a:"First, people are born unequal in their abilities: one is strong, another nimble, a third patient with detail. Second, the earth is unequal from place to place: soil, water, minerals and climate are not spread evenly. Because of both, it pays for each person and each place to concentrate on what they do comparatively best and to trade for the rest. You can treat the two facts as one: nature is varied, in people and in places, and dividing work is the way people take advantage of that variety.",
+ pts:["People differ in inborn abilities","The earth is unequal from place to place","Both reward specialising in what one does comparatively best and trading for the rest"],
+ ana:"A kitchen with a fast chopper and a careful baker, next to a market with good fish and a hill with good grapes, turns out a better dinner than the same people each cooking a whole meal from whatever is to hand."},
+
+{id:"c8-uniform", ch:8, s:3, kind:"q",
+ q:"What would happen to the division of labour in a world where all people were <em>equally able</em> and nature the same everywhere?",
+ a:"People would still join forces for jobs too big for one pair of hands, such as moving a boulder. But nobody would have any lasting reason to specialise, because no one would be better than anyone else at anything and no place would be better for anything. The permanent division of labour we know, with its trades and its regions, would not have developed. That shows the division of labour is not a plan imposed on nature; it is people’s considered response to the unevenness nature presents.",
+ pts:["People would still combine for tasks too big for one person","With no differences, there would be no lasting reason to specialise","The division of labour is a response to nature’s unevenness, not a plan imposed on it"],
+ ana:"In a village where everyone is exactly as good a cobbler as everyone else, nobody becomes the cobbler. They just all carry a boulder together now and then."},
+
+{id:"c8-machines", ch:8, s:3, kind:"q",
+ q:"What is the relationship between the division of labour and <em>machines</em>?",
+ a:"Machines are a result of the division of labour, not its cause. Once production has been split into small, repeated steps, many of those steps turn out to be simple enough for a mechanical device to do. Without the splitting there would be no simple steps to mechanise. So the sequence runs from dividing work to inventing machines, and machines then let the division of labour go further still.",
+ pts:["Machines come from the division of labour, not the other way round","Splitting production into small repeated steps makes mechanising them possible","Machines then let the division of labour go further"],
+ ana:"Nobody could build a machine to ‘make a shoe’. Once shoemaking was broken into cutting, stitching and nailing, each piece could be given to a device."},
+
+{id:"c8-term-assoc", ch:8, s:4, kind:"term",
+ q:"State the <em>law of association</em>.",
+ a:"Two people both gain by working together and trading, even when one of them is better at every single task than the other. The more able one should concentrate on the work where their lead is largest, the less able one on the work where their shortfall is smallest, and the two together will produce more than they could apart. Ricardo found this for trade between countries, his law of comparative cost. Mises widens it into a general law of cooperation between any people or places that differ.",
+ pts:["Both gain from cooperating even when one is better at everything","Each concentrates where their lead is largest or their shortfall smallest","Together they produce more than apart; Ricardo’s trade law made general"],
+ ana:"A surgeon who types faster than her secretary still hands over the typing. Every hour she spends at the keyboard is an hour of surgery lost, and nobody else can do the surgery."},
+
+{id:"c8-assoc-why", ch:8, s:4, kind:"q",
+ q:"Why does the <em>more able</em> partner gain from cooperating with someone worse at everything?",
+ a:"Because the able partner’s time is the scarce thing. Every hour they spend on a task where their lead is small is an hour taken from the task where their lead is large, and that costs them more than the small task is worth. Handing the small-lead task to the weaker partner, even though it gets done more slowly, frees the strong partner for the work only they do well. The total output of the pair goes up, and both get a share of the increase.",
+ pts:["The able partner’s time is scarce","An hour on the small-lead task is lost from the large-lead task","Handing over the small-lead task raises the pair’s total output, which both share"],
+ ana:"The best player on a football team could probably keep goal better than the goalkeeper. The team still loses if she stands in goal, because then nobody is scoring."},
+
+{id:"c8-strongweak", ch:8, s:4, kind:"q",
+ q:"What does the law of association explain about why the <em>strong</em> cooperated with the weak instead of getting rid of them?",
+ a:"It explains why society grew by taking people in rather than by wiping them out. If the strong gained nothing from the weak, the natural course would be to treat them as rivals for scarce means and drive them off. But the law shows that the able gain from cooperating even with those less able in every respect. So the talented have a reason to treat the less talented as partners, not competitors, and cooperation keeps widening to take in more people. Mises uses this to make sense of the long growth of human society.",
+ pts:["Society grew by taking people in, not by wiping them out","The able gain from cooperating even with the less able","So the talented treat others as partners, and cooperation keeps widening"],
+ ana:"A master builder does not run apprentices off the site to keep the work for himself. Each extra pair of hands, however green, lets him build more than he could alone."},
+
+{id:"c8-peace", ch:8, s:4, kind:"q",
+ q:"Why does Mises say the higher output of divided work removes the natural <em>conflict of interests</em>?",
+ a:"Nature by itself does not produce peace and goodwill; left to nature, people fight over a fixed supply, and one person’s gain is another’s loss. The division of labour changes the arithmetic. Once people work together, the supply is no longer fixed; it multiplies. There is now a shared interest, greater than any quarrel over shares, in keeping the cooperation going and extending it. That shared interest is what makes friendly relations between people possible at all.",
+ pts:["Left to nature, people fight over a fixed supply","Divided work makes the supply multiply instead of staying fixed","A shared interest in keeping cooperation going outweighs quarrels over shares"],
+ ana:"Two castaways fight over the one coconut. Two castaways who have built a boat together have a bigger thing to protect than either one’s share of the coconut."},
+
+{id:"c8-labortheory", ch:8, s:4, sub:"Current Errors Concerning the Law of Association", kind:"q",
+ q:"Why does the law of association not depend on the <em>labour theory of value</em> or on comparing hours of work?",
+ a:"Ricardo set out his examples in hours of labour, and critics took that to mean the law stands or falls with the idea that labour is the measure of value. It does not. The hours are only a convenient way to compare how much of each good two parties can turn out with what they have. The law needs just one assumption: that both parties want both goods. Given that, it follows from the physical facts of how much each can produce, and no theory of value enters at all.",
+ pts:["Ricardo’s hours of labour were only a convenient way to compare output","The law assumes only that both parties want both goods","It follows from physical facts of production, with no theory of value"],
+ ana:"A recipe written in cups still works if you cook by weight. The measure was a convenience; the dish does not depend on it."},
+
+{id:"c8-mobility", ch:8, s:4, sub:"Current Errors Concerning the Law of Association", kind:"q",
+ q:"What part does Ricardo’s assumption that capital and labour <em>cannot move</em> between countries play in the law of association?",
+ a:"It was a special assumption for the case Ricardo was studying, trade between nations, not a condition of the law itself. Critics treat it as if the law collapsed once people and capital can move. In fact, if they can move, they move to where they produce most, which is the same tendency the law describes, only carried out by migration instead of trade. The law holds between two neighbours in a village as much as between two countries, and whether anyone moves house changes who does what where, not the gain from cooperating.",
+ pts:["Immobility was Ricardo’s special assumption for trade between nations, not part of the law","With mobility, people and capital move to where they produce most","The law holds between neighbours as much as between countries"],
+ ana:"Whether the fish comes to the market or the cook goes to the harbour, the point is the same: the fish gets cooked by the cook. Moving changes the route, not the reason."},
+
+/* ---- Chapter VIII §5–§8: multiple choice ---- */
+{id:"c8-mc-dol-differ", ch:8, s:5, kind:"mc",
+ q:"Dividing work among people starts from the fact that people differ. What does Mises say it then <em>does</em> to those differences?",
+ opts:["It evens them out, because everyone ends up doing much the same routine tasks","It widens them, turning small inborn differences into large trained ones","It leaves them untouched, since talent is fixed at birth and work cannot change it","It removes them inside a nation while widening them between nations"],
+ ans:1,
+ a:"The division of labour is a response to natural differences, but it also magnifies them. Someone a little better with their hands becomes, after years at the bench, far better than anyone else. The same happens to places: a region slightly suited to one product becomes the place that product comes from. Cause and effect feed each other.",
+ ana:"Two saplings a few inches apart in height, one a touch closer to the window, end up as a tall tree and a short one. The small start became a large gap by being acted on."},
+
+{id:"c8-mc-dependence", ch:8, s:5, kind:"mc",
+ q:"What happens to the <em>individual</em> as the division of labour deepens?",
+ opts:["More self-sufficient, since specialised skill lets a person do more on their own","More dependent on others, since a specialist cannot live on their own output","Less in need of society, since impersonal markets replace personal ties","No different from before, since dependence belongs only to primitive life"],
+ ans:1,
+ a:"A person who makes only shoes, or only one part of a shoe, cannot eat shoes. The more finely work is divided, the less of what anyone needs is made by that person, and the more they depend on everyone else. A member of a developed society could not survive alone, let alone keep their way of life. Dependence grows with specialisation.",
+ ana:"A spider that spins a whole web can rebuild it alone. A worker bee that only guards the entrance dies outside the hive."},
+
+{id:"c8-mc-intensify", ch:8, s:5, kind:"mc",
+ q:"Mises describes the division of labour as a process that tends to <em>intensify</em>. What does that mean?",
+ opts:["Work gets harder and hours get longer as competition sharpens","Tasks are split ever finer and more people and places are drawn in","The state takes over more and more of the planning of production","Trade shifts away from physical goods toward services and ideas"],
+ ans:1,
+ a:"Intensification has two directions. Within a process, tasks are split into finer and finer steps. Across society, more people and more regions are drawn into exchanging with one another. Both raise output further, which rewards still more splitting and still wider reach. The process feeds itself, which is why Mises sees it as the main line of social development.",
+ ana:"A river system: each stream branches into more rivulets, and the whole network reaches further up the hills every year."},
+
+{id:"c8-mc-dol-result", ch:8, s:5, kind:"mc",
+ q:"Which statement about the division of labour would Mises <em>reject</em>?",
+ opts:["It is a conscious human response to the unevenness of nature","It makes each person more dependent on all the others","It is a fixed arrangement that, once reached, stays as it is","It itself becomes a cause of further differences among people and places"],
+ ans:2,
+ a:"The other three are Mises’s own claims. The division of labour is not a settled state but a process: it keeps splitting tasks, keeps drawing in more people, and keeps producing new differences that invite yet more division. Treating it as a finished arrangement misses what he thinks is most important about it, that it is the engine of social change.",
+ ana:"A language is not a finished dictionary. It is the ongoing activity of people talking, which keeps adding words."},
+
+{id:"c8-mc-sacrifice", ch:8, s:6, kind:"mc",
+ q:"Critics say that living in society forces the individual to <em>sacrifice</em> their own interests. What is Mises’s reply?",
+ opts:["The sacrifice is real, but it is worth bearing for the good of the whole","There is no sacrifice: isolation is traded for a far larger gain","Only the weak sacrifice anything; the strong would do better on their own","Society pays the individual back for the sacrifice with rights and welfare"],
+ ans:1,
+ a:"For Mises a sacrifice is giving up something you value for something you value less, and that is not what happens here. The person who stops stealing or keeps a bargain is giving up a small gain for the enormous gain of staying inside the web of cooperation, without which they could barely live. That is a trade in their own favour, not a loss borne for others.",
+ ana:"Paying for a train ticket is not a sacrifice to the railway. It is the cheap way to get across the country."},
+
+{id:"c8-mc-freedom", ch:8, s:6, kind:"mc",
+ q:"How does Mises compare the <em>freedom</em> of a person in society with the freedom of someone living outside it?",
+ opts:["The isolated person is freer, since nobody can give them orders","The person in society is freer, since cooperation frees them from want","Both are equally free; society only changes who gives the orders","Neither is free; freedom is an illusion in both conditions"],
+ ans:1,
+ a:"The person outside society answers to no one but is at the mercy of hunger, cold, disease and every stronger creature. Within society that same person can do incomparably more. What they give up is only the licence to harm others, which is worth little; what they gain is the whole range of ends that cooperation opens. Mises calls the savage’s freedom a poor thing beside this.",
+ ana:"A man alone on an island may do as he likes, and what he likes is to find enough to eat before dark."},
+
+{id:"c8-mc-coercion", ch:8, s:6, kind:"mc",
+ q:"If cooperation serves everyone, why does Mises think society still needs an <em>apparatus of compulsion</em>, the state?",
+ opts:["Most people cannot see their own interest and must be forced to cooperate","Some people will not keep the rules, and everyone else needs protecting from them","Society has goals of its own that override what individuals want","Without force, people would never divide work among themselves at all"],
+ ans:1,
+ a:"The case for cooperation is addressed to reason, but not everyone follows it. There are people who, from error or passion or short-sightedness, break the rules on which cooperation depends. Society cannot leave itself at their mercy. The state exists to hold back such conduct with force, so that peaceful cooperation among everyone else can go on.",
+ ana:"A football league does not need referees because the players hate football. It needs them because one player kicking shins ruins the game for twenty-one others."},
+
+{id:"c8-mc-selfinterest", ch:8, s:6, kind:"mc",
+ q:"On what, for Mises, does a person’s willingness to live within society <em>rest</em>?",
+ opts:["An inborn social instinct that draws people together","Fear of punishment, and nothing more than that","Seeing that cooperation serves their own ends better than anything else","A moral duty that each person owes to the collective"],
+ ans:2,
+ a:"Mises grounds social behaviour in the individual’s own interest, rightly understood. People do not become social by sacrificing themselves to a collective or by obeying an instinct. They become social by seeing that working with others gets them more of what they want. Where that recognition fails, force has to step in, but force is the backstop, not the foundation.",
+ ana:"A trader keeps his word not because a contract-god watches him but because people who keep their word get the next deal."},
+
+{id:"c8-mc-communion", ch:8, s:6, sub:"The Fable of the Mystic Communion", kind:"mc",
+ q:"What is the <em>mystic communion</em> that Mises calls a fable?",
+ opts:["The belief that markets coordinate strangers as if by magic","The claim that a felt bond of blood or spirit binds a people before any cooperation","The religious teaching that all human souls are at bottom one","The hope that all nations will one day merge into a single state"],
+ ans:1,
+ a:"Romantic and nationalist writers held that what makes a people one is a mystical feeling of kinship, a common blood or spirit, from which society then grows. Mises calls this a fable because it gets the order backwards. Cooperation comes first; the feelings of belonging grow up inside it and are shaped by it. No bond of blood ever built a society that cooperation had not built already.",
+ ana:"Fans feel one with a crowd of strangers at a match. The feeling is real, but it was the match that brought them together, not a prior kinship among people in matching scarves."},
+
+{id:"c8-mc-kinship", ch:8, s:6, sub:"The Fable of the Mystic Communion", kind:"mc",
+ q:"Which observation does Mises use <em>against</em> the idea that kinship or shared blood is what binds society?",
+ opts:["Relatives are usually the people who cooperate with one another best","Strangers of different blood cooperate daily, while brothers often quarrel","Nations with the purest bloodlines have built the strongest societies","Shared ancestry is impossible to establish, so it cannot bind anyone"],
+ ans:1,
+ a:"If blood or kinship were the glue of society, cooperation would stop at the family or the tribe, and relatives would be the most reliable partners. Neither is true. Strangers from different peoples and tongues trade and work together across the world, and families are as capable of feud as of harmony. What holds people together is the benefit each gets from cooperating, which does not care about ancestry.",
+ ana:"The baker you buy from every morning may share none of your ancestors. Your cousin, who shares plenty, has not spoken to you since the will was read."},
+
+{id:"c8-mc-folkspirit", ch:8, s:6, sub:"The Fable of the Mystic Communion", kind:"mc",
+ q:"What does Mises say a ‘national spirit’ or ‘soul of a people’ <em>really is</em>?",
+ opts:["A real force that shapes individuals from above and outlives them","The ideas its individual members share, which change as they change","A biological inheritance carried in the blood from generation to generation","A useful fiction that governments invent to keep people loyal"],
+ ans:1,
+ a:"There is no spirit floating above a people and steering them. What looks like one is the sum of what individuals think, value and do in common, learned from one another and passed on. Because it lives only in individuals, it changes when they change their minds. Treating it as an agent with purposes of its own is the same error as treating society as a being.",
+ ana:"A town’s ‘character’ is the people in it. Move them all out and bring in others, and the character moves with them."},
+
+{id:"c8-mc-great", ch:8, s:7, kind:"mc",
+ q:"What does Mises mean by the <em>great society</em>?",
+ opts:["A welfare state generous enough to provide for all its citizens","The worldwide web of cooperation that spreads with the division of labour","A political union of all nations under one world government","An ideal society that has never existed and never will"],
+ ans:1,
+ a:"Cooperation began in small circles and has widened, step by step, until people on every continent work for one another through exchange. That ever-widening web is the great society. It is not a government or a plan; nobody runs it. It is simply the division of labour extended across the whole human race, as far as peace allows.",
+ ana:"Your breakfast was grown, shipped, roasted and packed by thousands of people on three continents who will never meet you. That supply chain is a small piece of the great society."},
+
+{id:"c8-mc-enemies", ch:8, s:7, kind:"mc",
+ q:"Mises notes that the great society includes people who are <em>hostile</em> to one another. How is that possible?",
+ opts:["It is not possible; hostility breaks the society apart at once","Exchange links people whether or not they like each other","Governments force hostile peoples to keep trading with one another","Hostility between members is only ever a misunderstanding"],
+ ans:1,
+ a:"The web of exchange does not ask for affection. A farmer feeds people he has never met and might dislike if he had. So the great society can hold together people and even nations that regard each other with suspicion, as long as they do not actually go to war. Mises’s point is that cooperation rests on mutual advantage, not on mutual love.",
+ ana:"Two neighbours who cannot stand each other still both use the same bus company, and each of them, by paying a fare, helps keep the other’s bus running."},
+
+{id:"c8-mc-peacecond", ch:8, s:7, kind:"mc",
+ q:"What, according to Mises, is the great society’s <em>enemy</em>?",
+ opts:["Technology, which replaces human cooperation with machines","Large cities, which weaken the personal ties society rests on","War, conquest and the drive for national self-sufficiency","Trade itself, which breeds rivalry and resentment between peoples"],
+ ans:2,
+ a:"The great society lives on exchange, and anything that severs exchange shrinks it. War does so directly. The drive to make each nation self-sufficient, to grow and make everything at home, does so deliberately. Both throw away the gains of the law of association and push mankind back toward isolated groups. Peace is the condition of the great society; the policies that cut nations off from one another are its undoing.",
+ ana:"A city’s water system is only as good as its pipes. Blowing up the mains, or walling off each street to dig its own well, leaves everyone thirstier."},
+
+{id:"c8-mc-instinct", ch:8, s:8, kind:"mc",
+ q:"Some writers say humans have an inborn <em>instinct</em> to fight and destroy, so peaceful society goes against nature. What is Mises’s reply?",
+ opts:["There is no such instinct; people are peaceful by nature","Such urges may exist, but people can master them and reason shows they should","The instinct is real, so lasting peace is impossible","War is healthy precisely because it satisfies the instinct"],
+ ans:1,
+ a:"Mises does not need to deny that people feel aggressive urges. His point is that humans are not driven by urges the way animals are; they weigh them against consequences and often hold back. Civilisation is exactly the history of that holding back, done because reason sees that cooperation produces more of what people want than fighting over scraps. Yielding to the urge is a choice, and usually a bad one.",
+ ana:"Everyone has felt like punching a referee. Almost nobody does, and not because the feeling is missing but because they can see what happens next."},
+
+{id:"c8-mc-ideas", ch:8, s:8, kind:"mc",
+ q:"Why does Mises think wars are fought over <em>ideas</em> rather than being driven by a brute instinct?",
+ opts:["Soldiers left to themselves show no aggression, so instinct cannot be the cause","The great wars were made by taught doctrines of nationalism and conquest","Animals fight for ideas too, which shows that ideas lie behind all conflict","Instinct explains fights between individuals but says nothing about states"],
+ ans:1,
+ a:"An instinct would be the same in every age, but the readiness to fight rises and falls with the doctrines people hold. Modern wars were prepared by teachings about national destiny, racial mission and the glory of conquest, drilled into people by writers and schools. Change the ideas and the behaviour changes. That is why Mises treats militarism as a matter of ideas to be fought with better ideas, not a fixed feature of the species.",
+ ana:"Nobody is born supporting a particular war. They are talked into it, which means they can be talked out of it."},
+
+{id:"c8-mc-warriorcult", ch:8, s:8, kind:"mc",
+ q:"Writers who praise the warrior and scorn ‘soft’ commercial society claim to speak for nature against civilisation. What <em>irony</em> does Mises point out?",
+ opts:["Warriors have usually been poor writers, so the books are badly argued","They are products of the civilisation they despise and argue with the reason they belittle","Commercial societies have in fact won every war they have fought","Nature has no opinion about war, so nobody can speak for it"],
+ ans:1,
+ a:"The preachers of struggle sit in warm studies, fed and protected by the division of labour, writing books that only a peaceful, literate society could produce or read. And they try to persuade by argument, which is to appeal to reason, the very thing they say should give way to instinct. Their position saws off the branch it sits on.",
+ ana:"A man who denounces electricity in a podcast has already lost the argument before he opens his mouth."},
+
+{id:"c8-mc-tame", ch:8, s:8, kind:"mc",
+ q:"Which of these does Mises <em>accept</em> about aggression?",
+ opts:["Society needs people to hold aggressive urges in check, and that restraint underlies civilisation","Aggression is the deepest human drive and cannot be restrained for long","Only primitive peoples felt aggressive urges; civilised people have none","Aggression disappears by itself as soon as people begin to trade"],
+ ans:0,
+ a:"Mises grants that aggressive impulses exist and that living in society means curbing them. What he denies is that the curbing is unnatural or doomed. Reason is as much part of human nature as any urge, and it is reason that shows the gains of restraint. The impulses do not vanish with trade; they are held in check by people who see what they would lose by acting on them.",
+ ana:"A dog is trained not to bite the postman. The urge may remain; the postman still gets his rounds done."},
+
+{id:"c8-mc-darwin", ch:8, s:8, sub:"Current Misinterpretations of Modern Natural Science, Especially of Darwinism", kind:"mc",
+ q:"Social Darwinists took the ‘struggle for existence’ to mean that war between people is nature’s law. What is Mises’s <em>correction</em>?",
+ opts:["Darwin was simply wrong about struggle, so his theory has nothing to teach","The struggle is against the conditions of life, and humans wage it best by cooperating","The struggle applies to animals, but humans stand outside nature","War is indeed nature’s law, but reason lets humans ignore it"],
+ ans:1,
+ a:"Darwin’s struggle is a figure of speech for the effort to stay alive and leave offspring in a given environment; it need not mean fighting. For human beings the way to stay alive is to work together, because divided work produces vastly more. So the division of labour is not an escape from the struggle for existence; it is how humans wage it. War, by contrast, destroys the means of survival.",
+ ana:"Penguins survive the Antarctic winter by huddling, not by pecking each other to death. The huddle is their struggle for existence."},
+
+{id:"c8-mc-fittest", ch:8, s:8, sub:"Current Misinterpretations of Modern Natural Science, Especially of Darwinism", kind:"mc",
+ q:"Who are the <em>fittest</em>, in the human case, on Mises’s reading of Darwin?",
+ opts:["The physically strongest, the ones who win fights","Those best able to cooperate, since that is how humans adapt","Those with the most children, however they happen to live","The most ruthless, the ones who take what they want"],
+ ans:1,
+ a:"Fitness in Darwin’s sense means being suited to one’s conditions, not being fierce. The condition of human life is that people depend on one another, so the traits that fit a person to survive are the ones that fit them for cooperation: foresight, reliability, the capacity to reason and to restrain impulse. The brute who cannot cooperate is, in the human environment, badly adapted.",
+ ana:"On a ship, the fittest crew member is not the one who can throw the others overboard. It is the one the others want on watch."},
+
+{id:"c8-mc-eugenic", ch:8, s:8, sub:"Current Misinterpretations of Modern Natural Science, Especially of Darwinism", kind:"mc",
+ q:"Some claimed war improves a people by weeding out the weak. What does Mises say about this <em>eugenic</em> defence of war?",
+ opts:["It is correct, though regrettable, and must be accepted","It is backwards: war kills the young and fit and spares the rest","It applied to ancient wars but not to modern ones","Science has nothing to say about it one way or the other"],
+ ans:1,
+ a:"Modern war does not select the strong. It takes the fittest young men out of the population and kills or maims them, while those unfit to serve stay home and have children. If one insisted on judging war by breeding stock, it would come out as a machine for destroying the best. Mises uses this to show that the appeal to biology is not even good biology.",
+ ana:"A farmer who culled his finest bulls every spring and kept the lame ones would not call it improving the herd."}
 ];
 
 /* ============================================================
@@ -1376,6 +1611,7 @@ function buildDeckSelect(){
   var sel=$("deck"), html='';
   html+='<option value="all">All chapters ('+CARDS.length+')</option>';
   html+='<option value="terms">Key terms only</option>';
+  if(CARDS.some(function(c){return c.kind==="mc";})) html+='<option value="mc">Multiple choice only</option>';
   html+='<option value="trouble">My trouble spots</option>';
   CHAPTER_ORDER.forEach(function(ch){
     var C=CHAPTERS[ch];
@@ -1403,6 +1639,7 @@ var right=0, streak=0, bestStreak=0, startedAt=0, revealed=false, deckSize=0;
 function deckCards(){
   if(deckName==="all") return CARDS.slice();
   if(deckName==="terms") return CARDS.filter(function(c){return c.kind==="term";});
+  if(deckName==="mc") return CARDS.filter(function(c){return c.kind==="mc";});
   if(deckName==="trouble"){
     var weak=CARDS.filter(function(c){return mastery(c.id)==="weak";});
     if(weak.length) return weak;
@@ -1451,11 +1688,14 @@ function startRun(only){
 }
 
 function next(){
-  revealed=false;
+  revealed=false; mcDone=false;
   reveal.classList.remove("on");
   card.className="card";
   ta.value=""; ta.disabled=false; ta.style.display="";
   $("revealBtn").style.display=""; $("skipBtn").style.display="";
+  $("nextBtn").hidden=true; $("verdict").hidden=true;
+  $("ptsBlock").hidden=false; $("gradeBlock").hidden=false; $("modelHead").textContent="Model answer";
+  $("choices").hidden=true; $("choices").innerHTML="";
 
   current=pull();
   if(!current){ finish(); return; }
@@ -1463,8 +1703,13 @@ function next(){
 
   chTag.textContent=chLabel(current)+" · "+CHAPTERS[current.ch].short;
   secTag.textContent=secLabel(current);
-  kindTag.hidden=(current.kind!=="term");
+  kindTag.hidden=(current.kind==="q");
+  kindTag.textContent=(current.kind==="mc"?"Multiple choice":"Define");
   qtext.innerHTML=current.q;
+  if(current.kind==="mc"){
+    ta.style.display="none"; $("revealBtn").style.display="none";
+    showChoices(current);
+  }
   cardno.textContent=(Object.keys(learned).length+1)+" / "+deckSize+"  ·  "+remaining()+" left";
   if(window.innerWidth>720) ta.focus();
   renderStats();
@@ -1507,6 +1752,13 @@ $("points").addEventListener("change",function(){ touched=true; suggest(); });
 function gradeCard(g){
   if(!revealed||!current) return;
   var c=current; current=null; touched=false;
+  applyGrade(c,g);
+  save(); renderStats();
+  next();
+  window.scrollTo({top:card.getBoundingClientRect().top+window.scrollY-80, behavior:"smooth"});
+}
+// Records a grade for card c without advancing: shared by self-graded and multiple-choice cards.
+function applyGrade(c,g){
   var wasFirst=(firstTry[c.id]===undefined);
   if(wasFirst) firstTry[c.id]=(g==="got");
   if(g==="got"){
@@ -1528,10 +1780,54 @@ function gradeCard(g){
     lapse(c, 2+Math.floor(Math.random()*3));   // the Anki "again" pile
     card.className="card bad";
   }
-  save(); renderStats();
-  next();
-  window.scrollTo({top:card.getBoundingClientRect().top+window.scrollY-80, behavior:"smooth"});
 }
+
+/* ------------------------------------------------------------
+   Multiple choice: pick an option, it is marked at once, the
+   explanation appears, and the card is graded automatically —
+   right retires it, wrong brings it back soon. Option order is
+   shuffled each time so the letter cannot be memorised.
+   ------------------------------------------------------------ */
+var mcDone=false, mcOrder=[];
+var LETTERS=["A","B","C","D","E"];
+function showChoices(c){
+  mcOrder=shuffle(c.opts.map(function(t,i){return i;}));
+  var box=$("choices");
+  box.innerHTML=mcOrder.map(function(oi,k){
+    return '<button class="choice" data-k="'+k+'"><span class="key">'+LETTERS[k]+'</span><span>'+c.opts[oi]+'</span></button>';
+  }).join("");
+  box.hidden=false;
+}
+function choose(k){
+  if(revealed||mcDone||!current||current.kind!=="mc") return;
+  var c=current; current=null; revealed=true; mcDone=true;
+  var picked=mcOrder[k], ok=(picked===c.ans);
+  var btns=$("choices").querySelectorAll(".choice");
+  for(var i=0;i<btns.length;i++){
+    btns[i].disabled=true;
+    var oi=mcOrder[i];
+    if(oi===c.ans) btns[i].classList.add("right");
+    else if(i===k) btns[i].classList.add("wrong");
+    else btns[i].classList.add("dim");
+  }
+  applyGrade(c, ok?"got":"miss");
+  var v=$("verdict"); v.hidden=false; v.className="verdict "+(ok?"ok":"bad");
+  v.innerHTML=ok ? "&#10003; Right." : "&#10007; Not quite &mdash; the answer is <b>"+LETTERS[mcOrder.indexOf(c.ans)]+"</b>.";
+  $("modelHead").textContent="Why";
+  $("yoursBlock").hidden=true;
+  $("model").innerHTML=c.a;
+  $("ptsBlock").hidden=true; $("gradeBlock").hidden=true;
+  $("analogy").innerHTML="<b>Think of it like&hellip;</b> "+c.ana;
+  reveal.classList.add("on");
+  $("skipBtn").style.display="none"; $("nextBtn").hidden=false;
+  save(); renderStats();
+  $("nextBtn").focus();
+}
+$("choices").addEventListener("click",function(e){
+  var b=e.target.closest?e.target.closest(".choice"):null;
+  if(b) choose(+b.getAttribute("data-k"));
+});
+$("nextBtn").onclick=function(){ next(); window.scrollTo({top:card.getBoundingClientRect().top+window.scrollY-80, behavior:"smooth"}); };
 
 function finish(){
   card.style.display="none";
@@ -1598,10 +1894,13 @@ function itemHtml(c){
   return '<details class="item" data-id="'+c.id+'"><summary>'+
     '<i class="st '+(st==="new"?"":st)+'"></i>'+
     '<span class="q">'+c.q+'</span>'+
-    (c.kind==="term"?'<span class="t">term</span>':'')+
+    (c.kind==="term"?'<span class="t">term</span>':(c.kind==="mc"?'<span class="t">choice</span>':''))+
     '</summary><div class="body">'+
-    '<p class="model">'+c.a+'</p>'+
-    '<ul>'+c.pts.map(function(p){return "<li>"+p+"</li>";}).join("")+'</ul>'+
+    (c.kind==="mc"
+      ? '<ol class="mcopts">'+c.opts.map(function(o,i){return '<li class="'+(i===c.ans?"ok":"")+'"><i>'+(i===c.ans?"&#10003;":LETTERS[i])+'</i><span>'+o+'</span></li>';}).join("")+'</ol>'+
+        '<p class="model">'+c.a+'</p>'
+      : '<p class="model">'+c.a+'</p>'+
+        '<ul>'+c.pts.map(function(p){return "<li>"+p+"</li>";}).join("")+'</ul>')+
     '<div class="analogy"><b>Think of it like&hellip;</b> '+c.ana+'</div>'+
     '</div></details>';
 }
@@ -1693,9 +1992,19 @@ ta.addEventListener("keydown",function(e){
   if(e.key==="Enter" && (e.metaKey||e.ctrlKey)){ e.preventDefault(); doReveal(); }
 });
 document.addEventListener("keydown",function(e){
-  if(mode!=="review" || !current) return;
+  if(mode!=="review") return;
   var a=document.activeElement;
   if(a && (a.tagName==="TEXTAREA" || a.tagName==="INPUT" || a.tagName==="SELECT")) return;
+  if(mcDone){                                   // multiple choice answered: Enter / Space moves on
+    if(e.key==="Enter"||e.key===" "){ if(a&&a.tagName==="BUTTON"&&a.id!=="nextBtn") return; e.preventDefault(); $("nextBtn").onclick(); }
+    return;
+  }
+  if(!current) return;
+  if(current.kind==="mc" && !revealed){         // 1–4 pick an option
+    var n=parseInt(e.key,10);
+    if(n>=1 && n<=mcOrder.length){ e.preventDefault(); choose(n-1); }
+    return;
+  }
   if(!revealed){
     if(e.key==="Enter"||e.key===" "){ if(a&&a.tagName==="BUTTON") return; e.preventDefault(); doReveal(); }
     return;
